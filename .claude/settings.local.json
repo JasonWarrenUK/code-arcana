@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/jasonwarren/Code/sparks/code-arcana/docs/roadmaps)",
+      "Bash(mkdir -p /Users/jasonwarren/Code/sparks/code-arcana/.claude)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(npx prettier *)"
+    ]
+  }
+}

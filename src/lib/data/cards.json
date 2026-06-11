@@ -1,0 +1,906 @@
+[
+	{
+		"id": "the-fool",
+		"name": "The Fool",
+		"arcana": "major",
+		"number": 0,
+		"keywords": ["beginnings", "naivety", "leap of faith", "first commit"],
+		"codingInsight": "Ignorance Is the Entry Fee",
+		"essay": "Every project starts with someone who doesn't understand the problem committing code anyway. This looks reckless because it is. It's also the only way anything begins. You cannot think your way to understanding a system that doesn't exist yet—the understanding arrives through the building, usually around the third time you delete everything and start again. The Fool knows this, or rather doesn't know enough to be paralysed by it.\n\nThere's a particular kind of developer who researches frameworks for six weeks and ships nothing. They're not being diligent; they're being scared, and calling it rigour. The Fool walks off the cliff because the cliff is the only honest starting point. Your first repo on any real problem will be naive, your estimates will be fiction, and your initial architecture will embarrass you within a month. Fine. That embarrassment is evidence you learned something, and you couldn't have learned it any other way.\n\nThe trick is holding the naivety lightly. Begin without knowing, but notice when you start to know—and let the knowing change what you're building. The Fool who never updates is just an idiot with momentum.",
+		"connections": ["ace-of-wands", "page-of-wands", "the-magician", "the-world"]
+	},
+	{
+		"id": "the-magician",
+		"name": "The Magician",
+		"arcana": "major",
+		"number": 1,
+		"keywords": ["tools", "capability", "selection", "intent"],
+		"codingInsight": "Mastery Is Selection",
+		"essay": "The Magician stands at a table laid with everything: every language, every framework, every API a fetch call away. This has never been more literally true. You have access to more capability than the teams that landed spacecraft, and most of it is free. The question was never whether you have the tools. It's whether you know which one this particular problem actually needs—and whether you can resist the other ones.\n\nReaching for the familiar hammer is a failure of imagination; reaching for the exciting new one is usually a failure of judgement. The skill that separates the practitioner from the hobbyist is boring on paper: matching the tool to the job, not the job to the tool you fancied learning this month. A shell script that works beats a microservice architecture that's still being diagrammed.\n\nMind the card's shadow, though. The Magician is also the conjurer—the developer whose demo dazzles and whose codebase is smoke. Having the tools arranged beautifully on the table is theatre. The magic only counts if something real comes out the other end.",
+		"connections": ["the-fool", "ace-of-wands", "king-of-pentacles", "seven-of-cups"]
+	},
+	{
+		"id": "the-high-priestess",
+		"name": "The High Priestess",
+		"arcana": "major",
+		"number": 2,
+		"keywords": ["intuition", "pattern recognition", "tacit knowledge"],
+		"codingInsight": "The Itch Is Data",
+		"essay": "You know the bug is there before you can prove it. Something about the way the test passed too easily, or the diff that touched a file it had no business touching. You can't articulate it yet—that's the point. The High Priestess deals in the knowledge that arrives before the evidence does.\n\nThis isn't mysticism. Intuition is compressed experience: thousands of hours of pattern exposure, indexed somewhere your conscious reasoning can't query directly. When a seasoned developer says 'that feels wrong' about a perfectly green build, they're not guessing—they're pattern-matching against every previous time something looked exactly this fine right before it wasn't. Dismissing that signal because it lacks a stack trace is throwing away your most expensive sensor.\n\nThe discipline is in what you do next. The itch earns an investigation, not an assertion. 'I have a bad feeling about this PR' is a reason to read it twice, not a review comment. Trust the intuition enough to follow it; respect your colleagues enough to come back with proof. The High Priestess keeps her secrets until they're ready to be spoken—and so should you.",
+		"connections": ["the-moon", "queen-of-cups", "ace-of-swords", "nine-of-swords"]
+	},
+	{
+		"id": "the-empress",
+		"name": "The Empress",
+		"arcana": "major",
+		"number": 3,
+		"keywords": ["nurture", "growth", "paved paths", "good defaults"],
+		"codingInsight": "Make the Right Thing Easy",
+		"essay": "A codebase is a garden, not a factory. You don't manufacture good behaviour from your team; you cultivate the conditions where it happens by default. The Empress is the architecture of generosity: the project where the linter catches the mistake before review does, the scaffolding that makes the correct pattern the lazy option, the README that anticipates the question you were about to ask.\n\nMost systems do the opposite. They make the right thing arduous—seventeen steps of ceremony to add an endpoint properly—and then act surprised when people take shortcuts. Developers, like water, follow the path of least resistance. You can moralise about discipline, or you can lower the resistance on the path you actually want them to take. One of these works.\n\nThe Empress's growth is unglamorous and cumulative. Nobody gets promoted for the template that saved everyone twenty minutes a day, and the people who build these things rarely shout about it. But come back in a year and look at which teams are thriving. It's the ones where someone quietly made good work easier than bad work, and let the garden do the rest.",
+		"connections": ["the-emperor", "queen-of-pentacles", "six-of-pentacles", "three-of-wands"]
+	},
+	{
+		"id": "the-emperor",
+		"name": "The Emperor",
+		"arcana": "major",
+		"number": 4,
+		"keywords": ["structure", "constraints", "boundaries", "order"],
+		"codingInsight": "Constraints Are Load-Bearing",
+		"essay": "Infinite freedom is paralysis with better branding. The blank file with no conventions, no types, no architecture—that's not liberty, it's a thousand micro-decisions you'll make inconsistently and regret individually. The Emperor knows that structure, properly placed, doesn't restrict thought. It frees thought from the questions that don't deserve it, so the questions that do can have your full attention.\n\nA strict type system is a constraint. So is a module boundary, a naming convention, a rule that the database is only touched through one layer. Each one removes a category of possible mistakes and a category of pointless debate. The best architectures feel restrictive for the first week and liberating forever after, because you stop holding the whole system in your head—the structure holds it for you.\n\nThe shadow Emperor mistakes control for order. He's the architect who reviews every commit, the framework with an opinion about everything, the process that exists to demonstrate authority rather than enable work. The test is simple: does the structure make people more capable or more obedient? Good constraints are walls you can lean on. Bad ones are walls you're locked behind.",
+		"connections": ["the-empress", "the-hierophant", "king-of-swords", "four-of-pentacles"]
+	},
+	{
+		"id": "the-hierophant",
+		"name": "The Hierophant",
+		"arcana": "major",
+		"number": 5,
+		"keywords": ["convention", "orthodoxy", "tradition", "earned heresy"],
+		"codingInsight": "Convention Is Compressed Memory",
+		"essay": "Every convention in your codebase is a scar with the story worn off. Someone, somewhere, got burned badly enough that the tribe agreed never to do that again—and then the someone left, and the story faded, and what remains is a rule that looks arbitrary. The Hierophant is the keeper of these rules, and he is both genuinely wise and insufferably smug, often in the same sentence.\n\nThe correct relationship with orthodoxy has two stages, in strict order. First: follow the convention, even when it seems pointless, because the odds are good it encodes a failure you haven't had yet. The fence in the field was probably built for a reason; find out the reason before you tear it down. Second—and only after you genuinely understand why the rule exists—you've earned the right to break it. Heresy from understanding is innovation. Heresy from impatience is just the same old mistake wearing a new jumper.\n\nWhat the Hierophant cannot tolerate is being questioned, and that's his failure mode. 'Best practice' deployed as a conversation-ender is dogma, not wisdom. The healthiest teams treat their conventions as defaults with documented reasons—strong opinions, held accountably.",
+		"connections": ["the-emperor", "the-fool", "eight-of-pentacles", "seven-of-wands"]
+	},
+	{
+		"id": "the-lovers",
+		"name": "The Lovers",
+		"arcana": "major",
+		"number": 6,
+		"keywords": ["choice", "commitment", "values", "alignment"],
+		"codingInsight": "Choosing Is Closing Doors",
+		"essay": "Picking a stack feels like a technical decision and is actually a confession of values. React or Svelte, Postgres or Mongo, monolith or services—the comparison tables are theatre. What you're really deciding is what you're willing to optimise for and what you're willing to suffer. Every choice forecloses others, and the foreclosure is the point. A team that refuses to commit to anything keeps all its options and ships none of them.\n\nThe Lovers card is traditionally misread as romance when it's actually about the moment of choosing—and the fact that real choice costs something. The dual-database architecture 'so we can decide later' isn't keeping options open; it's paying for two relationships and being faithful to neither. Commitment is what makes depth possible. You only learn a tool's real character after the honeymoon, three months in, when you hit the first thing it's genuinely bad at and have to decide whether the trade was worth it.\n\nIt usually was, if you chose for your actual values rather than the conference-talk version of them. Know what you're optimising for. Write it down. Then commit, and let the closed doors stay closed long enough to find out what's behind the open one.",
+		"connections": ["two-of-swords", "two-of-wands", "the-chariot", "seven-of-cups"]
+	},
+	{
+		"id": "the-chariot",
+		"name": "The Chariot",
+		"arcana": "major",
+		"number": 7,
+		"keywords": ["momentum", "direction", "control", "shipping"],
+		"codingInsight": "Velocity Is a Vector",
+		"essay": "Speed without direction is just expensive noise. The Chariot is drawn by two creatures pulling in different directions—in our terms, the pressure to ship and the need to ship the right thing—and the driver's job is not to pick one but to hold both in tension and still move. Teams that surrender to pure momentum produce a great deal of software and very little product. Teams that surrender to pure deliberation produce documents.\n\nMomentum is genuinely valuable, which is what makes it dangerous. A team that's shipping feels good, and that feeling is self-justifying: look at the velocity, look at the burndown. Nobody wants to be the one asking whether the direction is right while the chariot is at full gallop. But velocity, despite what the Agile theatre has done to the word, is a vector. It has magnitude and direction, and the magnitude is worthless if the direction is wrong—you're just getting lost faster.\n\nThe Chariot's discipline is steering without stopping. Small course corrections at speed, not grand pauses for realignment. Ship, check the bearing, adjust, ship again. The reins stay in your hands the whole time. The moment you can't change direction without a crisis, you're not driving anymore—you're cargo.",
+		"connections": ["the-lovers", "temperance", "knight-of-wands", "eight-of-wands"]
+	},
+	{
+		"id": "strength",
+		"name": "Strength",
+		"arcana": "major",
+		"number": 8,
+		"keywords": ["patience", "complexity", "gentleness", "working with the grain"],
+		"codingInsight": "Force Creates Resistance",
+		"essay": "The card shows a figure calming a lion with bare hands, and every developer who has inherited a gnarly legacy system knows exactly what that feels like. You do not beat a complex system into submission. You can try—the big-bang refactor, the heroic rewrite-this-module weekend, the 'we'll just force it' migration—and the system will respond the way complex systems always respond to force: by breaking somewhere you weren't looking.\n\nReal strength here is the unglamorous kind. Learning the system's grain before you cut against it. Reading the code that offends you until you understand why it offends you—and occasionally discovering it was right and you were wrong. Making the small, reversible change and watching what happens, rather than the large irreversible one and praying. This looks like timidity to people who've never maintained anything, which is why the industry keeps celebrating lion-wrestlers and keeps being surprised by the mauling.\n\nComplexity isn't your enemy; it's an animal that was here before you and has reasons for its behaviour. Patience isn't weakness. It's the only force complex systems actually respond to.",
+		"connections": [
+			"the-high-priestess",
+			"knight-of-swords",
+			"queen-of-pentacles",
+			"eight-of-pentacles"
+		]
+	},
+	{
+		"id": "the-hermit",
+		"name": "The Hermit",
+		"arcana": "major",
+		"number": 9,
+		"keywords": ["solitude", "deep work", "focus", "the lantern"],
+		"codingInsight": "Some Problems Need One Mind",
+		"essay": "Collaboration is genuinely valuable, which is precisely why it gets weaponised. The open-plan office, the Slack channel that never sleeps, the calendar that looks like a lost game of Tetris—all justified in the name of teamwork, all hostile to the kind of thinking that actually solves hard problems. The Hermit makes the unfashionable case: some work requires one mind holding the entire problem at once, uninterrupted, for hours. Not because other people aren't clever, but because the problem doesn't fit through the letterbox of a conversation.\n\nThere's a state you reach about ninety minutes into genuinely focused work where the whole system is loaded into your head and you can feel the consequences of a change ripple through layers you couldn't even name out loud. One Slack notification evicts all of it. The cost isn't the thirty seconds of reading the message; it's the ninety minutes of rebuilding the cathedral.\n\nNote the lantern, though. The Hermit withdraws to find something and brings it back—that's what separates retreat from hiding. Solitude that produces understanding the team eventually shares is deep work. Solitude that produces an unreviewable ten-thousand-line surprise is just antisocial behaviour with a compile step.",
+		"connections": [
+			"the-high-priestess",
+			"four-of-swords",
+			"eight-of-pentacles",
+			"seven-of-pentacles"
+		]
+	},
+	{
+		"id": "wheel-of-fortune",
+		"name": "Wheel of Fortune",
+		"arcana": "major",
+		"number": 10,
+		"keywords": ["dependencies", "luck", "external forces", "churn"],
+		"codingInsight": "Upstream Owns You",
+		"essay": "Your project is a thin layer of intention sitting on a vast tower of other people's decisions. The framework's roadmap, the maintainer's burnout, the licence change announced in a blog post at 4am, the eleven-line package that half the internet turns out to depend on—the wheel turns, and it does not consult you first. Anyone who has watched a green build go red overnight without a single local change has felt the spin.\n\nThe junior response is denial: pin everything, vendor everything, update nothing, and pretend the world outside the lockfile has stopped moving. It hasn't. You're not avoiding the wheel; you're just accumulating rotational debt, and the eventual forced upgrade across four major versions will be biblical. The senior response is to accept the turning and position yourself for it: isolate your dependencies behind your own interfaces, keep the surface area small, update little and often, and know which of your foundations are actually load-bearing.\n\nSome of it is just luck, and pretending otherwise is how the industry stays insufferable. The project that bet on the framework that won looks like genius; the identical decision that bet on the one that died looks like incompetence. The wheel turned. Hold your plans loosely.",
+		"connections": ["the-tower", "two-of-pentacles", "five-of-pentacles", "death"]
+	},
+	{
+		"id": "justice",
+		"name": "Justice",
+		"arcana": "major",
+		"number": 11,
+		"keywords": ["code review", "honesty", "proportion", "fairness"],
+		"codingInsight": "Review Is an Ethical Act",
+		"essay": "Every code review is a small moral transaction, which is why so many of them go wrong. The approve-without-reading rubber stamp isn't politeness; it's a lie with a green tick on it, and the person who ships the bug you didn't bother to find inherits the consequences of your laziness. The forty-comment nitpick storm isn't rigour; it's vanity, the reviewer performing their own standards on someone else's pull request. Justice holds scales for a reason: the feedback should weigh the same as the problem.\n\nHonest review means saying the uncomfortable thing—'I think this approach is wrong'—when you believe it, and saying it about the code rather than the person who wrote it. Proportionate review means knowing the difference between 'this will corrupt data' and 'I would have named this differently', and not spending them from the same account. A reviewer who treats both with equal intensity teaches the author to ignore everything they say, which is the worst outcome available.\n\nThe sword in Justice's other hand matters too. Sometimes the verdict is no, and a culture where no one can say no isn't kind—it's negligent, with better manners. Read the code properly. Say what you actually think. Make the punishment fit the crime.",
+		"connections": ["judgement", "king-of-swords", "three-of-swords", "six-of-pentacles"]
+	},
+	{
+		"id": "the-hanged-man",
+		"name": "The Hanged Man",
+		"arcana": "major",
+		"number": 12,
+		"keywords": ["suspension", "patience", "perspective", "deliberate delay"],
+		"codingInsight": "Waiting Is Work",
+		"essay": "There is a moment in most projects when everyone wants you to ship and the only correct answer is 'not yet'. Not procrastination, not perfectionism—a deliberate, uncomfortable suspension, held against pressure, because something important hasn't finished becoming clear. The Hanged Man hangs voluntarily. That detail is the whole card. He could come down; he's choosing not to, because the upside-down view shows him something the upright one can't.\n\nThis is the hardest discipline to defend in a culture that measures motion. A paused project looks identical to a stalled one from the outside, and your stakeholders cannot tell the difference between 'we are waiting for the design to reveal its flaw' and 'we are faffing about'. The difference is real, though. The flaw you let surface during the pause costs a refactor; the same flaw discovered in production costs an incident, a migration, and a fortnight of apology.\n\nThe pause must earn its keep. A genuine Hanged Man suspension has a question attached—what are we waiting to learn?—and ends when the question is answered. If you can't name the question, you're not gaining perspective. You're just hanging about, and there's a less flattering card for that.",
+		"connections": ["four-of-swords", "seven-of-pentacles", "the-chariot", "two-of-swords"]
+	},
+	{
+		"id": "death",
+		"name": "Death",
+		"arcana": "major",
+		"number": 13,
+		"keywords": ["deprecation", "endings", "letting go", "renewal"],
+		"codingInsight": "Deletion Is a Feature",
+		"essay": "Nothing in the deck is more misread, so let's be clear: Death is not the Tower. This isn't catastrophe; it's the scheduled, necessary ending. The feature nobody uses but everyone maintains. The API version kept alive for one client who left two years ago. The module everyone routes around like a sealed-off wing of the house. Killing these things isn't destruction—it's the precondition for anything new having room to grow.\n\nCodebases rarely die of bad code. They die of accumulation: every path kept open, every flag kept supported, every deprecated method kept 'just in case', until the cost of understanding the system exceeds anyone's willingness to try. The teams that stay fast are the ones that delete with intent. Deprecate loudly, migrate deliberately, then actually remove the thing—the deprecation warning that lives for five years isn't a transition, it's taxidermy.\n\nMourning is allowed. You wrote that code, it worked, it mattered, and there's a real pang when the commit that removes it lands. Feel it, then merge. Keeping the corpse on display doesn't honour the work; finishing the ending does. Every ace in this deck needs the space that only Death clears.",
+		"connections": ["the-tower", "ten-of-swords", "six-of-swords", "ace-of-wands"]
+	},
+	{
+		"id": "temperance",
+		"name": "Temperance",
+		"arcana": "major",
+		"number": 14,
+		"keywords": ["sustainability", "moderation", "steady pace", "blending"],
+		"codingInsight": "Boring Ships",
+		"essay": "The all-nighter makes a better story than the eight consecutive months of unremarkable Tuesdays, which is why the industry keeps mythologising the wrong one. Heroics are what it looks like when planning failed. The crunch, the war room, the pizza boxes at midnight—these are symptoms wearing a cape. Temperance is the deeply unfashionable alternative: the sustainable pace that produces no anecdotes and all of the actual software.\n\nThe angel on the card is mixing water between two cups, and that blending is the real skill. Not abstinence—nobody's saying never sprint—but proportion. Some urgency, some rest. Some new framework, mostly boring proven ones. Some debt taken on deliberately, some paid down every week. Teams fail at the extremes: the ones that never push miss every window, and the ones that always push are running on borrowed judgement, shipping bugs they're too tired to see. The blend is where the throughput lives.\n\nA marathon pace feels insultingly slow on day one and looks like witchcraft by month six, when you're still shipping and the heroic team next door is on its third resignation. Nobody will make a film about your sustainable cadence. They'll just use your software, which was the point.",
+		"connections": ["the-chariot", "nine-of-wands", "four-of-swords", "eight-of-pentacles"]
+	},
+	{
+		"id": "the-devil",
+		"name": "The Devil",
+		"arcana": "major",
+		"number": 15,
+		"keywords": ["technical debt", "addiction", "bondage", "complicity"],
+		"codingInsight": "Comfortable Chains",
+		"essay": "Look closely at the card: the chains around the prisoners' necks are loose. They could lift them off. They don't. That's technical debt in one image—not the debt you don't know about, but the system you know is wrong, that everyone knows is wrong, that you actively choose to feed every sprint because the alternative is a conversation nobody wants to start.\n\nIt works like any addiction, which is to say it works perfectly until it doesn't. Each workaround delivers immediate relief—the feature ships, the demo works—and each one makes the eventual reckoning costlier, so the rational move at every individual moment is one more hit. The team develops the addict's vocabulary: we'll refactor after this release. We just need to get through Q3. We can stop whenever we want. Meanwhile the system's gravity grows; new code bends around the broken core, and people who suggest fixing it are told, accurately, that everything now depends on it staying broken.\n\nNobody put you in these chains. That's the uncomfortable bit, and also the way out: chains you put on, you can take off. It starts with someone saying the true thing out loud—this is costing us more than it saves—and the room not pretending otherwise. The Devil's only real power is everyone agreeing not to mention him.",
+		"connections": ["seven-of-swords", "five-of-pentacles", "the-tower", "eight-of-swords"]
+	},
+	{
+		"id": "the-tower",
+		"name": "The Tower",
+		"arcana": "major",
+		"number": 16,
+		"keywords": ["collapse", "reckoning", "forced change", "inevitability"],
+		"codingInsight": "The Collapse Was Scheduled",
+		"essay": "The lightning gets the blame, but the lightning is just the date. The Tower fell because of how it was built—the foundation everyone agreed not to inspect, the load-bearing hack, the migration deferred so many times it became a superstition. When the catastrophic rebuild finally arrives, it arrives looking like a surprise, and it is never a surprise. Ask anyone on the team. They'll tell you they knew. They'd been saying it in private channels for two years.\n\nThis is the Devil's invoice come due. Every quarter the comfortable chains stayed on, the eventual reckoning compounded, until 'fix it incrementally' quietly stopped being one of the options. That's the Tower's defining cruelty: by the time the collapse comes, the gentle paths are already gone. What's left is the rebuild nobody scheduled, on a timeline nobody chose, at the worst possible moment—because the worst possible moment is precisely when overloaded systems fail.\n\nAnd yet. People who've survived one will tell you, quietly, that there was relief in it. The lightning ends the pretending. The arguments about whether the architecture is fine are over; the budget that never existed for the rewrite suddenly exists. Nothing the Tower destroys was actually solid—that's worth grieving, and it's also the only comfort on offer.",
+		"connections": ["the-devil", "ten-of-swords", "the-star", "death"]
+	},
+	{
+		"id": "the-star",
+		"name": "The Star",
+		"arcana": "major",
+		"number": 17,
+		"keywords": ["hope", "renewal", "rebuilding", "earned clarity"],
+		"codingInsight": "Hope With Receipts",
+		"essay": "After the Tower, the Star. The card is quiet on purpose: no lightning, no drama, just someone pouring water by starlight in the ruins. This is what the morning after the catastrophic rebuild actually feels like—not triumph, not despair, but a strange and specific calm. The worst happened. You're still here. And for the first time in years, you can see the whole sky, because the Tower isn't blocking it anymore.\n\nWhat makes the Star different from the Fool's optimism is the receipts. This hope has scar tissue. You know exactly where the old system buried its bodies, because you buried them, and the new system gets built by someone who remembers. The greenfield rewrite that ignores those lessons is just the old Tower with fresh paint—give it three years. The rebuild that honours them is something rarer: a second attempt by people who've earned the right to one.\n\nBeware only the urge to over-correct. The trauma of the collapse makes everything about the old system feel poisoned, but some of it worked, and rebuilding in pure opposition to your past is still letting the past drive. Take what was true. Leave what fell. Pour the water. Begin.",
+		"connections": ["the-tower", "ace-of-cups", "six-of-swords", "three-of-wands"]
+	},
+	{
+		"id": "the-moon",
+		"name": "The Moon",
+		"arcana": "major",
+		"number": 18,
+		"keywords": ["ambiguity", "illusion", "hidden bugs", "uncertainty"],
+		"codingInsight": "Certainty Is a Rumour",
+		"essay": "The Moon governs everything you build in bad light: the spec that says 'should work intuitively', the requirement everyone interpreted differently and nobody confirmed, the bug that only reproduces on the one machine in the one timezone. Under moonlight, things are visible but not trustworthy—you can see shapes, but a rock and a sleeping dog look identical until you step on one of them.\n\nThe danger isn't the ambiguity itself; ambiguity is just weather. The danger is the human response to it, which is to hallucinate certainty. Faced with an unclear spec, developers don't stop—they fill the gaps with assumptions, silently, and then build with total confidence on the invented parts. Three months later the client says 'that's not what we meant' and everyone is somehow surprised. The Moon didn't deceive you. You deceived yourself and gave the Moon the credit.\n\nThe discipline for moonlit work is humility with a method. Say 'I don't know' out loud, early, where it can be answered cheaply. Reproduce before you theorise. Write down your assumptions where someone can object to them. You cannot make the fog lift on demand—but you can stop sprinting through it, and you can stop describing the shapes as facts. Dawn comes. It comes faster when you ask.",
+		"connections": ["the-high-priestess", "seven-of-cups", "two-of-swords", "nine-of-swords"]
+	},
+	{
+		"id": "the-sun",
+		"name": "The Sun",
+		"arcana": "major",
+		"number": 19,
+		"keywords": ["clarity", "joy", "flow", "earned confidence"],
+		"codingInsight": "Joy Is a Signal",
+		"essay": "Sometimes the code is simply good and you know it. The abstraction that makes three other problems disappear. The test suite that catches the regression before you've finished feeling clever about the change. The module you come back to after six months and read like prose. The Sun is that state, and the first thing to say about it is: it's real. Not luck, not delusion—the genuine article, the thing the whole craft is for.\n\nDevelopers are oddly embarrassed by this. We've built an entire culture around cynicism—all code is terrible, everything is on fire, the only honest review is a sigh—and it leaves us with no vocabulary for the days when it works. That's a loss, because joy is information. The pleasure you feel reading good code is your taste telling you what good is, calibrating the same instrument you'll use to recognise its absence. A developer who has never noticed the Sun has no baseline for diagnosing the fog.\n\nSo when it arrives, let it count. Say 'this is good work' in the review and mean it. Notice what conditions produced the clarity—they're usually reproducible, and almost never include heroics. The Sun isn't the absence of all the hard cards. It's what they were for.",
+		"connections": ["the-star", "six-of-wands", "ace-of-swords", "ten-of-cups"]
+	},
+	{
+		"id": "judgement",
+		"name": "Judgement",
+		"arcana": "major",
+		"number": 20,
+		"keywords": ["post-mortem", "reckoning", "accountability", "rebirth"],
+		"codingInsight": "Blameless, Not Toothless",
+		"essay": "The post-mortem is the closest thing our industry has to a sacrament, and like most sacraments it's usually performed without belief. The incident doc gets written, the timeline reconstructed, the action items minuted—and then filed somewhere nothing changes. That's not Judgement; that's paperwork wearing Judgement's robes. The card shows the dead rising to account for themselves, and the operative word is rising. A real reckoning transforms something. If nothing changes, you didn't have one.\n\n'Blameless' was a genuine insight that's curdled into an excuse. The insight: humans are not root causes. The engineer who ran the bad migration was handed a system where that migration was easy to run and hard to verify—fix the system, not the human, because the next human gets the same system. The curdled version: blameless means we never say anything went wrong, the incident 'surfaced learnings', and the same failure surfaces the same learnings every quarter like a ghost on a schedule. Blameless was never meant to mean consequence-free for the system itself.\n\nHonest reckoning requires saying true sentences with subjects in them. We knew the alerting was broken and chose not to fix it. The deadline was fiction and we all knew. The trumpet on the card isn't background music—it's loud on purpose. Wake up. Account. Change. Then you get the rebirth.",
+		"connections": ["justice", "the-tower", "ten-of-swords", "five-of-cups"]
+	},
+	{
+		"id": "the-world",
+		"name": "The World",
+		"arcana": "major",
+		"number": 21,
+		"keywords": ["completion", "integration", "shipping", "wholeness"],
+		"codingInsight": "Done Is a Real Place",
+		"essay": "There's a moment after a real ship—not a feature flag flip, but the thing that took everything you had—when the silence is almost disorienting. The problem that lived in your head for a year has moved out. You keep reaching for it and finding it gone, like a missing tooth. The World is that moment, and the deck puts it at the end for a reason: completion is real, it is reachable, and our industry has half-forgotten how to believe in it.\n\nWe've built a culture of the eternal iteration—everything is a journey, every product a living service, done is a dirty word that means you've stopped innovating. The backlog is infinite by design, so no ship ever gets to feel like an arrival. This is a quiet theft. The World says otherwise: there is such a thing as the work being whole. Not perfect—whole. The thing exists, it serves the people it was for, and the person who started it has been changed by the making of it. That's completion, and you're allowed to stand in it for a while before anyone says the word roadmap.\n\nThe dancer on the card holds the wreath, and the wreath is a circle: every ending is positioned to become a beginning. Tomorrow, perhaps, the Fool again. But not today. Today you finished something. Mark it.",
+		"connections": ["the-fool", "ten-of-pentacles", "ten-of-cups", "judgement"]
+	},
+	{
+		"id": "ace-of-cups",
+		"name": "Ace of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 1,
+		"keywords": ["genuine interest", "new beginnings", "emotional investment", "motivation"],
+		"codingInsight": "Care Precedes Craft",
+		"essay": "Somewhere in your projects folder is a graveyard of sensible ideas—things you started because they'd look good on a CV, because the market wanted them, because someone said you should. None of them survived the third weekend. The Ace of Cups is the other thing: the project you begin because something in you genuinely lights up. Not strategically. Not for the portfolio. Because you care, embarrassingly and specifically.\n\nCare is the only renewable energy source in software. Discipline runs out, deadlines lose their teeth, and 'this would be good for my career' has the motivational half-life of a New Year's resolution. But a problem you actually give a shit about will drag you back to the keyboard on a wet Tuesday in February when nothing else can.\n\nThe cup is offered, not earned. You don't choose what you care about; you just notice it. The skill is in not talking yourself out of it because it isn't sensible.",
+		"connections": ["ace-of-wands", "the-fool", "four-of-cups", "the-star"]
+	},
+	{
+		"id": "two-of-cups",
+		"name": "Two of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 2,
+		"keywords": ["pairing", "partnership", "mutual respect", "chemistry"],
+		"codingInsight": "Chemistry Beats Process",
+		"essay": "Most pairing is two people taking turns being bored. One drives, one half-watches while mentally rewriting their CV. The Two of Cups is the rare other thing: a partnership where the conversation moves faster than either of you could type, where 'no, wait—' is an act of generosity rather than a turf war.\n\nYou can't manufacture this with a rota or a methodology. Real pairing chemistry comes from mutual respect plus genuinely different brains: one of you sees edge cases, the other sees structure; one slows down at the right moments, the other refuses to let things stall. The result isn't twice as good as either of you alone—it's a third thing neither of you could have produced.\n\nWhen you find someone you work with like this, recognise it for the rare resource it is. Don't dilute it with mandated rotation, and don't assume every colleague will replicate it. The pair matters more than the practice.",
+		"connections": ["the-lovers", "three-of-wands", "two-of-swords", "three-of-cups"]
+	},
+	{
+		"id": "three-of-cups",
+		"name": "Three of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 3,
+		"keywords": ["celebration", "shipping", "shared joy", "team bonds"],
+		"codingInsight": "Let It Land",
+		"essay": "You shipped. It works. People are using it. And before you've even closed the deploy logs, someone's already talking about the next sprint. The Three of Cups insists you stop and actually feel the thing you just did—not a retro with action items, not a 'celebrating our wins' Slack emoji, but real shared delight in having made something together.\n\nThis matters more than it sounds. Teams that never mark their endings start to feel like the work is an endless conveyor belt—because it is, unless you punctuate it. Celebration is how a group of people processes 'we did that' into 'we can do things'. Skip it often enough and you'll find your best people quietly wondering why nothing ever feels finished.\n\nIt doesn't need to be a party. Sometimes it's just everyone going slightly useless for an afternoon, grinning at the dashboard. Take the afternoon.",
+		"connections": ["three-of-wands", "the-sun", "nine-of-cups", "ten-of-cups"]
+	},
+	{
+		"id": "four-of-cups",
+		"name": "Four of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 4,
+		"keywords": ["apathy", "disengagement", "stagnation", "unseen offers"],
+		"codingInsight": "Apathy is Information",
+		"essay": "You open the codebase and feel nothing. Not hatred—hatred is at least engagement. Just a flat, grey 'oh, this again'. You scroll the backlog like it's someone else's shopping list. The Four of Cups is apathy, and the first thing to know about it is that it's data, not a character flaw.\n\nSomething changed. Maybe the interesting problems got solved and what's left is plumbing. Maybe the project drifted away from whatever made you care in the first place. Maybe you're just knackered. Apathy measures the gap between what the work is and what you need it to be, and pretending the gap isn't there just postpones the reckoning.\n\nThe card's classic image has a fourth cup being offered that the figure can't see. There's usually something on offer—a different angle, a gnarly subproblem, a reason to care again. But you won't spot it by forcing enthusiasm. You spot it by admitting, honestly, that you've stopped looking.",
+		"connections": ["ace-of-cups", "eight-of-cups", "the-hermit", "four-of-pentacles"]
+	},
+	{
+		"id": "five-of-cups",
+		"name": "Five of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 5,
+		"keywords": ["grief", "project death", "loss", "what remains"],
+		"codingInsight": "Mourn What Mattered",
+		"essay": "The project died. Cancelled, deprecated, 'sunset'—pick your euphemism. And everyone around you is being terribly adult about it, talking about lessons learned and pivots, while you're quietly grieving two years of careful decisions that no one will ever see again.\n\nGrieve. Seriously. You put real thought into that schema, that API design, those tests that actually covered the edge cases. Code is crystallised judgement, and when a project dies you lose the artefact, not the judgement—but the artefact still mattered, and pretending it didn't is how engineers learn to stop investing. The post-mortem culture that converts every death into a tidy bullet list of takeaways is missing the bit where a thing you made stopped existing.\n\nThree cups spilled, two still standing. The classic reading holds: in time, turn around and look at what survived. The patterns you proved, the people you built it with, the taste you developed. But that's for later. First, the spilled ones.",
+		"connections": ["death", "the-tower", "eight-of-cups", "six-of-cups", "three-of-swords"]
+	},
+	{
+		"id": "six-of-cups",
+		"name": "Six of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 6,
+		"keywords": ["nostalgia", "old code", "past selves", "fondness"],
+		"codingInsight": "Nostalgia is a Diff",
+		"essay": "You open a project from four years ago, braced for horror, and instead find... it's quite nice? Naive in places, certainly—past you had clearly just discovered promises and was thrilled about it—but there's a directness to it, an unselfconsciousness. You wrote that code before you knew enough to be afraid.\n\nThe Six of Cups is nostalgia, and nostalgia for old code is more useful than it looks. It's a diff between who you were and who you are. The cringe shows you've grown; the surprising competence shows growth isn't a straight line—sometimes past you, unburdened by best practices, simply solved the problem. And the affection? That's the part worth keeping. You loved building this. Whatever conditions produced that feeling are worth reverse-engineering.\n\nDon't move back in, though. Memory lane is a fine place to visit and a terrible place to host production traffic.",
+		"connections": ["five-of-cups", "ace-of-cups", "the-moon", "eight-of-pentacles"]
+	},
+	{
+		"id": "seven-of-cups",
+		"name": "Seven of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 7,
+		"keywords": ["decision paralysis", "too many options", "imagined futures", "framework churn"],
+		"codingInsight": "Options Aren't Progress",
+		"essay": "Nineteen browser tabs. Four framework comparison articles. A Reddit thread titled 'Svelte vs Solid vs whatever' that you've read twice. You haven't written a line of code in three days, and you've started to suspect the research is the procrastination.\n\nIt is. The Seven of Cups is the paralysis of abundance: every option shimmering with imagined futures, none of them weighed down by actual trade-offs yet. An unchosen framework is perfect the way an unstarted project is perfect. The moment you pick one, it becomes real, with real warts, and some part of you would rather stay in the showroom forever.\n\nHere's the uncomfortable truth: for most projects, most of the candidates would be fine. The cost of choosing slightly wrong is almost always lower than the cost of not choosing. Pick the one you can imagine debugging at 11pm, close the tabs, and let reality start teaching you things the comparison articles couldn't.",
+		"connections": ["two-of-swords", "the-lovers", "ace-of-wands", "seven-of-pentacles"]
+	},
+	{
+		"id": "eight-of-cups",
+		"name": "Eight of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 8,
+		"keywords": ["walking away", "honest endings", "sunk cost", "moving on"],
+		"codingInsight": "Leaving is a Skill",
+		"essay": "There's a moment—usually quiet, usually at night—when you realise you're not going to finish this. Not because it's hard; you've done hard. Because the reason you started no longer exists, and you've been running on momentum and guilt for months.\n\nThe Eight of Cups is walking away, and it's the most underrated skill in software. We valorise grit and shipping, so abandoning a project feels like moral failure, and people stay years past the point of honesty—adding features to things they no longer believe in, maintaining cups they no longer drink from. Sunk cost dressed up as commitment.\n\nBut walking away isn't quitting; quitting is passive, and this is a decision. The card shows a figure leaving eight perfectly good cups behind, and that's the point—they're fine, the work was real, and you're still going. Write the README that explains where things stand, archive the repo with dignity, and go find out what you're actually for now.",
+		"connections": ["four-of-cups", "five-of-cups", "death", "the-hermit"]
+	},
+	{
+		"id": "nine-of-cups",
+		"name": "Nine of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 9,
+		"keywords": ["satisfaction", "fulfilment", "earned contentment", "it works"],
+		"codingInsight": "Satisfaction Without Apology",
+		"essay": "The card of having actually got what you wanted. The codebase does the thing. Not 'does the thing with known issues' or 'does the thing if you squint'—it does the thing you set out to make it do, and using it feels the way you hoped it would feel back when it was just a sketch.\n\nThis is rarer than it should be, and our industry is weirdly embarrassed by it. We're fluent in technical debt confessionals and 'lol it's all held together with tape', but say 'I'm genuinely satisfied with this code' out loud and watch people wait for the punchline. Permanent dissatisfaction gets mistaken for high standards. It isn't. It's just permanent dissatisfaction.\n\nSatisfaction is information too: it tells you your judgement and your execution finally agreed on something. Sit with it. Don't immediately refactor it, don't apologise for it. You wanted this, you built it, it works. That's allowed.",
+		"connections": ["three-of-cups", "nine-of-pentacles", "the-sun", "the-world"]
+	},
+	{
+		"id": "ten-of-cups",
+		"name": "Ten of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"number": 10,
+		"keywords": ["psychological safety", "sustainable teams", "trust", "completion"],
+		"codingInsight": "Safety Ships",
+		"essay": "The Ten of Cups is the team people don't believe exists until they've been on one: where you can say 'I broke production' in the same tone you'd say 'I'm making tea', because the response will be help, not theatre. Where disagreement is normal and grudges aren't. Where nobody's performing competence because nobody's checking for weakness.\n\nPsychological safety has been corporatised into a workshop topic, which is a shame, because the real thing is structural, not motivational. It's built from a hundred small moments: the senior dev who says 'I don't know' in front of everyone; the incident review that genuinely doesn't hunt for a culprit; the basic question that gets answered without a sigh. Each one is a deposit. Sarcasm at someone's expense, blame dressed up as 'accountability'—those are withdrawals, and the exchange rate is brutal.\n\nTens are completions that point backwards: every other card in this suit is something this team learned to do. It's not luck. It's accumulated practice.",
+		"connections": ["three-of-cups", "ten-of-pentacles", "queen-of-cups", "temperance", "the-world"]
+	},
+	{
+		"id": "page-of-cups",
+		"name": "Page of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"courtRank": "page",
+		"keywords": ["curiosity", "fresh eyes", "learning by feeling", "naive questions"],
+		"codingInsight": "Wonder is a Method",
+		"essay": "The Page of Cups asks the question everyone else was too experienced to ask. 'Why do we do it that way?' And half the time the honest answer is 'no idea, it was like that when I got here'—which is precisely why the question matters.\n\nThis is the junior who learns by feeling: drawn to the parts of the system that seem interesting rather than the parts the onboarding doc prescribes, delighted by things the seniors stopped noticing years ago. 'Wait, you can just... look at the network tab?' Yes. You can. And their delight is a better code review than most code reviews, because it shows you your system through eyes that haven't normalised its weirdness yet.\n\nIf you're the Page: your not-knowing is a temporary superpower, so spend it before it expires. If you work with one: the day they stop asking odd questions is the day you should check what made them stop.",
+		"connections": ["the-fool", "page-of-wands", "ace-of-cups", "queen-of-cups"]
+	},
+	{
+		"id": "knight-of-cups",
+		"name": "Knight of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"courtRank": "knight",
+		"keywords": ["idealism", "beautiful prototypes", "romance", "unfinished visions"],
+		"codingInsight": "Falling in Love First",
+		"essay": "The Knight of Cups has shipped more beautiful half-finished things than most people ship things. A gorgeous prototype with no error handling. A side project with a stunning landing page and a TODO where the auth should be. The vision is always real, the taste is always good, and the last twenty per cent is always someone else's problem—usually future them, who never turns up.\n\nIt's easy to sneer, and the sneering misses something. The Knight's prototypes move people. They show what's possible in a way a roadmap never will, and plenty of solid, finished products began life as someone's abandoned beautiful thing, picked up by hands with more patience. The industry needs its romantics; somebody has to fall in love first.\n\nBut if you recognise yourself here, learn the one discipline that converts vision into reality: finish something small. Not the cathedral. A shed. One complete, working, boring shed—and notice that finishing is its own kind of beautiful.",
+		"connections": ["knight-of-wands", "seven-of-cups", "ace-of-cups", "eight-of-pentacles"]
+	},
+	{
+		"id": "queen-of-cups",
+		"name": "Queen of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"courtRank": "queen",
+		"keywords": ["empathy", "listening", "emotional intelligence", "leadership"],
+		"codingInsight": "Listening is Architecture",
+		"essay": "The Queen of Cups runs the calmest team you've ever seen, and the secret isn't in any of the places people look. It's that she listens before deciding—actually listens, not the managerial nod-while-formulating-a-response. When two engineers are locked in an architecture argument, she's the one who notices that one of them is defending a design and the other is defending themselves, and that those need entirely different conversations.\n\nThis gets dismissed as 'soft skills', which is the industry's way of saying 'skills we don't know how to measure'. But understanding why someone is really objecting to a migration—fear of being blamed when it breaks, usually—is as much a debugging exercise as anything in the terminal. People are systems too. Badly documented ones, with surprising failure modes.\n\nThe Queen still decides, mind. Empathy without decisions is just a very pleasant bottleneck. She listens first because the decision is better for it, not instead of making one.",
+		"connections": ["king-of-cups", "the-high-priestess", "two-of-cups", "ten-of-cups"]
+	},
+	{
+		"id": "king-of-cups",
+		"name": "King of Cups",
+		"suit": "cups",
+		"arcana": "minor",
+		"courtRank": "king",
+		"keywords": ["emotional mastery", "calm under pressure", "incident response", "steadiness"],
+		"codingInsight": "Calm is Contagious",
+		"essay": "Production is down, the dashboard looks like a casino fire, and someone in the incident channel has just typed 'this is bad' for the third time. The King of Cups responds: 'Right. What do we know?'—and the temperature of the entire room drops by ten degrees.\n\nThis is not the absence of feeling. The King feels everything—the panic, the stakes, the small ungenerous thought about whoever approved that deploy—and lets none of it drive. That's the whole card: emotion as information, never as steering. Panic spreads through a team faster than any outage spreads through a system, and calm spreads exactly the same way. During an incident, the most senior person's nervous system becomes everyone's nervous system, whether they like it or not.\n\nYou don't get this from a runbook. It's built in advance, through every small stress you chose to metabolise rather than transmit. The incident doesn't make the King calm. It just reveals the practice.",
+		"connections": ["queen-of-cups", "the-tower", "temperance", "strength"]
+	},
+	{
+		"id": "ace-of-wands",
+		"name": "Ace of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 1,
+		"keywords": ["spark", "new beginnings", "raw potential", "creative ignition"],
+		"codingInsight": "Start Before You're Ready",
+		"essay": "There's a window—maybe a day, maybe an hour—between having the idea and talking yourself out of it. The Ace of Wands lives in that window. It's the empty repository with the audacious name, the README that promises more than you know how to build. Everything is potential energy; nothing has been ruined by reality yet.\n\nThe corporate version of this moment is a discovery phase, a feasibility study, a planning sprint. The honest version is: open the editor and write something terrible. The spark doesn't survive committees. It barely survives a good night's sleep. Half the projects that matter started as someone refusing to wait for permission, including most of the tools you use daily.\n\nThis isn't an argument against thinking. It's an argument against the particular kind of thinking that's actually fear wearing a project plan as a disguise. The Ace asks one question: are you going to start, or are you going to keep describing what starting would look like?",
+		"connections": ["the-fool", "the-magician", "two-of-wands", "page-of-wands", "ace-of-swords"]
+	},
+	{
+		"id": "two-of-wands",
+		"name": "Two of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 2,
+		"keywords": ["planning", "hesitation", "held potential", "the unstarted"],
+		"codingInsight": "Plans Don't Compile",
+		"essay": "The Two of Wands is the person standing at the edge of the map, holding the world in one hand and refusing to drop it. You've sketched the architecture. You've compared frameworks. You've got a Notion page that's frankly better organised than anything you've ever shipped. What you don't have is a single line of code.\n\nPlanning feels like progress because it produces artefacts—diagrams, decision matrices, beautifully reasoned trade-off documents. But a plan is a hypothesis, and hypotheses are cheap. The expensive, informative part is contact with reality: the API that doesn't behave like its docs, the data model that collapses on the first real user. You learn more from one ugly prototype than from a month of immaculate foresight.\n\nThere's a legitimate version of this card—genuine deliberation before commitment, weighing two roads you can't walk simultaneously. The trick is recognising when deliberation has curdled into avoidance. If you've redrawn the same diagram three times, you're not planning any more. You're hiding.",
+		"connections": [
+			"ace-of-wands",
+			"three-of-wands",
+			"the-hanged-man",
+			"seven-of-cups",
+			"knight-of-wands"
+		]
+	},
+	{
+		"id": "three-of-wands",
+		"name": "Three of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 3,
+		"keywords": ["collaboration", "team formation", "creative synergy"],
+		"codingInsight": "Collaboration is Creativity",
+		"essay": "The myth of the lone genius coder persists because it's a better story than the truth. The truth is that most good code is a palimpsest—your idea, rewritten by someone who spotted the flaw you'd stopped seeing, rewritten again when a third person asked the question you'd decided was obvious. The Three of Wands isn't about synergy, which is what management calls it when they want credit for your collaboration. It's about the specific, generative collision of two people who both care about something and disagree on how to do it.\n\nEarly collaboration—when the project's still soft—matters disproportionately. The decisions made in the first few weeks calcify into the decisions that are too expensive to revisit in week twenty. This is when a second voice is most valuable and most resisted: nobody wants architectural criticism when the excitement is still fresh. The Three of Wands asks you to want it anyway.\n\nThe blindspots aren't random. Your brain solves the problems it finds interesting and defers the ones it finds tedious, which means your code has systematic gaps that happen to align with your preferences. Someone else's tedious problem is your interesting one. That's not a workflow; it's just what minds do when they're genuinely engaged with the same material.",
+		"connections": ["ace-of-wands", "three-of-cups", "three-of-swords"]
+	},
+	{
+		"id": "four-of-wands",
+		"name": "Four of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 4,
+		"keywords": ["celebration", "stable foundation", "milestone", "earned rest"],
+		"codingInsight": "Ship It, Then Toast It",
+		"essay": "Your first clean deploy deserves more ceremony than it gets. The pipeline runs green, the site is actually live, nothing is on fire—and the industry's response is to immediately ask what's next on the backlog. The Four of Wands says: stop. Look at the thing. It works. You built scaffolding sturdy enough to stand on, and that's not nothing.\n\nThere's a quiet engineering truth underneath the celebration. Stability is an achievement, not a starting condition. A foundation that holds—tests that catch real bugs, a deploy process that doesn't require a ritual sacrifice—is the product of dozens of unglamorous decisions made properly. Nobody writes conference talks about boring infrastructure that just works, which is precisely why it's rare.\n\nMark the milestone. Not with a corporate pizza party, but with genuine acknowledgement: this used to be hard, and now it isn't, because of work you did. The teams that never celebrate foundations end up resenting them—and resented foundations get neglected until they stop being foundations at all.",
+		"connections": ["six-of-wands", "four-of-pentacles", "ten-of-cups", "the-sun"]
+	},
+	{
+		"id": "five-of-wands",
+		"name": "Five of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 5,
+		"keywords": ["productive conflict", "friction", "competing ideas", "creative sparring"],
+		"codingInsight": "Friction Polishes",
+		"essay": "A pull request with forty comments looks like a disaster and is sometimes the healthiest thing on the team. The Five of Wands is the scrap—five people waving sticks at each other, nobody actually wounded. It's the review thread where someone questions your error handling, someone else questions their question, and the code that emerges is better than anything any one of you would have written alone.\n\nThe corporate instinct is to smooth this over. Alignment workshops, disagreement escalation processes, the dreaded 'let's take this offline'. But teams that never argue about code have usually stopped caring about it. Polite silence isn't harmony; it's apathy with good manners. The genuinely worrying PR is the one that gets a thumbs-up emoji and zero comments at four hundred lines.\n\nThe skill is keeping the conflict about the work. Attack the design, not the designer; defend the idea, not your ego. When the sticks are aimed at the problem, everyone walks away sharper. When they're aimed at each other, you've got a different card entirely—and a much worse afternoon.",
+		"connections": [
+			"three-of-wands",
+			"five-of-swords",
+			"five-of-cups",
+			"seven-of-wands",
+			"strength"
+		]
+	},
+	{
+		"id": "six-of-wands",
+		"name": "Six of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 6,
+		"keywords": ["recognition", "real users", "earned victory", "visible success"],
+		"codingInsight": "Users Are the Trophy",
+		"essay": "There's a particular feeling when you discover actual strangers are using your thing. Not your mates being supportive, not colleagues obligated by politeness—genuine humans who found it, kept it, and would mildly inconvenienced if it vanished. The Six of Wands is that moment: riding back into town with proof the work was real.\n\nIt's worth being honest about what the victory is. It's not the GitHub stars, which measure curiosity rather than use. It's not the launch-day traffic spike, which is mostly other developers rubbernecking. It's the bug report from someone you've never met, written with the slightly entitled tone of a person who *depends* on your software. That complaint is a laurel wreath. Frame it.\n\nRecognition has a half-life, mind. The crowd cheers and then checks its phone. If you build for applause you'll be miserable within a fortnight, because applause is a lagging indicator of work you did months ago. Take the victory lap—you've earned it—but notice that the satisfying part was never the parade. It was the thing being useful.",
+		"connections": ["four-of-wands", "nine-of-wands", "the-sun", "six-of-cups", "the-world"]
+	},
+	{
+		"id": "seven-of-wands",
+		"name": "Seven of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 7,
+		"keywords": ["defence", "conviction", "holding ground", "pressure"],
+		"codingInsight": "Defensible Beats Popular",
+		"essay": "Sooner or later you'll make a technical decision that everyone questions. The architecture review where six people want to know why you didn't just use the framework everyone else uses. The Seven of Wands is you on the hill you chose, stick in hand, explaining yourself—again—to people who arrived after the context did.\n\nHere's the uncomfortable part: defending a decision well requires knowing why you made it. 'It felt right' won't survive contact with a sceptical staff engineer, and honestly, it shouldn't. The pressure to justify yourself is annoying but useful—it forces your intuition to show its working. If you can't articulate the trade-offs you accepted, you didn't make a decision; you made a guess that happened to compile.\n\nBut don't confuse defensibility with stubbornness. Holding your ground matters when you have ground—evidence, reasoning, scars from the alternative. If the sixth person to question your choice raises something the first five didn't, listen. The hill is worth defending precisely because you'd abandon it if someone showed you a better one.",
+		"connections": ["five-of-wands", "nine-of-wands", "the-emperor", "king-of-swords", "justice"]
+	},
+	{
+		"id": "eight-of-wands",
+		"name": "Eight of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 8,
+		"keywords": ["velocity", "momentum", "flow state", "everything at once"],
+		"codingInsight": "Speed Is a Side Effect",
+		"essay": "Some weeks, everything lands. The tests pass first time, the deploys are boring, your hands seem to know what the next function is before you do. The Eight of Wands is that state at full tilt—eight wands in the air, all travelling the same direction, none of them colliding. It's the closest programming gets to being effortless, and it's intoxicating.\n\nThe mistake is treating velocity as something you can demand. Management certainly tries—story points, sprint goals, the gentle suggestion that everyone 'find another gear'. But real speed is an emergent property. It happens when the friction is gone: when the codebase doesn't fight you, the requirements aren't shifting mid-sentence, and nobody's scheduled a meeting in the middle of your afternoon. You don't create flow; you remove the things that prevent it.\n\nEnjoy it while it lasts, because it doesn't. Momentum this clean is a weather pattern, not a climate. The craft isn't sustaining the high—it's recognising the conditions that produced it, and rebuilding them when the wands inevitably hit the ground.",
+		"connections": [
+			"the-chariot",
+			"knight-of-wands",
+			"eight-of-pentacles",
+			"temperance",
+			"wheel-of-fortune"
+		]
+	},
+	{
+		"id": "nine-of-wands",
+		"name": "Nine of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 9,
+		"keywords": ["endurance", "final push", "battle-worn", "almost there"],
+		"codingInsight": "Tired Is Not Done",
+		"essay": "The Nine of Wands is the week before launch. You're bandaged, leaning on the last wand like a crutch, and the finish line is visible—which is somehow worse than when it wasn't. Every bug you fix reveals a smaller, more annoying one. The edge cases you cheerfully deferred in month two have all arrived at once, holding receipts.\n\nThis card respects something the productivity industry doesn't: that finishing is a different skill from starting, and a rarer one. Anyone can ride the early energy. The Nine is what's left when the energy is gone and the obligation isn't—when you ship not because you're inspired but because you said you would, and the saying meant something.\n\nA warning, though, from someone who's been the figure in the bandages: there's a difference between the final push and the permanent push. If every sprint ends like this, it isn't a sprint, it's a lifestyle, and it's eating you. The Nine of Wands is meant to be a chapter. If it's become the whole book, put the wand down and read the Ten—you're already living it.",
+		"connections": ["ten-of-wands", "seven-of-wands", "nine-of-swords", "strength", "the-star"]
+	},
+	{
+		"id": "ten-of-wands",
+		"name": "Ten of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"number": 10,
+		"keywords": ["overload", "burden", "maintainer fatigue", "carrying everything"],
+		"codingInsight": "Load-Bearing Human",
+		"essay": "The figure in the Ten of Wands can't see where they're going, because they're carrying all ten wands at once and the wands are in front of their face. If you've ever maintained an open source project—or been the one person who understands the billing system—you know the posture. Every issue is yours. Every question is yours. The thing you built out of joy now arrives in your inbox shaped entirely like obligation.\n\nThe insidious part is that you earned this. Each wand was picked up for a good reason: you cared, you were capable, nobody else volunteered. Competence is a magnet for burden, and the reward for carrying things well is more things. No single addition was unreasonable. The total is crushing anyway—arithmetic doesn't care about your intentions.\n\nThe fix is not heroic time management. It's putting wands down: documenting so questions answer themselves, handing maintainership to the person who keeps sending good PRs, letting some things genuinely be someone else's problem—or nobody's. The project surviving without you isn't a failure of dedication. It was the point.",
+		"connections": ["nine-of-wands", "ten-of-pentacles", "the-hermit", "the-devil", "queen-of-cups"]
+	},
+	{
+		"id": "page-of-wands",
+		"name": "Page of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"courtRank": "page",
+		"keywords": ["enthusiasm", "beginnings", "scattered energy", "untested passion"],
+		"codingInsight": "Five Repos, No Regrets",
+		"essay": "The Page of Wands has five repositories, four of them created this month, none of them past the second commit. There's a half-built game, a CLI tool that solves a problem nobody has, and something ambitious involving WebSockets that currently renders a single unstyled button. The Page regrets nothing.\n\nIt's fashionable to sneer at this—finish your projects, pick a lane, the graveyard of abandoned side projects, et cetera. But the sneering misses what's actually happening. The Page isn't failing to finish; the Page is sampling. Every abandoned repo taught something: a framework's shape, an API's temperament, the specific flavour of a problem's difficulty. Breadth before depth isn't a character flaw. It's how you find out what's worth going deep on.\n\nThe Page becomes a problem only when the pattern fossilises—when starting becomes a way of never being tested, because nothing unfinished can be judged. At some point one of the five projects has to survive its first boring week. Until then, let them start things. Enthusiasm is a renewable resource, but only if you don't shame it out of people early.",
+		"connections": ["ace-of-wands", "the-fool", "knight-of-wands", "page-of-cups", "seven-of-cups"]
+	},
+	{
+		"id": "knight-of-wands",
+		"name": "Knight of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"courtRank": "knight",
+		"keywords": ["speed", "audacity", "recklessness", "momentum over caution"],
+		"codingInsight": "Velocity Has a Blast Radius",
+		"essay": "The Knight of Wands shipped it on Friday afternoon and went home. The Knight of Wands does not write migration rollback scripts, because the Knight of Wands has never needed one—a sentence doing remarkable load-bearing work via survivorship bias. Fast, fearless, genuinely productive, and leaving a wake of small fires that other people put out without being thanked.\n\nHere's the awkward truth the careful types don't enjoy: the Knight ships. While the architecture committee debates the third revision of the design doc, the Knight has a prototype in front of users and is learning things the document never could. Speed is information. Bias toward action is a legitimate strategy, not just a personality flaw with a job title.\n\nBut momentum without follow-through is just expensive noise. The Knight's repos all have a commit history that ends abruptly, like a journal found in an abandoned cabin. The mature version of this card keeps the speed and acquires consequences: tests for the load-bearing bits, a glance back at the wreckage, the occasional Friday spent fixing rather than shipping. Move fast and clean up your own glass.",
+		"connections": [
+			"eight-of-wands",
+			"page-of-wands",
+			"the-chariot",
+			"knight-of-swords",
+			"the-tower"
+		]
+	},
+	{
+		"id": "queen-of-wands",
+		"name": "Queen of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"courtRank": "queen",
+		"keywords": ["infectious energy", "making", "warmth with momentum", "creative confidence"],
+		"codingInsight": "Enthusiasm That Compiles",
+		"essay": "Every good team has someone whose energy is structural. The Queen of Wands is that person: the one whose excitement about a problem makes other people excited, who turns 'we could never' into 'well, what if we just—' and then, crucially, actually builds the thing. Plenty of people are enthusiastic. The Queen is enthusiastic *and ships*, which is a rarer alloy than the industry admits.\n\nThe difference between the Queen and a mere hype merchant is the follow-through. Hype merchants generate meetings; the Queen generates prototypes. When she says 'that's a brilliant idea', a repository appears within the week. Her confidence isn't performance—it's the accumulated residue of having built things before and watched them work. People trust it because it has receipts.\n\nWhat makes this card a queen rather than a knight is that the energy is generative for others, not just personally propulsive. She's the reason the quiet junior dev demoed something at Friday's show-and-tell. Warmth and momentum, in the same person, pointed outward. If you've worked with one, you remember. If you haven't: it's worth becoming one, because apparently they're not making enough.",
+		"connections": ["king-of-wands", "the-empress", "three-of-wands", "queen-of-cups", "the-sun"]
+	},
+	{
+		"id": "king-of-wands",
+		"name": "King of Wands",
+		"suit": "wands",
+		"arcana": "minor",
+		"courtRank": "king",
+		"keywords": ["vision", "trust", "leadership without leash", "directional clarity"],
+		"codingInsight": "Point, Don't Steer",
+		"essay": "The King of Wands tells you where the fire needs to be and trusts you to carry it there. That's the whole trick, and almost nobody manages it. Most technical leadership oscillates between two failure modes: the absentee visionary whose 'strategy' is a slide deck nobody can implement, and the micromanager reviewing your variable names from three levels up the org chart. The King does neither. Vision specific enough to act on, autonomy real enough to mean something.\n\nWhat makes this possible isn't charisma—it's earned credibility plus genuine restraint. The King has built things, which is why the vision is implementable rather than decorative. And the King has learned the harder lesson: that a team executing their own good judgement at 90% of your imagined perfection beats a team executing your exact instructions at 100% compliance and 0% ownership. The first team gets better every quarter. The second one gets a retention problem.\n\nThe test of this card is what happens when the King goes on holiday. If everything stalls, that wasn't leadership; it was a bottleneck with gravitas. Real fire-keeping means the fire burns whether or not you're watching it.",
+		"connections": [
+			"queen-of-wands",
+			"the-emperor",
+			"the-magician",
+			"king-of-pentacles",
+			"seven-of-wands"
+		]
+	},
+	{
+		"id": "ace-of-swords",
+		"name": "Ace of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 1,
+		"keywords": ["clarity", "insight", "breakthrough", "first principles"],
+		"codingInsight": "Clarity Arrives Uninvited",
+		"essay": "You've been staring at the problem for three days. You've drawn diagrams, argued with the rubber duck, considered a career in carpentry. Then—usually while doing something else entirely—the whole thing rearranges itself and you see it. Not a solution exactly, but the *shape* of the problem, stripped of all the accidental complexity you'd draped over it. The Ace of Swords is that moment: the fog becoming geometry.\n\nThe insight feels like a gift, but it isn't. It's the payoff for all that apparently useless staring. Your brain was doing the work; it just declined to show progress bars. Which is worth remembering when a manager asks why you've written no code today.\n\nThe danger is treating the clarity as permanent. It's an ace—a seed, not a system. Write it down immediately, in plain language, before it evaporates. The number of brilliant insights lost between the shower and the keyboard would fill a very good architecture book that nobody will ever read.",
+		"connections": ["the-magician", "the-hermit", "eight-of-swords", "page-of-swords"]
+	},
+	{
+		"id": "two-of-swords",
+		"name": "Two of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 2,
+		"keywords": ["impasse", "trade-offs", "deferred decisions", "equilibrium"],
+		"codingInsight": "Stalemate Is Self-Inflicted",
+		"essay": "Two architectures. Both defensible. Both with trade-offs you can articulate fluently because you've now written the comparison document four times. Monolith or services, SQL or document store, build or buy—the specifics don't matter. What matters is that you've reached genuine equilibrium, and equilibrium is where decisions go to die.\n\nHere's the uncomfortable truth: if the options were meaningfully different, you'd have chosen already. The fact that you're stuck means the choice barely matters—what matters is committing to one and making it good. Most architectures fail through half-hearted execution, not wrong selection. A mediocre design pursued with conviction beats an optimal one you're still debating in week six.\n\nSo set a deadline, pick one, and write down why—not to be right, but so future you understands the reasoning when the trade-offs start to bite. They will. They would have either way. That's what trade-off means.",
+		"connections": ["the-lovers", "justice", "eight-of-swords", "seven-of-cups"]
+	},
+	{
+		"id": "three-of-swords",
+		"name": "Three of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 3,
+		"keywords": ["painful refactor", "letting go", "necessary loss"],
+		"codingInsight": "Kill Your Darlings",
+		"essay": "There's code you're proud of. Genuinely clever, hard-won, the kind of thing you'd show off if showing off code were socially acceptable. And now it has to go—because requirements changed, because the abstraction didn't survive contact with reality, because the clever bit is precisely the bit nobody else can maintain. The Three of Swords is the refactor that hurts not because it's difficult, but because it's a small bereavement.\n\nThe pride is the problem. Code you're attached to gets defended past its usefulness; you start contorting new features to fit the old design rather than admit the design is done. The deletion is the professional act. The grief is just the receipt.\n\nIt helps to recognise that the value was never in the artefact. Writing that code taught you things you still know. The understanding survives the `git rm`. Nothing of consequence is lost except the evidence—and version control keeps that anyway, like an ex's photos you'll never look at again.",
+		"connections": ["death", "six-of-swords", "three-of-wands", "eight-of-pentacles"]
+	},
+	{
+		"id": "four-of-swords",
+		"name": "Four of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 4,
+		"keywords": ["rest", "incubation", "stepping away", "deliberate pause"],
+		"codingInsight": "The Shower Is an IDE",
+		"essay": "Every developer knows the pattern: you fight a problem all afternoon, give up, go home, and the answer ambushes you while you're rinsing shampoo out of your hair. This isn't luck. It's how brains work. Focused attention is brilliant for execution and rubbish for restructuring—and the hardest problems are restructuring problems. The Four of Swords is choosing to step away *on purpose*, before exhaustion makes the choice for you.\n\nThis is harder than it sounds, because rest looks like nothing. Industry culture treats visible effort as the unit of value—hours logged, commits pushed, green squares on the graph. Thinking, the actual job, produces none of these. So we perform busyness while our best tool sits idle.\n\nDeliberate rest isn't the absence of work; it's a phase of it. The walk, the nap, the evening where you pointedly don't open the laptop. If that feels indulgent, consider how much it costs to ship the wrong design because nobody stopped long enough to notice it was wrong.",
+		"connections": ["the-hanged-man", "the-hermit", "temperance", "nine-of-swords"]
+	},
+	{
+		"id": "five-of-swords",
+		"name": "Five of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 5,
+		"keywords": ["hollow victory", "conflict", "ego", "scorched earth"],
+		"codingInsight": "Technically Correct, Socially Bankrupt",
+		"essay": "You won the architecture debate. Your benchmarks were sound, your counter-arguments precise, and you dismantled the opposing proposal in front of the whole team with surgical thoroughness. The decision went your way. And now your colleagues agree with you in meetings and route around you everywhere else. Congratulations: you've discovered that an argument can be won and lost simultaneously.\n\nThe Five of Swords isn't about being wrong—that would be simpler. It's about being right in a way that costs more than being wrong would have. Technical decisions are made by groups, maintained by groups, and quietly sabotaged by groups who feel steamrollered. Code review comments dry up. Design discussions happen without you. Your beautiful architecture gets implemented with the bare-minimum enthusiasm of people complying rather than believing.\n\nThe fix isn't to stop being rigorous. It's to notice that 'winning' is the wrong frame entirely. Nobody on your team is your opponent, and treating a colleague's idea as a thing to be defeated guarantees they'll return the favour.",
+		"connections": ["five-of-wands", "five-of-cups", "queen-of-swords", "knight-of-swords"]
+	},
+	{
+		"id": "six-of-swords",
+		"name": "Six of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 6,
+		"keywords": ["migration", "transition", "moving on", "incremental escape"],
+		"codingInsight": "Progress Looks Like Leaving",
+		"essay": "Every team has one: the architecture everyone has stopped defending. It made sense once—or seemed to—and now it's the thing you apologise for in onboarding sessions. The Six of Swords is the decision to actually leave, and the long, unglamorous crossing that follows. Not the dramatic rewrite-from-scratch fantasy, but the real thing: the strangler pattern, the dual writes, the feature freeze nobody enjoys, the months of two systems limping along in parallel.\n\nMigrations are miserable because they're all cost and no visible feature. Stakeholders see effort going in and nothing new coming out, like paying off a mortgage on a house you've already left. The skill is keeping faith—yours and theirs—through the middle stretch, where the old system still mostly works and the new one mostly doesn't.\n\nAnd here's the bit nobody says out loud: the water you're crossing is calm precisely because you're not thrashing about in it. A boring, methodical migration is the success story. If it's exciting, something has gone badly wrong.",
+		"connections": ["three-of-swords", "ten-of-swords", "death", "temperance"]
+	},
+	{
+		"id": "seven-of-swords",
+		"name": "Seven of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 7,
+		"keywords": ["shortcuts", "technical debt", "the load-bearing hack"],
+		"codingInsight": "Temporary Is a Lie",
+		"essay": "Somewhere in your codebase right now there's a comment that says `// TODO: temporary fix, remove before launch`. The launch was in 2021. The fix now has seventeen other modules depending on its exact, accidental behaviour, and removing it would take down systems whose owners you've never met. The Seven of Swords is the shortcut that got away with it—so thoroughly that it became infrastructure.\n\nThe traditional card is about theft, and that's apt: a shortcut steals from future you. Sometimes that's a perfectly sound trade—future you might have more time, more information, or a different job. The Five of Pentacles makes an honest version of this bargain. The Seven's version is dishonest, mostly with itself: it's the hack that nobody documented, nobody flagged, and everybody quietly hoped would be someone else's problem.\n\nThe sin isn't taking the shortcut. It's the stealth. A hack that's visible, logged, and understood is debt; a hack that's hidden is a trap with a delay timer. If you must do the dodgy thing—and sometimes you must—do it loudly.",
+		"connections": ["five-of-pentacles", "the-devil", "the-tower", "ten-of-swords"]
+	},
+	{
+		"id": "eight-of-swords",
+		"name": "Eight of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 8,
+		"keywords": ["analysis paralysis", "self-imposed limits", "hidden assumptions"],
+		"codingInsight": "You Built the Cage",
+		"essay": "The Eight of Swords shows someone bound and blindfolded among eight swords stuck in the ground—and if she simply moved, she'd find the bindings loose and the swords easily avoided. It's the most accurate picture of analysis paralysis ever drawn. You're stuck not because the problem is hard, but because somewhere early on you accepted a constraint that was never real, and you've been designing around it ever since.\n\n'It has to be backwards compatible.' Does it? Who said? 'We can't touch that service.' Can't, or haven't asked? 'The data model is fixed.' Fixed by whom—a decision someone made in a hurry three years ago that everyone has since treated as geology? Most impossible problems are ordinary problems wearing an inherited assumption as a disguise.\n\nThe way out is embarrassingly simple and genuinely difficult: list every constraint you're honouring and interrogate where each one came from. The ones you can't trace to an actual requirement are the blindfold. This is why an outsider—or a junior with no reverence for your folklore—so often solves it in minutes. They never agreed to the rules.",
+		"connections": ["two-of-swords", "the-hanged-man", "page-of-swords", "the-moon"]
+	},
+	{
+		"id": "nine-of-swords",
+		"name": "Nine of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 9,
+		"keywords": ["dread", "3am debugging", "catastrophising", "anxiety"],
+		"codingInsight": "Dread Is Not Diagnosis",
+		"essay": "It's 3am. The bug won't reproduce, then reproduces twice, then vanishes. And somewhere in the small hours a thought arrives with terrible conviction: *it's not a bug, it's the whole design*. The data model is wrong. The concurrency story is fiction. Everything built on top of it is condemned, and you are the only one who knows. The Nine of Swords is that specific flavour of dread—the one that feels like insight but is actually just exhaustion wearing insight's coat.\n\nHere's what experience eventually teaches: 3am certainty is almost always wrong. Not because the codebase is secretly fine, but because tired brains catastrophise systematically. They pattern-match to the worst case, lose the ability to weigh evidence, and mistake the intensity of a feeling for its accuracy. The fundamental flaw you've discovered at 3am is, by 10am, usually an off-by-one error.\n\nSo: write down the fear, in detail, and go to bed. If the dread survives sleep and daylight, take it seriously—genuine architectural rot does exist. But interrogate it rested. You wouldn't accept a diagnosis from a doctor who'd been awake for twenty hours; extend your own judgement the same scepticism.",
+		"connections": ["the-moon", "four-of-swords", "ten-of-swords", "the-star"]
+	},
+	{
+		"id": "ten-of-swords",
+		"name": "Ten of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"number": 10,
+		"keywords": ["catastrophe", "total failure", "post-mortem", "rock bottom"],
+		"codingInsight": "Rock Bottom Has Logs",
+		"essay": "The Ten of Swords doesn't do subtlety: a figure face-down with ten swords in their back. One sword would have done the job; ten is the universe making a point. In programming terms, this is the catastrophic incident—not a bug, but the cascade. The database failover that didn't, the backup that was never tested, the alerting that paged a Slack channel nobody reads. Each failure individually survivable; together, the full Ten.\n\nWhen it happens—and given enough time, it happens to everyone—two things are true at once. First: it's as bad as it looks. No silver-lining nonsense; users were hurt, trust was spent, and the weekend is gone. Second: it's *over*. The Ten is the end of the sequence. There is no eleven of swords. Whatever was going to fail has now comprehensively failed, and that's the most informative state a system can be in.\n\nWhich is why the post-mortem matters more than the incident. Done honestly—blameless, specific, allergic to 'human error' as a root cause—it converts catastrophe into the only currency that matters: knowing exactly where your system was lying to you. The figure on the card is facing the dawn. So is your incident channel, eventually.",
+		"connections": ["the-tower", "judgement", "six-of-swords", "nine-of-swords"]
+	},
+	{
+		"id": "page-of-swords",
+		"name": "Page of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"courtRank": "page",
+		"keywords": ["curiosity", "naive questions", "fresh eyes", "challenge"],
+		"codingInsight": "The Stupid Question Isn't",
+		"essay": "Three weeks into the job, the new junior raises a hand in the design review and asks why the sync service exists at all, given that both systems read from the same database. Silence. Long silence. Because the answer is that it *used* to be two databases, four years ago, and nobody has questioned the architecture since—they've only ever extended it. The Page of Swords is that question: innocent of context, lethal to assumptions.\n\nExperience is mostly a gift, but it has one tax: you stop seeing the things you've explained to yourself. Every team accumulates folklore—constraints that calcified into facts, workarounds promoted to architecture. Veterans navigate around these so smoothly they forget they're there. The Page doesn't navigate around anything, because the Page doesn't know where the furniture is.\n\nThe card carries an obligation in both directions. If you're junior: ask the question. Genuinely, not performatively—your confusion is data, and it's often the only honest signal in the room. If you're senior: build a team where asking it is safe, because the day juniors stop asking why is the day your architecture stops being examined by anyone at all.",
+		"connections": ["the-fool", "eight-of-swords", "queen-of-swords", "ace-of-swords"]
+	},
+	{
+		"id": "knight-of-swords",
+		"name": "Knight of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"courtRank": "knight",
+		"keywords": ["velocity", "conviction", "brilliance", "collateral damage"],
+		"codingInsight": "Brilliance Needs Brakes",
+		"essay": "Every organisation of sufficient size has one: the architect who moves at twice everyone else's speed, holds opinions like religious convictions, and is right often enough that you can't simply ignore them. The Knight of Swords arrives at the design review having already built the prototype, already benchmarked it, already decided. The traditional card shows a rider charging at full gallop—and if you look closely, charging *into a headwind*, which is the detail that matters. The Knight doesn't slow down for conditions.\n\nThe brilliance is real. Knights cut through months of committee dithering in an afternoon; they're the antidote to the Two of Swords' eternal stalemate. But the trail behind them is littered: half-migrated systems abandoned for the next crusade, colleagues whose objections were technically answered and humanly dismissed, an architecture that only makes sense at the speed it was conceived.\n\nIf you work with one, your job is friction—not obstruction, friction. The questions that force the gallop to slow just enough for steering. And if you *are* one (you'd know, though you'd phrase it as 'having high standards'): the wind you're charging into is usually feedback. It's worth finding out what it's saying.",
+		"connections": ["the-chariot", "knight-of-wands", "five-of-swords", "king-of-swords"]
+	},
+	{
+		"id": "queen-of-swords",
+		"name": "Queen of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"courtRank": "queen",
+		"keywords": ["honest feedback", "rigour", "clarity", "respect"],
+		"codingInsight": "Truth Without Teeth Marks",
+		"essay": "There's a code review style that hides criticism so deep in qualifiers it never lands—'just a thought, totally optional, might be wrong!'—and a style that uses 'brutal honesty' as a licence to be brutal and call it honesty. The Queen of Swords does neither. Her review says: this function will fail when the input is empty, here's the case that breaks it, here's what I'd do instead. No softening, no savaging. Just the truth, delivered as though the recipient is an adult who can use it.\n\nThe trick everyone misses is that her precision *is* the kindness. Vague feedback is cruel in slow motion—it leaves people guessing, repeating mistakes, learning nothing. Cruelty dressed as candour is just ego with a victim. The Queen's feedback is specific, actionable, and aimed entirely at the work, which is precisely why people seek it out rather than brace against it.\n\nThis is harder than either extreme. Diplomacy without honesty is easy; honesty without diplomacy is easier. Holding both requires you to actually give a shit about the person *and* the code—and to have done the work of being right before you open your mouth. The Queen has always done the work.",
+		"connections": ["justice", "five-of-swords", "queen-of-cups", "king-of-swords"]
+	},
+	{
+		"id": "king-of-swords",
+		"name": "King of Swords",
+		"suit": "swords",
+		"arcana": "minor",
+		"courtRank": "king",
+		"keywords": ["systems thinking", "judgement", "scale", "the long view"],
+		"codingInsight": "Systems, Not Symptoms",
+		"essay": "Ask most engineers about an outage and you'll get the proximate cause: the bad deploy, the missing index, the null that should have been checked. Ask the King of Swords and you'll get a different answer: why the deploy pipeline allowed it, why the review didn't catch it, why the team was rushing in the first place. The King sees the whole board—not the pieces, but the rules generating their movement. Every recurring bug is a system producing exactly what it's designed to produce, whatever it claims to be designed for.\n\nThis is the mature form of the suit. The Ace's flash of clarity, the Knight's velocity, the Queen's precision—the King has metabolised all of it into something quieter: judgement. He's slower to act than the Knight and harder to impress than anyone, because he's watching second-order effects. The clever microservice split that doubles your operational surface. The hiring spree that dilutes the culture that made hiring worthwhile.\n\nThe failure mode is detachment—so far above the board that the people on it become abstractions. The best systems thinkers remember that every box on the architecture diagram has humans inside it, on call, at 3am. A system design that ignores them isn't rigorous. It's just incomplete.",
+		"connections": ["the-emperor", "queen-of-swords", "knight-of-swords", "the-world"]
+	},
+	{
+		"id": "ace-of-pentacles",
+		"name": "Ace of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 1,
+		"keywords": ["opportunity", "groundwork", "tangibility", "first commit"],
+		"codingInsight": "Ideas Don't Compile",
+		"essay": "Everyone has ideas. The bloke at the pub has ideas. Your product manager has seventeen of them before lunch. The Ace of Pentacles is the moment an idea stops being conversation and becomes something you could actually build—a spec, a schema, a README with a problem statement that survives being read twice. It's the least glamorous magic in the deck: turning vapour into a thing with edges.\n\nThe shift is harder than it looks. Writing it down forces the questions the idea was happily avoiding: who's it for, what does it store, what happens when it fails? Most ideas die at this stage, and good riddance—better to lose them on paper than three sprints in.\n\nThe ones that survive are gold. Not because they're brilliant, but because they're now concrete enough to argue with. You can't refactor a vibe. The Ace says: stop talking, start specifying, and let the idea prove it deserves your keyboard.",
+		"connections": ["ace-of-wands", "the-magician", "page-of-pentacles", "seven-of-pentacles"]
+	},
+	{
+		"id": "two-of-pentacles",
+		"name": "Two of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 2,
+		"keywords": ["juggling", "context switching", "divided attention", "balance"],
+		"codingInsight": "Context Has a Tax",
+		"essay": "The Two of Pentacles is the juggler with two projects in the air, and the dirty secret of juggling: the balls spend most of their time not in your hands. Every switch between codebases costs you the twenty minutes of mental state you'd painstakingly loaded—variable names, half-formed hunches, that bug you were *this* close to understanding. The work isn't doubled; it's worse than doubled, because you pay the reload fee every single time.\n\nManagement loves to pretend this tax doesn't exist. 'It's just a small ticket on the other project' is how good engineers get turned into mediocre ones on two fronts simultaneously. The juggler on the card is smiling, but look closely—it's the fixed grin of someone who knows that dropping either ball is a meeting.\n\nSometimes juggling is genuinely unavoidable, and the craft lies in switching deliberately: finish a thought, write yourself a note, leave a failing test as a bookmark. Make the context cheap to reload, because you can't make the switch free.",
+		"connections": ["two-of-swords", "temperance", "the-chariot", "seven-of-cups"]
+	},
+	{
+		"id": "three-of-pentacles",
+		"name": "Three of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 3,
+		"keywords": ["collaboration", "complementary skills", "craftsmanship", "shared building"],
+		"codingInsight": "Nobody Owns the Cathedral",
+		"essay": "The traditional card shows a mason, an architect, and a monk standing in a cathedral, each holding knowledge the other two lack. The building exists because none of them pretended otherwise. The Three of Pentacles is that project—the one needing someone who knows the database, someone who knows the users, and someone who knows why the legacy system does that horrifying thing on Tuesdays. Remove any one of them and you don't get a worse cathedral; you get rubble with good intentions.\n\nThis is different from collaboration as ritual. It's not pairing because the process says so, or reviews performed as compliance theatre. It's the genuine article: recognising that the work itself is bigger than any one head, and that the seams between specialisms are where the interesting problems live.\n\nThe craft here is humility without false modesty. Know exactly what you bring, say it plainly, and listen with equal precision when the others do the same. The cathedral doesn't care whose name is on the commit.",
+		"connections": ["three-of-wands", "three-of-cups", "the-hierophant", "six-of-pentacles"]
+	},
+	{
+		"id": "four-of-pentacles",
+		"name": "Four of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 4,
+		"keywords": ["hoarding", "gatekeeping", "false security", "bus factor"],
+		"codingInsight": "Hoarded Knowledge Rots",
+		"essay": "Every team has one, or has had one: the developer who guards the deploy process, the arcane config, the One True Understanding of the billing system, like a dragon on a pile of gold. The Four of Pentacles clutches its coins so tightly it can't pick anything else up. That's the bit people miss—hoarding doesn't just starve the team, it freezes the hoarder. You can't grow while both arms are wrapped around what you already know.\n\nThe motive is usually fear dressed as indispensability. If only I understand the system, they can't get rid of me. It works, briefly, in the way that holding your breath works as a survival strategy. Then the hoarder becomes the bottleneck, the bottleneck becomes resentment, and the 'job security' becomes a career ceiling, because nobody promotes the person who can't be replaced in their current seat.\n\nKnowledge isn't gold; it's more like sourdough starter. Unshared, it goes off. The fix isn't altruism—it's self-interest with a longer time horizon.",
+		"connections": ["the-devil", "six-of-pentacles", "four-of-cups", "the-hermit"]
+	},
+	{
+		"id": "five-of-pentacles",
+		"name": "Five of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 5,
+		"keywords": ["pragmatism", "resourcefulness", "making do"],
+		"codingInsight": "Pragmatic Compromise",
+		"essay": "The Five of Pentacles is the card of working in conditions that are not the ones you'd have chosen. The legacy codebase. The dependency that can't be upgraded because the test suite for the thing that depends on it never got written. The deadline that arrived before the architecture was ready. You are, as the traditional image has it, outside in the cold, and the warm building is the version of this project that existed in the planning document.\n\nThere's a specific kind of dishonesty that passes for professionalism here: the pretence that you're making a reasoned trade-off when you're actually just doing what you can in the time available. The Five of Pentacles asks you to be straight about it—not as self-flagellation, but as hygiene. The comment that says 'this is a hack because X' is worth ten times the comment that justifies the hack as a reasonable architectural decision. Future-you needs to know what the building looks like from inside, not a retrospective rationalisation of why you ended up outside.\n\nPragmatic compromise is real craft. The senior developer who knows when to reach for the ugly solution and when to hold the line on the clean one has learned something that can't be taught in a workshop. But the skill is in the knowing, not in the compromise itself—and the knowing requires honesty about which one you're doing.",
+		"connections": ["five-of-swords", "eight-of-pentacles", "four-of-pentacles"]
+	},
+	{
+		"id": "six-of-pentacles",
+		"name": "Six of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 6,
+		"keywords": ["mentorship", "knowledge transfer", "generosity", "reciprocity"],
+		"codingInsight": "Teaching Debugs the Teacher",
+		"essay": "The Six of Pentacles is the merchant with the scales, giving with one hand, weighing with the other. In a team, that's mentorship done properly—not the formal programme with the spreadsheet and the quarterly check-in, but the daily traffic of explanation: here's why this pattern, here's where that body is buried, here's the question you should have asked.\n\nWhat the card understands, and corporate mentoring schemes mostly don't, is that the exchange flows both ways. Explaining your architecture to someone new is the cheapest design review you'll ever get. Their confusion is data. Every 'wait, why does it do that?' is either a gap in your explanation or a gap in your system, and both are worth finding. The senior who finds teaching beneath them is refusing free debugging.\n\nAnd receiving has its own discipline. Taking help gracefully—without performing either gratitude or competence—is a skill, and a rarer one than giving. The scales matter: mentorship that flows only one way isn't generosity, it's dependency with better PR.",
+		"connections": [
+			"four-of-pentacles",
+			"the-hierophant",
+			"six-of-cups",
+			"page-of-pentacles",
+			"queen-of-pentacles"
+		]
+	},
+	{
+		"id": "seven-of-pentacles",
+		"name": "Seven of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 7,
+		"keywords": ["patience", "long refactor", "delayed payoff", "tending"],
+		"codingInsight": "Gardening, Not Harvesting",
+		"essay": "The figure on the Seven of Pentacles leans on a hoe, staring at a vine that stubbornly refuses to be finished. That's the long refactor: week three of untangling the module everyone fears, no user-visible change, no dopamine, just a diff that grows and a nagging voice asking whether this was worth starting. The card's answer is uncomfortable: you can't know yet. Slow work withholds its verdict.\n\nThis is genuinely hard for brains tuned to the tight feedback loops of normal development—red test, green test, ship, repeat. A refactor with no immediate payoff offers none of that. The only honest signals are small and quiet: this function now fits in your head, that test no longer needs four mocks, the new starter found the code less baffling than the last one did.\n\nThe discipline is twofold. Trust the slow work enough to continue, but inspect it honestly enough to stop if it's actually going nowhere. The figure isn't just resting—it's assessing. Patience without evaluation is just sunk cost with a better posture.",
+		"connections": ["the-hanged-man", "eight-of-pentacles", "knight-of-pentacles", "death"]
+	},
+	{
+		"id": "eight-of-pentacles",
+		"name": "Eight of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 8,
+		"keywords": ["deliberate practice", "repetition", "skill-building", "apprenticeship"],
+		"codingInsight": "Boring Practice, Sharp Tools",
+		"essay": "The Eight of Pentacles shows an apprentice carving the same pentacle, again and again, each one fractionally better than the last. It's the least romantic card in the deck and possibly the most important. Mastery isn't a montage; it's the deliberate, slightly tedious business of doing the thing you're mediocre at until you aren't—writing the data structure from scratch instead of importing it, reading the source of the library you use daily, rebuilding the thing the framework does for you, just once, to understand it.\n\nNote the word deliberate. Ten years of experience can be one year of learning followed by nine of repetition, and the industry is full of senior developers who plateaued the day they got comfortable. Practice only counts when it's aimed at the edge of your ability—where you're slow, clumsy, and mildly embarrassed. Comfort is the enemy here, which is awkward, because comfort is also the reward everyone's chasing.\n\nThe good news: this kind of focus, the hours that vanish into a single narrow problem, is something some brains do naturally. The card just says: point it somewhere that compounds.",
+		"connections": ["the-hermit", "seven-of-pentacles", "page-of-pentacles", "the-magician"]
+	},
+	{
+		"id": "nine-of-pentacles",
+		"name": "Nine of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 9,
+		"keywords": ["self-sufficiency", "earned independence", "quiet competence"],
+		"codingInsight": "Independence Is a Result",
+		"essay": "The Nine of Pentacles stands alone in a garden she planted herself, and crucially, she's not lonely—she's finished asking permission. This is the developer who can take a vague problem and ship a working solution without a committee: debug the gnarly thing solo, read the spec instead of waiting for someone to summarise it, set up the whole pipeline because they've done every piece of it before. Self-sufficiency isn't a personality trait. It's an output—the compound interest on years of Eights of Pentacles.\n\nIt's worth distinguishing this from the lone-genius myth, which remains bollocks. The Nine collaborates fine; she just doesn't *need* to for the work to move. There's a difference between choosing solitude and being incapable of company, and between independence and the hoarder's bunker. Her garden has a gate.\n\nThe trap is subtler: gardens are pleasant, and pleasant is sticky. Full self-sufficiency in one domain can quietly become a reason never to be a beginner again. Enjoy the garden. Don't retire into it.",
+		"connections": ["eight-of-pentacles", "the-hermit", "four-of-pentacles", "queen-of-pentacles"]
+	},
+	{
+		"id": "ten-of-pentacles",
+		"name": "Ten of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"number": 10,
+		"keywords": ["legacy", "inheritance", "longevity", "what remains"],
+		"codingInsight": "You Are Future Legacy",
+		"essay": "The Ten of Pentacles is generational wealth: the old man, the family, the dogs, the estate that will outlive everyone in the frame. In code, the inheritance is less picturesque. What you leave behind isn't the clever bits—those get rewritten first. It's the structure, the names, the tests, the comments explaining *why*, the decisions that either make the next developer's life easier or quietly poison their afternoons for years.\n\nHere's the humbling part: legacy code is just code that succeeded. The horrifying fifteen-year-old system you inherited survived because it worked, paid salaries, and outlasted three rewrites that didn't. Sneering at it is sneering at the only kind of code that matters—code that lived. Meanwhile, the beautiful service you're writing right now is someone's future archaeology dig, and they will judge you exactly as generously as you judge your predecessors. Which is to say: not very.\n\nSo write for the inheritors. Not out of saintliness—because the most likely inheritor, statistically, is you, in eighteen months, with no memory of any of this.",
+		"connections": ["the-world", "death", "judgement", "king-of-pentacles", "six-of-cups"]
+	},
+	{
+		"id": "page-of-pentacles",
+		"name": "Page of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"courtRank": "page",
+		"keywords": ["methodical learning", "thoroughness", "reading first", "studious curiosity"],
+		"codingInsight": "Read Before You Type",
+		"essay": "The Page of Pentacles is the junior who reads the documentation before touching the code. In an industry that treats 'move fast' as a personality, this looks like slowness. It isn't. While everyone else is pasting their fourth Stack Overflow answer into the void, the Page is twenty minutes into the actual docs and about to find the one configuration flag that solves the whole thing. Methodical beats frantic more often than frantic likes to admit.\n\nThis is a particular learning style, and a valid one: understand the system before poking it. The Page wants the model in their head first—what the framework assumes, what the API promises, where the edges are. Some people learn by breaking things; the Page learns by knowing what shouldn't break and being interested when it does anyway.\n\nThe risk is preparation as procrastination—the seventeenth tutorial, the fourth book, the course you bought instead of starting. Reading the docs is a virtue right up until it becomes a way of avoiding the bit where you might fail. At some point the Page has to put the manual down and type. The good ones know when.",
+		"connections": ["the-high-priestess", "eight-of-pentacles", "ace-of-pentacles", "page-of-wands"]
+	},
+	{
+		"id": "knight-of-pentacles",
+		"name": "Knight of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"courtRank": "knight",
+		"keywords": ["reliability", "thoroughness", "steady delivery", "unglamorous excellence"],
+		"codingInsight": "Boring Is a Superpower",
+		"essay": "Every knight in the deck is charging somewhere except this one. The Knight of Pentacles sits on a stationary horse, surveying a ploughed field, radiating all the glamour of a well-maintained CI pipeline. This is the developer nobody tells stories about: estimates that land, edge cases handled before QA finds them, releases so uneventful that people forget releases used to be terrifying. Shipping on time, every time, is the least celebrated and most valuable trick in software.\n\nThe industry fetishises the other knights—the 10x cowboy, the genius who rewrites the system over a weekend. But heroics are usually a symptom: someone, somewhere, skipped the boring work, and now a hero is required. The Knight of Pentacles makes heroism unnecessary, which is precisely why it goes unnoticed. You don't get a medal for the fire that never started.\n\nThe shadow side is real: thoroughness can calcify into plodding, and reliability into a refusal to ever take the interesting risk. The horse does occasionally need to move. But given the choice between exciting and dependable, the Knight knows which one ships.",
+		"connections": ["knight-of-wands", "seven-of-pentacles", "temperance", "the-chariot"]
+	},
+	{
+		"id": "queen-of-pentacles",
+		"name": "Queen of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"courtRank": "queen",
+		"keywords": [
+			"pragmatic leadership",
+			"sustainability",
+			"keeping the lights on",
+			"grounded care"
+		],
+		"codingInsight": "Someone Has to Ship",
+		"essay": "While the visionaries sketch the v3 architecture on whiteboards, the Queen of Pentacles is making sure v1 stays up, the on-call rota is humane, and the new starter has database access before Thursday. This is leadership as husbandry: unglamorous, continuous, and the only reason there's a company left to dream in. The Queen's question isn't 'what's possible?'—it's 'what will still be working in six months, and who'll be maintaining it?'\n\nPragmatism gets caricatured as the enemy of ambition, which is rubbish. The Queen kills ideas, certainly—but specifically the ones that would have died expensively later, taking the team's weekends with them. What survives her scrutiny tends to actually ship, which is more than the whiteboard can say. There's deep care in this, even if it never sounds inspirational: protecting people's time, sustainable pace, and the quiet systems everyone relies on and nobody thanks.\n\nHer risk is becoming purely custodial—so busy keeping the lights on that nobody's allowed to rewire anything, ever. The best Queens budget for dreams: a small, deliberate allowance of risk, paid for by everything else running boringly well.",
+		"connections": [
+			"the-empress",
+			"king-of-pentacles",
+			"five-of-pentacles",
+			"six-of-pentacles",
+			"queen-of-wands"
+		]
+	},
+	{
+		"id": "king-of-pentacles",
+		"name": "King of Pentacles",
+		"suit": "pentacles",
+		"arcana": "minor",
+		"courtRank": "king",
+		"keywords": [
+			"seasoned mastery",
+			"earned scepticism",
+			"architectural judgement",
+			"pattern memory"
+		],
+		"codingInsight": "Experience Is Compressed Failure",
+		"essay": "The King of Pentacles is the senior architect who has seen every failure mode twice—once to learn it, once to confirm it wasn't a fluke. When the team proposes the exciting new approach, the King doesn't say no; he says 'we tried that in 2019, here's the specific way it fell over, here's what would need to be different this time.' That sentence is worth more than any framework. It's not cynicism. It's a database of expensive lessons, queried for free.\n\nWhat separates the King from the bitter old hand is that the knowledge stays in service of building. The bitter version uses war stories to veto everything; the King uses them to de-risk the things worth attempting. 'That will fail' is cheap. 'That will fail *unless*—' is architecture. The throne is decorated with pentacles because the King's judgement has compounded into something the whole organisation quietly leans on.\n\nThe failure mode the King struggles to see is his own: the world changes, and some lessons expire. The approach that fell over in 2019 might work now, because the constraint that killed it is gone. The wisest Kings hold their scars lightly enough to re-examine them.",
+		"connections": [
+			"the-emperor",
+			"queen-of-pentacles",
+			"ten-of-pentacles",
+			"the-tower",
+			"the-hermit"
+		]
+	}
+]
