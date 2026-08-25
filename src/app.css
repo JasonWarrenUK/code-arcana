@@ -1,30 +1,31 @@
-@import '@fontsource/inter';
-
 :root {
-	/* Post-punk palette: stark contrasts, no warmth */
-	--bg-primary: #ffffff;
-	--bg-secondary: #f5f5f5;
-	--text-primary: #000000;
-	--text-secondary: #333333;
-	--accent: #000000;
-	--border: #000000;
+	/* Ink on paper. One accent per card; it never leaves the card face. */
+	--ink: #0b0b0b;
+	--paper: #e4e1d9;
+	--bone: #efece5;
+	--frame: #3a3733;
+	--quiet: #8b8780;
+	--rule-ghost: #b9b5ac;
+	--text-body: #23211e;
+	--text-muted: #4d4a44;
+	--text-faint: #6f6c65;
 
-	/* Spacing: tight but not cramped */
+	--bg-primary: var(--paper);
+	--text-primary: var(--ink);
+	--text-secondary: var(--text-muted);
+	--border: var(--ink);
+
+	--font-body: Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--font-mono: 'SF Mono', Monaco, 'Courier New', monospace;
+
 	--space-xs: 0.5rem;
 	--space-sm: 1rem;
 	--space-md: 2rem;
 	--space-lg: 4rem;
 
-	/* Typography: functional, not decorative */
-	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-	--font-mono: 'SF Mono', 'Monaco', 'Courier New', monospace;
-
-	--text-base: 1rem;
-	--text-lg: 1.25rem;
-	--text-xl: 1.5rem;
-	--text-2xl: 2rem;
-
-	--line-height: 1.6;
+	--page-max: 1560px;
+	--page-pad-x: 48px;
+	--grid-gap: 18px;
 }
 
 * {
@@ -40,84 +41,35 @@ body {
 
 body {
 	font-family: var(--font-body);
-	font-size: var(--text-base);
-	line-height: var(--line-height);
-	color: var(--text-primary);
-	background: var(--bg-primary);
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--ink);
+	background: var(--paper);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-}
-
-/* Typography that doesn't fuck about */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-weight: 600;
-	line-height: 1.2;
-	margin-bottom: var(--space-sm);
-}
-
-h1 {
-	font-size: var(--text-2xl);
-}
-h2 {
-	font-size: var(--text-xl);
-}
-h3 {
-	font-size: var(--text-lg);
-}
-
-p {
-	margin-bottom: var(--space-sm);
-}
-
-p:last-child {
-	margin-bottom: 0;
+	overflow-x: hidden;
 }
 
 a {
-	color: var(--text-primary);
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 2px;
+	color: var(--ink);
+	text-decoration: none;
 }
 
 a:hover {
-	text-decoration-thickness: 2px;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
-/* Stark form elements */
 button {
-	font-family: var(--font-body);
-	font-size: var(--text-base);
-	padding: var(--space-xs) var(--space-sm);
-	background: var(--bg-primary);
-	color: var(--text-primary);
-	border: 2px solid var(--border);
+	font-family: inherit;
 	cursor: pointer;
-	transition: background 0.1s ease;
 }
 
-button:hover {
-	background: var(--text-primary);
-	color: var(--bg-primary);
-}
-
-button:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-}
-
-/* Keyboard focus: visible ring that doesn't fight the B&W aesthetic */
 :focus-visible {
-	outline: 2px solid var(--text-primary);
+	outline: 2px solid var(--ink);
 	outline-offset: 3px;
 }
 
-/* Respect motion preferences */
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
@@ -127,73 +79,202 @@ button:disabled {
 	}
 }
 
-/* Lists without pretension */
-ul,
-ol {
-	margin-left: var(--space-md);
-	margin-bottom: var(--space-sm);
+/* ---------- Type registers ---------- */
+
+/* Condensed caps for display */
+.display {
+	margin: 0;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-stretch: 74%;
+	letter-spacing: -0.05em;
+	line-height: 0.85;
+	text-wrap: balance;
 }
 
-li {
-	margin-bottom: var(--space-xs);
+/* The insight: reversed block, slightly condensed */
+.insight {
+	margin: 0;
+	font-size: 22px;
+	line-height: 1.12;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-stretch: 88%;
+	letter-spacing: -0.015em;
+	background: var(--ink);
+	color: var(--paper);
+	padding: 9px 12px 11px;
+	align-self: flex-start;
+	max-width: 30ch;
 }
 
-/* Code blocks: monospace, no syntax highlighting nonsense */
-code {
-	font-family: var(--font-mono);
-	font-size: 0.9em;
-	background: var(--bg-secondary);
-	padding: 0.2em 0.4em;
-	border: 1px solid var(--border);
+/* Reading copy */
+.body {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.6;
+	max-width: 66ch;
+	color: var(--text-body);
+	text-wrap: pretty;
 }
 
-pre {
-	font-family: var(--font-mono);
-	font-size: 0.9em;
-	background: var(--bg-secondary);
-	padding: var(--space-sm);
-	border: 2px solid var(--border);
-	overflow-x: auto;
-	margin-bottom: var(--space-sm);
+/* Wide-tracked caps for labels */
+.label {
+	font-size: 10px;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	color: var(--text-faint);
 }
 
-pre code {
-	background: none;
-	padding: 0;
-	border: none;
+.label-strong {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--ink);
 }
 
-/* Utility classes */
-.container {
-	max-width: 800px;
-	margin: 0 auto;
-	padding: var(--space-md);
+/* ---------- Rules ---------- */
+
+.rule-heavy {
+	height: 3px;
+	background: var(--ink);
 }
 
-.text-center {
-	text-align: center;
+.rule-hair {
+	height: 1px;
+	background: var(--ink);
 }
 
-.border-box {
-	border: 2px solid var(--border);
-	padding: var(--space-sm);
+.rule-ghost {
+	height: 1px;
+	background: var(--rule-ghost);
 }
 
-/* Grid for card catalog */
-.card-grid {
+/* ---------- Buttons and tags ---------- */
+
+.btn {
+	display: inline-block;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	border: 2px solid var(--ink);
+	padding: 9px 18px;
+	cursor: pointer;
+	text-decoration: none;
+	transition:
+		background 0.1s ease,
+		color 0.1s ease;
+}
+
+.btn:hover {
+	text-decoration: none;
+}
+
+.btn-primary {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.btn-primary:hover {
+	background: var(--paper);
+	color: var(--ink);
+}
+
+.btn-secondary {
+	background: transparent;
+	color: var(--ink);
+}
+
+.btn-secondary:hover {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.btn-large {
+	padding: 11px 20px;
+}
+
+/* Small pill used for nav, filters and spread tabs */
+.chip {
+	font-family: inherit;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	padding: 6px 13px;
+	cursor: pointer;
+	border: 2px solid var(--ink);
+	background: transparent;
+	color: var(--ink);
+	text-decoration: none;
+	transition:
+		background 0.1s ease,
+		color 0.1s ease;
+}
+
+.chip:hover,
+.chip.active {
+	background: var(--ink);
+	color: var(--paper);
+	text-decoration: none;
+}
+
+.tag {
+	font-size: 10px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	border: 1px solid var(--ink);
+	padding: 4px 9px;
+}
+
+.tag-active {
+	font-size: 10px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	background: var(--ink);
+	color: var(--paper);
+	padding: 5px 9px;
+}
+
+/* ---------- Layout ---------- */
+
+.page {
+	display: flex;
+	flex-direction: column;
+}
+
+.grid-12 {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: var(--space-md);
-	margin-top: var(--space-md);
+	grid-template-columns: repeat(12, 1fr);
+	gap: var(--grid-gap);
 }
 
-/* Minimalist card styling */
-.card {
-	border: 2px solid var(--border);
-	padding: var(--space-sm);
-	transition: transform 0.1s ease;
+/* Unstyled button that wraps a card face */
+.card-button {
+	font-family: inherit;
+	text-align: left;
+	background: transparent;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	color: var(--ink);
+	text-decoration: none;
 }
 
-.card:hover {
-	transform: translateY(-2px);
+.card-button:hover {
+	text-decoration: none;
+}
+
+.card-button:hover .card-caption {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+	:root {
+		--page-pad-x: 20px;
+	}
 }
