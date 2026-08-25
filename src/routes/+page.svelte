@@ -4,23 +4,14 @@
 <div class="container">
 	<div class="hero">
 		<h1>Programming Wisdom Through Tarot</h1>
-		<p class="tagline">
-			Not "The Way of Code." Not corporate agile theatre. Just honest insights about writing
-			software, organised through archetypal patterns that actually make sense.
-		</p>
+		<p class="tagline">For devs with enough scar tissue to find methodology slogans irritating.</p>
 	</div>
 
 	<div class="intro">
 		<p>
-			The full tarot deck, reread through programming. Not a map of code concepts onto card
-			names—the Ace of Swords isn't "open your IDE"—but a set of archetypal lenses for the recurring
-			patterns in programming life: the codebase you've inherited, the architecture you can't commit
-			to, the colleague who ships everything and documents nothing.
-		</p>
-		<p>
-			Aimed at developers with enough scar tissue to find methodology slogans irritating. No steps
-			to success. No actionable takeaways. Just honest observations, filed under the framework that
-			happened to fit.
+			Archetypal lenses for the recurring patterns in programming life: the codebase you've
+			inherited, the architecture you can't commit to, the colleague who ships everything and
+			documents nothing.
 		</p>
 	</div>
 
