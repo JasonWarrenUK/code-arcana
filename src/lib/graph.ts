@@ -1,144 +1,132 @@
 import type { Card } from './types/card';
+import { artKey, isMajor, mulberry32, type ArtKey } from './arcana';
 
-export interface GraphLayoutNode {
+/**
+ * Constellation layout: a small force simulation, seeded so the build and the
+ * browser agree on where every star sits. Runs once at load time.
+ */
+
+export const GRAPH_W = 1000;
+export const GRAPH_H = 620;
+
+export interface GraphNode {
 	id: string;
-	type: 'card';
 	name: string;
-	group: 'major' | 'cups' | 'wands' | 'swords' | 'pentacles';
+	group: ArtKey;
+	major: boolean;
 	x: number;
 	y: number;
-	angle: number;
 }
 
 export interface GraphEdge {
 	a: string;
 	b: string;
-	path: string;
 }
 
 export interface GraphLayout {
-	nodes: GraphLayoutNode[];
+	nodes: GraphNode[];
 	edges: GraphEdge[];
-	viewBox: string;
 }
 
-const CX = 500;
-const CY = 500;
-const R = 380;
-const VIEW_SIZE = 1000;
-
-// angular gap between groups (radians)
-const GROUP_GAP = 0.12;
-
-const GROUP_ORDER: Array<'major' | 'cups' | 'wands' | 'swords' | 'pentacles'> = [
-	'major',
-	'wands',
-	'cups',
-	'swords',
-	'pentacles'
-];
-
-function groupOf(card: Card): 'major' | 'cups' | 'wands' | 'swords' | 'pentacles' {
-	if (card.arcana === 'major') return 'major';
-	return card.suit ?? 'wands';
+interface SimNode extends GraphNode {
+	vx: number;
+	vy: number;
 }
 
-// Sort within a group: numbered cards by number, court cards after (by rank order)
-const COURT_ORDER: Record<string, number> = { page: 11, knight: 12, queen: 13, king: 14 };
+export function buildGraphLayout(cards: Card[], seed = 78): GraphLayout {
+	const random = mulberry32(seed);
+	const n = cards.length;
+	const cx = GRAPH_W / 2;
+	const cy = GRAPH_H / 2;
 
-function sortKey(card: Card): number {
-	if (card.courtRank) return COURT_ORDER[card.courtRank] ?? 11;
-	return card.number ?? 0;
-}
+	const nodes: SimNode[] = cards.map((c, i) => {
+		const a = (i / n) * Math.PI * 2;
+		return {
+			id: c.id,
+			name: c.name,
+			group: artKey(c),
+			major: isMajor(c),
+			x: cx + Math.cos(a) * 240 + (random() - 0.5) * 40,
+			y: cy + Math.sin(a) * 200 + (random() - 0.5) * 40,
+			vx: 0,
+			vy: 0
+		};
+	});
+	const index = new Map(nodes.map((nd) => [nd.id, nd]));
 
-export function buildGraphLayout(cards: Card[]): GraphLayout {
-	// Partition cards by group, sorted within group
-	const groups = new Map<string, Card[]>();
-	for (const g of GROUP_ORDER) groups.set(g, []);
-	for (const card of cards) {
-		groups.get(groupOf(card))?.push(card);
-	}
-	for (const g of GROUP_ORDER) {
-		groups.get(g)?.sort((a, b) => sortKey(a) - sortKey(b));
-	}
-
-	// Compute group sweeps — total arc = 2π minus all gaps
-	const totalGap = GROUP_GAP * GROUP_ORDER.length;
-	const totalSweep = 2 * Math.PI - totalGap;
-	const totalCards = cards.length; // 78
-
-	const groupSweeps = new Map<string, number>();
-	for (const g of GROUP_ORDER) {
-		const count = groups.get(g)?.length ?? 0;
-		groupSweeps.set(g, (count / totalCards) * totalSweep);
-	}
-
-	// Assign angles — start at -π/2 (top) so major arcana opens at top of circle
-	const nodes: GraphLayoutNode[] = [];
-	let angle = -Math.PI / 2;
-
-	for (const g of GROUP_ORDER) {
-		const groupCards = groups.get(g) ?? [];
-		const sweep = groupSweeps.get(g) ?? 0;
-
-		for (let i = 0; i < groupCards.length; i++) {
-			const card = groupCards[i];
-			// Space cards evenly within the group sweep
-			const cardAngle =
-				groupCards.length > 1 ? angle + (i / (groupCards.length - 1)) * sweep : angle + sweep / 2;
-
-			nodes.push({
-				id: card.id,
-				type: 'card',
-				name: card.name,
-				group: g,
-				x: parseFloat((CX + R * Math.cos(cardAngle)).toFixed(2)),
-				y: parseFloat((CY + R * Math.sin(cardAngle)).toFixed(2)),
-				angle: cardAngle
-			});
-		}
-
-		angle += sweep + GROUP_GAP;
-	}
-
-	// Build undirected edges — deduplicate a-b and b-a
-	const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+	const edges: Array<[SimNode, SimNode]> = [];
 	const seen = new Set<string>();
-	const edges: GraphEdge[] = [];
-
-	for (const card of cards) {
-		for (const connId of card.connections ?? []) {
-			const key = [card.id, connId].sort().join('|');
-			if (seen.has(key)) continue;
+	for (const c of cards) {
+		for (const other of c.connections ?? []) {
+			const key = [c.id, other].sort().join('|');
+			const target = index.get(other);
+			const source = index.get(c.id);
+			if (seen.has(key) || !target || !source) continue;
 			seen.add(key);
-
-			const a = nodeMap.get(card.id);
-			const b = nodeMap.get(connId);
-			if (!a || !b) continue;
-
-			// Quadratic Bézier: control point pulled toward centre
-			// The deeper toward centre based on chord angle span
-			const span = Math.abs(a.angle - b.angle);
-			const normalised = Math.min(span, 2 * Math.PI - span) / Math.PI; // 0..1
-			const pull = 0.35 + normalised * 0.45; // 0.35..0.8: wider chord → deeper bow
-
-			// Lerp chord midpoint toward centre by pull factor
-			const midX = (a.x + b.x) / 2;
-			const midY = (a.y + b.y) / 2;
-			const cX = parseFloat((midX + (CX - midX) * pull).toFixed(2));
-			const cY = parseFloat((midY + (CY - midY) * pull).toFixed(2));
-
-			edges.push({
-				a: card.id,
-				b: connId,
-				path: `M${a.x} ${a.y} Q${cX} ${cY} ${b.x} ${b.y}`
-			});
+			edges.push([source, target]);
 		}
 	}
+
+	const ITERATIONS = 320;
+	for (let iter = 0; iter < ITERATIONS; iter++) {
+		const k = 1 - iter / ITERATIONS;
+		for (let i = 0; i < nodes.length; i++) {
+			for (let j = i + 1; j < nodes.length; j++) {
+				const a = nodes[i];
+				const b = nodes[j];
+				const dx = a.x - b.x;
+				const dy = a.y - b.y;
+				const d2 = dx * dx + dy * dy || 0.01;
+				const f = 2600 / d2;
+				const d = Math.sqrt(d2);
+				a.vx += (dx / d) * f;
+				a.vy += (dy / d) * f;
+				b.vx -= (dx / d) * f;
+				b.vy -= (dy / d) * f;
+			}
+		}
+		for (const [a, b] of edges) {
+			const dx = b.x - a.x;
+			const dy = b.y - a.y;
+			const d = Math.hypot(dx, dy) || 0.01;
+			const f = (d - 84) * 0.03;
+			a.vx += (dx / d) * f;
+			a.vy += (dy / d) * f;
+			b.vx -= (dx / d) * f;
+			b.vy -= (dy / d) * f;
+		}
+		for (const nd of nodes) {
+			nd.vx += (cx - nd.x) * 0.004;
+			nd.vy += (cy - nd.y) * 0.004;
+			nd.x += nd.vx * k * 0.5;
+			nd.y += nd.vy * k * 0.5;
+			nd.vx *= 0.82;
+			nd.vy *= 0.82;
+			nd.x = Math.max(26, Math.min(GRAPH_W - 26, nd.x));
+			nd.y = Math.max(22, Math.min(GRAPH_H - 22, nd.y));
+		}
+	}
+
+	// Stretch the settled cloud to fill the frame
+	const pad = 34;
+	const xs = nodes.map((nd) => nd.x);
+	const ys = nodes.map((nd) => nd.y);
+	const x0 = Math.min(...xs);
+	const x1 = Math.max(...xs);
+	const y0 = Math.min(...ys);
+	const y1 = Math.max(...ys);
+	const sx = (GRAPH_W - pad * 2) / Math.max(1, x1 - x0);
+	const sy = (GRAPH_H - pad * 2) / Math.max(1, y1 - y0);
 
 	return {
-		nodes,
-		edges,
-		viewBox: `0 0 ${VIEW_SIZE} ${VIEW_SIZE}`
+		nodes: nodes.map(({ id, name, group, major, x, y }) => ({
+			id,
+			name,
+			group,
+			major,
+			x: parseFloat((pad + (x - x0) * sx).toFixed(1)),
+			y: parseFloat((pad + (y - y0) * sy).toFixed(1))
+		})),
+		edges: edges.map(([a, b]) => ({ a: a.id, b: b.id }))
 	};
 }
