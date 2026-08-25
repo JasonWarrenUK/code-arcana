@@ -9,7 +9,7 @@
 
 	const byId = new Map(data.allCards.map((c) => [c.id, c]));
 
-	let spreadId = data.spreads[1].id;
+	let spreadId = data.spreads[0].id;
 	let ids: string[] = [];
 
 	const reshuffle = () => {
@@ -64,15 +64,28 @@
 	</div>
 
 	{#if slots.length}
-		<ol class="list" aria-label="Cards in this spread">
-			{#each slots as { slot, card } (`${slot.position}-${card.id}`)}
-				<li>
-					<span class="position">{slot.position}</span>
-					<a href="/card/{card.id}" class="list-name">{card.name}</a>
-					<span class="list-insight">{card.codingInsight}</span>
-				</li>
-			{/each}
-		</ol>
+		<section class="reading" aria-label="The reading">
+			<div class="reading-head"><span>The reading</span></div>
+			<ol class="list">
+				{#each slots as { slot, card } (`${slot.position}-${card.id}`)}
+					<li class="reading-row">
+						<div class="reading-position">
+							<span class="position">{slot.position}</span>
+							{#if slot.interpretation}
+								<p class="interpretation">{slot.interpretation}</p>
+							{/if}
+						</div>
+						<a href="/card/{card.id}" class="card-button reading-card">
+							<CardFace {card} />
+							<span class="reading-copy">
+								<span class="card-caption list-name">{card.name}</span>
+								<span class="list-insight">{card.codingInsight}</span>
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		</section>
 	{/if}
 </div>
 
@@ -176,19 +189,68 @@
 		line-height: 1.15;
 	}
 
-	.list {
-		display: none;
-		list-style: none;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.list li {
+	.reading {
 		display: flex;
 		flex-direction: column;
-		gap: 3px;
-		border-top: 1px solid var(--rule-ghost);
-		padding-top: 10px;
+		gap: 18px;
+	}
+
+	.reading-head {
+		border-bottom: 3px solid var(--ink);
+		padding-bottom: 8px;
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+	}
+
+	.list {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.reading-row {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		gap: 34px;
+		border-bottom: 1px solid var(--rule-ghost);
+		padding: 18px 0;
+	}
+
+	.reading-position {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.reading-position .position {
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.24em;
+		color: var(--ink);
+	}
+
+	.interpretation {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--text-muted);
+		max-width: 52ch;
+		text-wrap: pretty;
+	}
+
+	.reading-card {
+		display: grid;
+		grid-template-columns: 70px 1fr;
+		gap: 12px;
+		align-items: start;
+	}
+
+	.reading-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
 	}
 
 	.list-name {
@@ -196,10 +258,12 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		font-stretch: 86%;
+		line-height: 1.1;
 	}
 
 	.list-insight {
 		font-size: 12px;
+		line-height: 1.4;
 		color: var(--text-muted);
 	}
 
@@ -208,8 +272,9 @@
 			display: none;
 		}
 
-		.list {
-			display: flex;
+		.reading-row {
+			grid-template-columns: 1fr;
+			gap: 12px;
 		}
 
 		.title {

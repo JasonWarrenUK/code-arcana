@@ -28,7 +28,7 @@
 		drawKey += 1;
 	}
 
-	$: excerpt = drawn ? (drawn.essay ?? '').split('\n\n')[0] : '';
+	$: paragraphs = drawn ? (drawn.essay ?? '').split('\n\n') : [];
 </script>
 
 <svelte:head>
@@ -82,7 +82,11 @@
 			<h1 class="display name">{drawn.name}</h1>
 			<div class="rule-heavy"></div>
 			<p class="insight">{drawn.codingInsight}</p>
-			<p class="body excerpt">{excerpt}</p>
+			<div class="essay">
+				{#each paragraphs as text}
+					<p class="body excerpt">{text}</p>
+				{/each}
+			</div>
 			<a href="/card/{drawn.id}" class="btn btn-secondary">Read the card</a>
 		{:else}
 			<div class="prompt">
@@ -149,6 +153,12 @@
 
 	.reading .insight {
 		padding: 10px 13px 12px;
+	}
+
+	.essay {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
 	}
 
 	.excerpt {

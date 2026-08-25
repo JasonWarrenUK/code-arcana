@@ -2,6 +2,8 @@ export type LabelSide = 'below' | 'right';
 
 export interface SpreadSlot {
 	position: string;
+	/** What this position asks of the card placed on it */
+	interpretation?: string;
 	/** Percentage of the table width and height, centre of the card */
 	x: number;
 	y: number;
@@ -18,17 +20,75 @@ export interface SpreadLayout {
 	slots: SpreadSlot[];
 }
 
+/** Three cards in a rank: the geometry shared by every three-card reading */
+const rank = (positions: Array<[string, string?]>): SpreadSlot[] =>
+	positions.map(([position, interpretation], i) => ({
+		position,
+		interpretation,
+		x: [18, 50, 82][i],
+		y: 50,
+		w: 200,
+		rot: 0
+	}));
+
 export const spreads: SpreadLayout[] = [
 	{
-		id: 'three',
-		title: 'Three Cards',
+		id: 'the-stuck',
+		title: 'The Stuck',
+		blurb: 'For when you know something is wrong but not what.',
+		slots: rank([
+			[
+				'What you are avoiding',
+				'The thing you keep deferring. Not because it is hard, but because looking at it directly requires admitting something.'
+			],
+			[
+				'What is actually the problem',
+				'Not the symptom you have been debugging. The actual root. It is probably structural.'
+			],
+			[
+				'The boring fix',
+				'The solution that has been obvious for a while. The one that requires no cleverness, just time and the willingness to do unglamorous work.'
+			]
+		])
+	},
+	{
+		id: 'the-decision',
+		title: 'The Decision',
+		blurb: 'For the choice you have been thinking about too long.',
+		slots: rank([
+			[
+				'The thing you want to do',
+				'What your instinct says. Not the answer you have rehearsed for the standup, but the one you have been sitting with at 11pm.'
+			],
+			[
+				'The thing you should do',
+				'What the constraints, the team, the codebase, or basic professionalism require. The version of you that has to live with the consequences.'
+			],
+			[
+				'What you will actually do at 4pm on Friday',
+				'Neither of the above, shaped by deadline pressure and diminishing capacity. Worth knowing in advance.'
+			]
+		])
+	},
+	{
+		id: 'the-codebase',
+		title: 'The Codebase',
 		blurb:
-			'Three cards in a rank. The simplest reading and the one most likely to be useful: what shaped this codebase, what it is now, and what it is about to become.',
-		slots: [
-			{ position: 'Before', x: 18, y: 50, w: 200, rot: 0 },
-			{ position: 'Now', x: 50, y: 50, w: 200, rot: 0 },
-			{ position: 'Next', x: 82, y: 50, w: 200, rot: 0 }
-		]
+			'A diagnostic for inherited or stagnant systems: what shaped this codebase, what it is now, and what it is about to become.',
+		slots: rank([
+			[
+				'What it pretends to be',
+				'The README version. The architecture diagram drawn before the first line of code. The story the original authors told themselves.'
+			],
+			[
+				'What it is',
+				'The lived reality. The workarounds, the modules that only one person understands, the tests that are disabled because they are too slow.'
+			],
+			[
+				'What it is becoming',
+				'Not what you plan to do to it: what it is already moving toward, given the changes being made now. Direction matters more than destination.'
+			]
+		])
 	},
 	{
 		id: 'cross',

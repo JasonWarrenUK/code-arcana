@@ -24,6 +24,14 @@
 	<div class="hero grid-12">
 		<h1 class="display hero-title">A tarot deck about writing software</h1>
 		<div class="hero-cta">
+			<p class="tagline">
+				For devs with enough scar tissue to find methodology slogans irritating.
+			</p>
+			<p class="intro">
+				Archetypal lenses for the recurring patterns in programming life: the codebase you've
+				inherited, the architecture you can't commit to, the colleague who ships everything and
+				documents nothing.
+			</p>
 			<a href="/draw" class="btn btn-primary btn-large">Draw a card</a>
 		</div>
 	</div>
@@ -76,10 +84,29 @@
 	}
 
 	.hero-cta {
-		grid-column: 10 / 13;
+		grid-column: 9 / 13;
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
+	}
+
+	.tagline {
+		margin: 0;
+		font-size: 17px;
+		line-height: 1.25;
+		font-weight: 700;
+		text-transform: uppercase;
+		font-stretch: 88%;
+		letter-spacing: -0.015em;
+		text-wrap: pretty;
+	}
+
+	.intro {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--text-muted);
+		text-wrap: pretty;
 	}
 
 	.hero-cta .btn {

@@ -64,6 +64,18 @@
 				Built with SvelteKit and TypeScript. Static generation for platform independence. No
 				tracking, no analytics, no newsletter signup forms. Just the cards and their insights.
 			</p>
+		</div>
+	</section>
+
+	<section class="row">
+		<div class="label-strong">What's next</div>
+		<div class="copy">
+			<p class="body">
+				The deck is complete. What's left is navigation: spreads for structured prompts, and the
+				constellation, 250 edges of cross-suit, cross-arcana relationships that the JSON already
+				knows about. The site grows slowly from here: not more cards, but more ways to navigate the
+				ones that exist.
+			</p>
 			<p class="body">No newsletter. No roadmap. No sprint to anything.</p>
 		</div>
 	</section>

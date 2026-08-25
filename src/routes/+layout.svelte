@@ -41,6 +41,11 @@
 	<main>
 		<slot />
 	</main>
+
+	<footer class="footer">
+		<div class="rule-heavy"></div>
+		<p class="label footer-line">A tarot-based programming philosophy. No bullshit.</p>
+	</footer>
 </div>
 
 <style>
@@ -102,6 +107,18 @@
 
 	main {
 		flex: 1;
+	}
+
+	.footer {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		margin-top: 72px;
+	}
+
+	.footer-line {
+		margin: 0;
+		letter-spacing: 0.24em;
 	}
 
 	@media (max-width: 900px) {

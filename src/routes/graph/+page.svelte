@@ -35,6 +35,11 @@
 <div class="page graph">
 	<div class="head">
 		<h1 class="display title">Constellation</h1>
+		<p class="intro">
+			Every card points at others. Hover to trace a line of thought; click to follow it.
+			{data.layout.edges.length} edges across {data.layout.nodes.length} cards, none of them obvious until
+			you see them.
+		</p>
 	</div>
 
 	<div class="frame">
@@ -121,6 +126,15 @@
 		font-size: 62px;
 		line-height: 0.94;
 		letter-spacing: -0.045em;
+	}
+
+	.intro {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--text-muted);
+		max-width: 52ch;
+		text-wrap: pretty;
 	}
 
 	.frame {

@@ -60,6 +60,7 @@
 				<CardFace {card} />
 				<span class="card-caption name">{card.name}</span>
 				<span class="meta">{cardShortMeta(card)}</span>
+				<span class="cell-insight">{card.codingInsight}</span>
 			</a>
 		{/each}
 	</div>
@@ -144,6 +145,12 @@
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--text-faint);
+	}
+
+	.cell-insight {
+		font-size: 11px;
+		line-height: 1.35;
+		color: var(--text-muted);
 	}
 
 	@media (max-width: 1200px) {

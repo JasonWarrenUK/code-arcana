@@ -14,8 +14,7 @@ export const load: PageLoad = async ({ params }) => {
 	const byId = new Map(cards.map((c) => [c.id, c]));
 	const related = (card.connections ?? [])
 		.map((id) => byId.get(id))
-		.filter((c): c is Card => Boolean(c))
-		.slice(0, 4);
+		.filter((c): c is Card => Boolean(c));
 
 	return { card, related };
 };
