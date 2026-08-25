@@ -1,91 +1,185 @@
 <script lang="ts">
+	import type { PageData } from './$types';
+	import CardFace from '$lib/components/CardFace.svelte';
+	import { cardMeta, cardOfTheDay } from '$lib/arcana';
+
+	export let data: PageData;
+
+	$: daily = cardOfTheDay(data.cards);
+	$: excerpt = (daily.essay ?? '').split('\n\n')[0];
+
+	const entries = [
+		{ href: '/catalog', number: '01', title: 'The Deck' },
+		{ href: '/spread', number: '02', title: 'Spreads' },
+		{ href: '/graph', number: '03', title: 'Constellation' }
+	];
 </script>
 
-<div class="container">
-	<div class="hero">
-		<h1>Programming Wisdom Through Tarot</h1>
-		<p class="tagline">For devs with enough scar tissue to find methodology slogans irritating.</p>
+<svelte:head>
+	<title>Arcana of Code</title>
+	<meta name="description" content="A tarot deck about writing software." />
+</svelte:head>
+
+<div class="page home">
+	<div class="hero grid-12">
+		<h1 class="display hero-title">A tarot deck about writing software</h1>
+		<div class="hero-cta">
+			<a href="/draw" class="btn btn-primary btn-large">Draw a card</a>
+		</div>
 	</div>
 
-	<div class="intro">
-		<p>
-			Archetypal lenses for the recurring patterns in programming life: the codebase you've
-			inherited, the architecture you can't commit to, the colleague who ships everything and
-			documents nothing.
-		</p>
-	</div>
+	<div class="rule-heavy"></div>
 
-	<div class="cta-grid">
-		<a href="/catalog" class="cta-card">
-			<h2>Browse the Catalog</h2>
-			<p>Explore all 78 cards and their programming insights</p>
-		</a>
+	<section class="daily grid-12" aria-labelledby="daily-heading">
+		<div class="daily-face">
+			<div class="label" id="daily-heading">Card of the day</div>
+			<a href="/card/{daily.id}" aria-label="Read {daily.name}">
+				<CardFace card={daily} index />
+			</a>
+		</div>
+		<div class="daily-copy">
+			<div class="label">{cardMeta(daily)}</div>
+			<h2 class="display daily-name">{daily.name}</h2>
+			<div class="rule-hair"></div>
+			<p class="insight">{daily.codingInsight}</p>
+			<p class="body">{excerpt}</p>
+			<a href="/card/{daily.id}" class="btn btn-secondary">Read the card</a>
+		</div>
+	</section>
 
-		<a href="/draw" class="cta-card">
-			<h2>Draw a Card</h2>
-			<p>Get a random perspective on your current work</p>
-		</a>
-
-		<a href="/spread" class="cta-card">
-			<h2>Draw a Spread</h2>
-			<p>Three cards, three positions, one specific problem</p>
-		</a>
-	</div>
+	<nav class="entries" aria-label="Sections">
+		{#each entries as entry}
+			<a href={entry.href} class="entry">
+				<span class="entry-number">{entry.number}</span>
+				<span class="entry-title">{entry.title}</span>
+			</a>
+		{/each}
+	</nav>
 </div>
 
 <style>
+	.home {
+		gap: 60px;
+		padding-top: 52px;
+	}
+
 	.hero {
-		text-align: center;
-		margin-bottom: var(--space-lg);
-		padding: var(--space-lg) 0;
-		border-bottom: 2px solid var(--border);
+		align-items: end;
 	}
 
-	.hero h1 {
-		font-size: var(--text-2xl);
-		margin-bottom: var(--space-md);
+	.hero-title {
+		grid-column: 1 / 9;
+		font-size: clamp(48px, 7vw, 108px);
+		line-height: 0.82;
+		letter-spacing: -0.055em;
+		font-stretch: 72%;
 	}
 
-	.tagline {
-		font-size: var(--text-lg);
-		max-width: 700px;
-		margin: 0 auto;
-		line-height: 1.5;
+	.hero-cta {
+		grid-column: 10 / 13;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
 	}
 
-	.intro {
-		max-width: 650px;
-		margin: var(--space-lg) auto;
+	.hero-cta .btn {
+		align-self: flex-start;
 	}
 
-	.intro p {
-		margin-bottom: var(--space-md);
+	.daily {
+		align-items: start;
 	}
 
-	.cta-grid {
+	.daily-face {
+		grid-column: 1 / 4;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.daily-copy {
+		grid-column: 5 / 13;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.daily-name {
+		font-size: clamp(36px, 4vw, 56px);
+		line-height: 0.88;
+		font-stretch: 76%;
+		letter-spacing: -0.04em;
+	}
+
+	.daily-copy .label {
+		letter-spacing: 0.28em;
+	}
+
+	.daily-copy .insight {
+		font-size: 21px;
+	}
+
+	.daily-copy .btn {
+		align-self: flex-start;
+	}
+
+	.entries {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: var(--space-md);
-		margin-top: var(--space-lg);
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--grid-gap);
 	}
 
-	.cta-card {
-		border: 2px solid var(--border);
-		padding: var(--space-md);
+	.entry {
+		text-align: left;
+		background: transparent;
+		border: 2px solid var(--ink);
+		padding: 22px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		color: var(--ink);
 		text-decoration: none;
-		transition: transform 0.1s ease;
+		transition:
+			background 0.1s ease,
+			color 0.1s ease;
 	}
 
-	.cta-card:hover {
-		transform: translateY(-4px);
+	.entry:hover {
+		background: var(--ink);
+		color: var(--paper);
+		text-decoration: none;
 	}
 
-	.cta-card h2 {
-		margin-bottom: var(--space-sm);
+	.entry-number {
+		font-size: 10px;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+		opacity: 0.6;
 	}
 
-	.cta-card p {
-		color: var(--text-secondary);
-		margin: 0;
+	.entry-title {
+		font-size: 30px;
+		font-weight: 700;
+		text-transform: uppercase;
+		font-stretch: 80%;
+		letter-spacing: -0.03em;
+		line-height: 0.94;
+	}
+
+	@media (max-width: 900px) {
+		.hero-title,
+		.hero-cta,
+		.daily-face,
+		.daily-copy {
+			grid-column: 1 / -1;
+		}
+
+		.daily-face {
+			max-width: 280px;
+		}
+
+		.entries {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

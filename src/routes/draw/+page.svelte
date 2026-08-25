@@ -1,171 +1,174 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import type { Card } from '$lib/types/card';
-	import CardPlaceholder from '$lib/components/CardPlaceholder.svelte';
+	import CardFace from '$lib/components/CardFace.svelte';
+	import { cardMeta } from '$lib/arcana';
 
 	export let data: PageData;
 
-	let drawnCard: Card | null = null;
-	let isDrawing = false;
+	let drawn: Card | null = null;
+	let revealed = false;
+	let drawKey = 0;
 
-	function drawCard() {
-		isDrawing = true;
+	const randomCard = (): Card => data.allCards[Math.floor(Math.random() * data.allCards.length)];
 
-		// Brief animation delay
-		setTimeout(() => {
-			const randomIndex = Math.floor(Math.random() * data.allCards.length);
-			drawnCard = data.allCards[randomIndex];
-			isDrawing = false;
-		}, 300);
+	onMount(() => {
+		drawn = randomCard();
+	});
+
+	function act() {
+		if (!drawn) drawn = randomCard();
+		if (revealed) {
+			drawn = randomCard();
+			revealed = false;
+		} else {
+			revealed = true;
+		}
+		drawKey += 1;
 	}
 
-	function reset() {
-		drawnCard = null;
-	}
+	$: excerpt = drawn ? (drawn.essay ?? '').split('\n\n')[0] : '';
 </script>
 
 <svelte:head>
 	<title>Draw a Card | Arcana of Code</title>
 </svelte:head>
 
-<div class="container">
-	<div class="draw-intro">
-		<h1>Draw a Card</h1>
-		<p>
-			Get a random perspective on your current work. Not fortune-telling, just a prompt for
-			reflection—a different lens through which to view whatever problem you're wrestling with.
-		</p>
+<div class="page draw grid-12">
+	<div class="table">
+		<button
+			type="button"
+			class="card-button face"
+			on:click={act}
+			aria-label={revealed ? 'Draw again' : 'Turn the card'}
+		>
+			{#if revealed && drawn}
+				{#key drawKey}
+					<CardFace card={drawn} index animate />
+				{/key}
+			{:else}
+				<svg viewBox="0 0 200 300" class="back" aria-hidden="true">
+					<rect width="200" height="300" fill="#0b0b0b" />
+					<rect
+						x="14"
+						y="14"
+						width="172"
+						height="272"
+						fill="none"
+						stroke="#3a3733"
+						stroke-width="1"
+					/>
+					<rect
+						x="22"
+						y="22"
+						width="156"
+						height="256"
+						fill="none"
+						stroke="#26241f"
+						stroke-width="1"
+					/>
+				</svg>
+			{/if}
+		</button>
+		<button type="button" class="btn btn-primary btn-large" on:click={act}>
+			{revealed ? 'Draw again' : 'Turn the card'}
+		</button>
 	</div>
 
-	<div class="draw-area" aria-live="polite" aria-atomic="true">
-		{#if !drawnCard}
-			<button on:click={drawCard} disabled={isDrawing} class="draw-button">
-				{isDrawing ? 'Drawing...' : 'Draw a Card'}
-			</button>
+	<div class="reading" aria-live="polite" aria-atomic="true">
+		{#if revealed && drawn}
+			<div class="label">{cardMeta(drawn)}</div>
+			<h1 class="display name">{drawn.name}</h1>
+			<div class="rule-heavy"></div>
+			<p class="insight">{drawn.codingInsight}</p>
+			<p class="body excerpt">{excerpt}</p>
+			<a href="/card/{drawn.id}" class="btn btn-secondary">Read the card</a>
 		{:else}
-			<div class="drawn-card">
-				<div class="card-display">
-					<CardPlaceholder card={drawnCard} />
-				</div>
-				<div class="card-content">
-					<h2>{drawnCard.name}</h2>
-					<p class="insight">{drawnCard.codingInsight}</p>
-
-					{#if drawnCard.essay}
-						<div class="essay">
-							{#each drawnCard.essay.split('\n\n') as paragraph}
-								<p>{paragraph}</p>
-							{/each}
-						</div>
-					{/if}
-
-					<div class="actions">
-						<a href="/card/{drawnCard.id}" class="action-link"> View Full Card → </a>
-						<button on:click={reset} class="reset-button"> Draw Again </button>
-					</div>
-				</div>
+			<div class="prompt">
+				<div class="label">One card</div>
+				<h1 class="display prompt-title">Turn one over</h1>
 			</div>
 		{/if}
 	</div>
 </div>
 
 <style>
-	.draw-intro {
-		text-align: center;
-		max-width: 650px;
-		margin: 0 auto var(--space-lg);
-		padding-bottom: var(--space-lg);
-		border-bottom: 2px solid var(--border);
-	}
-
-	.draw-intro h1 {
-		margin-bottom: var(--space-sm);
-	}
-
-	.draw-intro p {
-		color: var(--text-secondary);
-	}
-
-	.draw-area {
-		min-height: 400px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.draw-button {
-		font-size: var(--text-lg);
-		padding: var(--space-md) var(--space-lg);
-		border: 3px solid var(--border);
-	}
-
-	.drawn-card {
-		width: 100%;
-		display: grid;
-		grid-template-columns: 300px 1fr;
-		gap: var(--space-lg);
+	.draw {
+		padding-top: 60px;
 		align-items: start;
+		min-height: 620px;
 	}
 
-	.card-display {
-		position: sticky;
-		top: var(--space-md);
-	}
-
-	.card-content h2 {
-		font-size: var(--text-2xl);
-		margin-bottom: var(--space-sm);
-	}
-
-	.insight {
-		font-size: var(--text-lg);
-		font-weight: 600;
-		margin-bottom: var(--space-md);
-		padding-bottom: var(--space-md);
-		border-bottom: 1px solid var(--border);
-	}
-
-	.essay {
-		margin: var(--space-md) 0;
-		max-width: 650px;
-	}
-
-	.essay p {
-		margin-bottom: var(--space-md);
-	}
-
-	.actions {
-		margin-top: var(--space-lg);
+	.table {
+		grid-column: 1 / 5;
 		display: flex;
-		gap: var(--space-md);
-		align-items: center;
+		flex-direction: column;
+		gap: 16px;
 	}
 
-	.action-link {
-		text-decoration: none;
-		padding: var(--space-xs) var(--space-sm);
-		border: 2px solid var(--border);
+	.face {
+		width: 100%;
+		max-width: 340px;
+		display: block;
 	}
 
-	.action-link:hover {
-		background: var(--text-primary);
-		color: var(--bg-primary);
+	.back {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
-	.reset-button {
-		background: var(--bg-secondary);
+	.table .btn {
+		align-self: flex-start;
 	}
 
-	@media (max-width: 768px) {
-		.drawn-card {
-			grid-template-columns: 1fr;
+	.reading {
+		grid-column: 6 / 13;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.prompt {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		max-width: 52ch;
+	}
+
+	.prompt-title {
+		font-size: clamp(44px, 5vw, 62px);
+		line-height: 0.86;
+		letter-spacing: -0.045em;
+	}
+
+	.name {
+		font-size: clamp(44px, 5.5vw, 72px);
+	}
+
+	.reading .insight {
+		padding: 10px 13px 12px;
+	}
+
+	.excerpt {
+		font-size: 16.5px;
+		line-height: 1.62;
+		max-width: 64ch;
+	}
+
+	.reading .btn {
+		align-self: flex-start;
+	}
+
+	@media (max-width: 900px) {
+		.table,
+		.reading {
+			grid-column: 1 / -1;
 		}
 
-		.card-display {
-			max-width: 300px;
-			margin: 0 auto;
-			position: relative;
-			top: 0;
+		.draw {
+			min-height: 0;
 		}
 	}
 </style>
