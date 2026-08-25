@@ -1,8 +1,54 @@
-{
-	"roadmaps": [
-		{
-			"name": "MVP",
-			"path": "docs/roadmaps/mvp.md"
-		}
-	]
-}
+[
+	{
+		"name": "MVP",
+		"path": "docs/roadmaps/mvp.md",
+		"archived": false,
+		"externalGates": [],
+		"milestones": [
+			{
+				"id": "M1",
+				"name": "Deno Migration",
+				"goal": "Convert the SvelteKit site from Node/adapter-static to SvelteKit + Deno Deploy. Site live at a real domain.",
+				"tasks": [
+					{ "id": "1DE.1", "description": "Swap `@sveltejs/adapter-static` for the Deno adapter", "status": "done", "dependsOn": [], "notes": "`@sveltejs/adapter-deno` does not exist; used the community-standard `svelte-adapter-deno@0.9.1`, which required upgrading SvelteKit 1 → 2 (plus Vite 4 → 5, Svelte 4.0 → 4.2). `svelte-check` passes clean." },
+					{ "id": "1DE.2", "description": "Update `svelte.config.js` to Deno adapter config (`out: 'build'`, `precompress: true`)", "status": "done", "dependsOn": [] },
+					{ "id": "1DE.3", "description": "Verify all dependencies are compatible with Deno runtime", "status": "done", "dependsOn": ["1DE.1"], "notes": "Only runtime dep is `@fontsource/inter` (bundled CSS at build); no Node-only builtins in app code; server boots and serves under Deno 2.6" },
+					{ "id": "1DE.4", "description": "Add `deno.json` config at project root (`deno task start` runs the built server)", "status": "done", "dependsOn": [] },
+					{ "id": "1DE.5", "description": "Update build script and CI", "status": "done", "dependsOn": ["1DE.1", "1DE.2"], "notes": "`npm run build` produces the Deno server; `.github/workflows/deploy.yml` deploys via `deployctl` on push to main (project name placeholder until 1DE.6)" },
+					{ "id": "1DE.6", "description": "Set up Deno Deploy project and link to repository", "status": "todo", "dependsOn": [], "notes": "Manual: requires dash.deno.com account access; see DEPLOY.md" },
+					{ "id": "1DE.7", "description": "Configure custom domain on Deno Deploy", "status": "blocked", "dependsOn": ["1DE.6"], "notes": "Manual: requires DNS access; see DEPLOY.md" },
+					{ "id": "1DE.8", "description": "Smoke test all routes locally under Deno (homepage, catalog, draw, about, card pages incl. majors, 404 case)", "status": "done", "dependsOn": ["1DE.5"], "notes": "All pass" },
+					{ "id": "1DE.9", "description": "Re-run smoke test checklist against the live deployment", "status": "blocked", "dependsOn": ["1DE.6"] }
+				]
+			},
+			{
+				"id": "M2",
+				"name": "Card Content",
+				"goal": "All 78 cards have prototype essays — enough to feel like a real artefact worth sharing.",
+				"tasks": [
+					{ "id": "2CU", "description": "Cups — Collaboration & Communication (14 cards)", "status": "done", "dependsOn": [] },
+					{ "id": "2WA", "description": "Wands — Innovation & Energy (14 cards)", "status": "done", "dependsOn": [] },
+					{ "id": "2SW", "description": "Swords — Analysis & Architecture (14 cards)", "status": "done", "dependsOn": [] },
+					{ "id": "2PE", "description": "Pentacles — Craft & Resources (14 cards)", "status": "done", "dependsOn": [] },
+					{ "id": "2MA", "description": "Major Arcana — The Big Themes (22 cards)", "status": "done", "dependsOn": [] }
+				]
+			},
+			{
+				"id": "M3",
+				"name": "Visual Identity",
+				"goal": "Replace placeholder component symbols with Joy Division Unknown Pleasures-esque SVG line art — one unique illustration per card.",
+				"tasks": [
+					{ "id": "3VI.1", "description": "SVG illustration system defined — 200×300 viewBox (2:3), white 1.2px ridge lines on black (Unknown Pleasures idiom), occluding silhouette fills, card label (Roman numerals for majors) and name as SVG text", "status": "done", "dependsOn": [] },
+					{ "id": "3VI.2", "description": "Generation approach — parameterised generator in `src/lib/illustration.ts`: deterministic seed from card id (xmur3 + mulberry32), suit-specific line character, rank-scaled intensity; no image assets", "status": "done", "dependsOn": ["3VI.1"] },
+					{ "id": "3VI.3", "description": "Wands illustrations — energetic, tall peaks (generated, 14 cards)", "status": "done", "dependsOn": ["3VI.2"] },
+					{ "id": "3VI.4", "description": "Cups illustrations — smooth rolling waves (generated, 14 cards)", "status": "done", "dependsOn": ["3VI.2"] },
+					{ "id": "3VI.5", "description": "Swords illustrations — sharp, jagged, high-frequency (generated, 14 cards)", "status": "done", "dependsOn": ["3VI.2"] },
+					{ "id": "3VI.6", "description": "Pentacles illustrations — steady, dense, modest (generated, 14 cards)", "status": "done", "dependsOn": ["3VI.2"] },
+					{ "id": "3VI.7", "description": "Major Arcana illustrations — denser, taller, more dramatic (generated, 22 cards)", "status": "done", "dependsOn": ["3VI.2"] },
+					{ "id": "3VI.8", "description": "`CardPlaceholder.svelte` rewritten to render the per-card SVG", "status": "done", "dependsOn": ["3VI.1"] },
+					{ "id": "3VI.9", "description": "Render check — single scalable SVG per card; verified rasterised output across suits; catalog page weighs 1.45MB raw / ~175KB gzipped (precompressed brotli emitted at build)", "status": "done", "dependsOn": ["3VI.8"] }
+				]
+			}
+		]
+	}
+]
