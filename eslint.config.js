@@ -29,6 +29,6 @@ export default ts.config(
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/', 'docs/']
+		ignores: ['build/', '.svelte-kit/', '.deno-deploy/', 'dist/', 'docs/']
 	}
 );
