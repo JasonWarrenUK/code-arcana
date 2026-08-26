@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import type { Card } from '$lib/types/card';
 	import CardFace from '$lib/components/CardFace.svelte';
 	import { pickCardIds } from '$lib/arcana';
 
@@ -20,7 +19,10 @@
 
 	const spread = $derived(data.spreads.find((s) => s.id === spreadId) ?? data.spreads[0]);
 	const slots = $derived(
-		ids.length ? spread.slots.map((slot, i) => ({ slot, card: byId.get(ids[i]) as Card })) : []
+		spread.slots.flatMap((slot, i) => {
+			const card = byId.get(ids[i]);
+			return card ? [{ slot, card }] : [];
+		})
 	);
 </script>
 
