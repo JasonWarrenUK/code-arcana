@@ -15,12 +15,12 @@ npm run build
 ```bash
 deno task start
 # or directly:
-deno run -A .deno-deploy/server.ts
+deno run --allow-env --allow-read --allow-net .deno-deploy/server.ts
 ```
 
 ## Deno Deploy
 
-The `code-arcana` app on Deno Deploy is linked to this GitHub repository. Deno Deploy clones the repo, runs the install and build itself (framework preset: SvelteKit) and serves `.deno-deploy/server.ts`. Every push to `main` deploys; other branches get preview deployments.
+The `code-arcana` app on Deno Deploy is linked to this GitHub repository. Deno Deploy clones the repo, runs the install and build itself (framework preset: SvelteKit) and serves `.deno-deploy/server.ts`. Every push to `main` deploys; other branches can get preview deployments if that is enabled in the app settings.
 
 There is no GitHub Action for deployment: the platform does the build, so a second pipeline pushing to the same app would only race it.
 
