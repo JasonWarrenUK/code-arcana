@@ -5,11 +5,11 @@
 	import CardFace from '$lib/components/CardFace.svelte';
 	import { cardMeta } from '$lib/arcana';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	let drawn: Card | null = null;
-	let revealed = false;
-	let drawKey = 0;
+	let drawn = $state<Card | null>(null);
+	let revealed = $state(false);
+	let drawKey = $state(0);
 
 	const randomCard = (): Card => data.allCards[Math.floor(Math.random() * data.allCards.length)];
 
@@ -28,7 +28,7 @@
 		drawKey += 1;
 	}
 
-	$: paragraphs = drawn ? (drawn.essay ?? '').split('\n\n') : [];
+	const paragraphs = $derived(drawn ? (drawn.essay ?? '').split('\n\n') : []);
 </script>
 
 <svelte:head>
@@ -40,7 +40,7 @@
 		<button
 			type="button"
 			class="card-button face"
-			on:click={act}
+			onclick={act}
 			aria-label={revealed ? 'Draw again' : 'Turn the card'}
 		>
 			{#if revealed && drawn}
@@ -71,7 +71,7 @@
 				</svg>
 			{/if}
 		</button>
-		<button type="button" class="btn btn-primary btn-large" on:click={act}>
+		<button type="button" class="btn btn-primary btn-large" onclick={act}>
 			{revealed ? 'Draw again' : 'Turn the card'}
 		</button>
 	</div>

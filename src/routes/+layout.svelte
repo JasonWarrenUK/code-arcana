@@ -1,6 +1,9 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+	import type { Snippet } from 'svelte';
+
+	let { children }: { children: Snippet } = $props();
 
 	const nav = [
 		{ href: '/catalog', label: 'The Deck' },
@@ -30,7 +33,7 @@
 		<a href="/" class="brand">Arcana of Code</a>
 		<nav class="nav" aria-label="Primary">
 			{#each nav as item}
-				<a href={item.href} class="chip" class:active={isActive(item.href, $page.url.pathname)}>
+				<a href={item.href} class="chip" class:active={isActive(item.href, page.url.pathname)}>
 					{item.label}
 				</a>
 			{/each}
@@ -39,7 +42,7 @@
 	<div class="rule-heavy"></div>
 
 	<main>
-		<slot />
+		{@render children()}
 	</main>
 
 	<footer class="footer">
