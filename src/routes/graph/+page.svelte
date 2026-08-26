@@ -1,172 +1,196 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
+	import { PALETTE, suitAccent } from '$lib/arcana';
+	import { GRAPH_H, GRAPH_W } from '$lib/graph';
 
 	export let data: PageData;
 
-	let activeId: string | null = null;
+	let hovered: string | null = null;
 
-	function activate(id: string) {
-		activeId = id;
-	}
+	$: nodeById = new Map(data.layout.nodes.map((n) => [n.id, n]));
+	$: hoveredNode = hovered ? nodeById.get(hovered) : undefined;
+	$: neighbours = new Set(
+		hovered
+			? data.layout.edges.flatMap((e) => (e.a === hovered ? [e.b] : e.b === hovered ? [e.a] : []))
+			: []
+	);
 
-	function deactivate() {
-		activeId = null;
-	}
+	$: labelX = hoveredNode ? Math.min(860, hoveredNode.x + 12) : 0;
+	$: labelW = hoveredNode ? Math.max(90, hoveredNode.name.length * 9.2) : 0;
+
+	const legend: Array<[keyof typeof PALETTE, string]> = [
+		['major', 'Majors'],
+		['cups', 'Cups'],
+		['wands', 'Wands'],
+		['swords', 'Swords'],
+		['pentacles', 'Pentacles']
+	];
 </script>
 
 <svelte:head>
-	<title>Connections | Arcana of Code</title>
+	<title>Constellation | Arcana of Code</title>
 </svelte:head>
 
-<div class="container">
-	<div class="graph-intro">
-		<h1>Connections</h1>
-		<p>
-			Every card points at others. Hover to trace a line of thought; click to follow it. 250 edges
-			across 78 cards—none of them obvious until you see them.
+<div class="page graph">
+	<div class="head">
+		<h1 class="display title">Constellation</h1>
+		<p class="intro">
+			Every card points at others. Hover to trace a line of thought; click to follow it.
+			{data.layout.edges.length} edges across {data.layout.nodes.length} cards, none of them obvious until
+			you see them.
 		</p>
 	</div>
 
-	<div class="graph-wrapper">
+	<div class="frame">
 		<svg
-			viewBox={data.layout.viewBox}
-			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 {GRAPH_W} {GRAPH_H}"
+			class="sky"
 			role="img"
-			aria-label="Connection graph of all 78 cards"
-			class="graph-svg"
+			aria-label="Connection graph of all {data.layout.nodes.length} cards"
 		>
-			<title>Arcana of Code — Card Connections</title>
-
+			<rect width={GRAPH_W} height={GRAPH_H} fill="#0b0b0b" />
 			{#each data.layout.edges as edge}
-				<path
-					d={edge.path}
-					class="edge"
-					class:edge-active={activeId !== null && (edge.a === activeId || edge.b === activeId)}
-					class:edge-dim={activeId !== null && edge.a !== activeId && edge.b !== activeId}
-				/>
+				{@const live = hovered !== null && (edge.a === hovered || edge.b === hovered)}
+				{@const a = nodeById.get(edge.a)}
+				{@const b = nodeById.get(edge.b)}
+				{#if a && b}
+					<line
+						x1={a.x}
+						y1={a.y}
+						x2={b.x}
+						y2={b.y}
+						stroke={live ? '#efece5' : '#2e2b27'}
+						stroke-width={live ? 1.2 : 0.6}
+					/>
+				{/if}
 			{/each}
-
-			{#each data.layout.nodes as node}
+			{#each data.layout.nodes as node (node.id)}
+				{@const on = !hovered || node.id === hovered || neighbours.has(node.id)}
 				<a
 					href="/card/{node.id}"
 					aria-label={node.name}
-					on:mouseenter={() => activate(node.id)}
-					on:mouseleave={deactivate}
-					on:focus={() => activate(node.id)}
-					on:blur={deactivate}
+					on:mouseenter={() => (hovered = node.id)}
+					on:mouseleave={() => (hovered = null)}
+					on:focus={() => (hovered = node.id)}
+					on:blur={() => (hovered = null)}
+					on:click|preventDefault={() => goto(`/card/${node.id}`)}
 				>
 					<circle
 						cx={node.x}
 						cy={node.y}
-						r={node.group === 'major' ? 8 : 6}
-						class="node"
-						class:node-major={node.group === 'major'}
-						class:node-active={activeId === node.id}
-					>
-						<title>{node.name}</title>
-					</circle>
+						r={node.major ? 6 : 4}
+						fill={on ? suitAccent(node.group) : '#3a3733'}
+						stroke={node.id === hovered ? '#efece5' : 'none'}
+						stroke-width={node.id === hovered ? 2 : 0}
+						class="star"
+					/>
 				</a>
-				{#if activeId === node.id}
-					<text
-						x={node.x}
-						y={node.y - 14}
-						class="node-label"
-						text-anchor="middle"
-						pointer-events="none"
-					>
-						{node.name}
-					</text>
-				{/if}
 			{/each}
+			{#if hoveredNode}
+				<g pointer-events="none">
+					<rect x={labelX} y={hoveredNode.y - 30} width={labelW} height="22" fill="#efece5" />
+					<text x={labelX + 8} y={hoveredNode.y - 14} class="tooltip">
+						{hoveredNode.name.toUpperCase()}
+					</text>
+				</g>
+			{/if}
 		</svg>
 	</div>
 
-	<p class="graph-legend">
-		Major arcana nodes are slightly larger. Groups: Major · Wands · Cups · Swords · Pentacles
-		(clockwise from top).
-	</p>
+	<ul class="legend" aria-label="Legend">
+		{#each legend as [key, label]}
+			<li>
+				<span class="swatch" style:background={PALETTE[key]}></span>
+				<span class="legend-label">{label}</span>
+			</li>
+		{/each}
+	</ul>
 </div>
 
 <style>
-	.graph-intro {
-		max-width: 650px;
-		margin: 0 auto var(--space-lg);
-		padding-bottom: var(--space-lg);
-		border-bottom: 2px solid var(--border);
-		text-align: center;
+	.graph {
+		gap: 26px;
+		padding-top: 44px;
 	}
 
-	.graph-intro h1 {
-		margin-bottom: var(--space-sm);
+	.head {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 24px;
+		flex-wrap: wrap;
 	}
 
-	.graph-intro p {
-		color: var(--text-secondary);
+	.title {
+		font-size: 62px;
+		line-height: 0.94;
+		letter-spacing: -0.045em;
 	}
 
-	.graph-wrapper {
-		width: 100%;
-		max-width: 800px;
-		margin: 0 auto;
-		border: 2px solid var(--border);
+	.intro {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--text-muted);
+		max-width: 52ch;
+		text-wrap: pretty;
 	}
 
-	.graph-svg {
+	.frame {
+		border: 1px solid var(--rule-ghost);
+		background: #0b0b0b;
+		position: relative;
+	}
+
+	.sky {
+		display: block;
 		width: 100%;
 		height: auto;
-		display: block;
-		background: var(--bg-primary);
 	}
 
-	.edge {
-		fill: none;
-		stroke: var(--text-primary);
-		stroke-width: 1;
-		opacity: 0.15;
-		transition: opacity 0.1s ease;
-	}
-
-	.edge-active {
-		opacity: 0.9;
-		stroke-width: 1.5;
-	}
-
-	.edge-dim {
-		opacity: 0.03;
-	}
-
-	.node {
-		fill: var(--bg-primary);
-		stroke: var(--text-primary);
-		stroke-width: 1.5;
+	.star {
 		cursor: pointer;
 		transition: fill 0.1s ease;
 	}
 
-	.node-major {
-		stroke-width: 2;
+	.tooltip {
+		font-family: var(--font-body);
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		fill: #0b0b0b;
 	}
 
-	.node-active {
-		fill: var(--text-primary);
+	.legend {
+		list-style: none;
+		display: flex;
+		gap: 22px;
+		flex-wrap: wrap;
 	}
 
-	.node-label {
-		font-family: var(--font-body, 'Inter', sans-serif);
-		font-size: 11px;
-		fill: var(--text-primary);
-		font-weight: 600;
+	.legend li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
 	}
 
-	.graph-legend {
-		max-width: 800px;
-		margin: var(--space-sm) auto 0;
-		font-size: 0.8rem;
-		color: var(--text-secondary);
-		text-align: center;
+	.swatch {
+		width: 12px;
+		height: 12px;
+		display: block;
 	}
 
-	a {
-		text-decoration: none;
+	.legend-label {
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 760px) {
+		.title {
+			font-size: 48px;
+		}
 	}
 </style>

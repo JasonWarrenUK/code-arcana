@@ -11,13 +11,10 @@ export const load: PageLoad = async ({ params }) => {
 		throw error(404, 'Card not found');
 	}
 
-	// Get connected cards if they exist
-	const connectedCards = card.connections
-		? cards.filter((c) => card.connections?.includes(c.id))
-		: [];
+	const byId = new Map(cards.map((c) => [c.id, c]));
+	const related = (card.connections ?? [])
+		.map((id) => byId.get(id))
+		.filter((c): c is Card => Boolean(c));
 
-	return {
-		card,
-		connectedCards
-	};
+	return { card, related };
 };

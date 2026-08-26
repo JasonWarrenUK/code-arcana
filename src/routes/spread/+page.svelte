@@ -1,268 +1,285 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import type { Card, Spread } from '$lib/types/card';
-	import CardPlaceholder from '$lib/components/CardPlaceholder.svelte';
+	import type { Card } from '$lib/types/card';
+	import CardFace from '$lib/components/CardFace.svelte';
+	import { pickCardIds } from '$lib/arcana';
 
 	export let data: PageData;
 
-	let selectedSpread: Spread | null = null;
-	let drawnCards: Card[] = [];
-	let isDrawing = false;
+	const byId = new Map(data.allCards.map((c) => [c.id, c]));
 
-	function selectSpread(spread: Spread) {
-		selectedSpread = spread;
-		drawnCards = [];
-	}
+	let spreadId = data.spreads[0].id;
+	let ids: string[] = [];
 
-	function drawSpread() {
-		if (!selectedSpread) return;
-		isDrawing = true;
-		setTimeout(() => {
-			const pool = [...data.allCards];
-			drawnCards = selectedSpread!.positions.map(
-				() => pool.splice(Math.floor(Math.random() * pool.length), 1)[0]
-			);
-			isDrawing = false;
-		}, 300);
-	}
+	const reshuffle = () => {
+		ids = pickCardIds(data.allCards, 5);
+	};
 
-	function reset() {
-		selectedSpread = null;
-		drawnCards = [];
-	}
+	onMount(reshuffle);
+
+	$: spread = data.spreads.find((s) => s.id === spreadId) ?? data.spreads[0];
+	$: slots = ids.length
+		? spread.slots.map((slot, i) => ({ slot, card: byId.get(ids[i]) as Card }))
+		: [];
 </script>
 
 <svelte:head>
 	<title>Spreads | Arcana of Code</title>
 </svelte:head>
 
-<div class="container">
-	<div class="spread-intro">
-		<h1>Draw a Spread</h1>
-		<p>
-			Three cards, three positions, one specific problem. Not fortune-telling—structured prompts for
-			reflection on whatever is actually in front of you.
-		</p>
-	</div>
-
-	{#if !selectedSpread}
-		<div class="spread-picker">
-			{#each data.spreads as spread}
-				<button class="spread-option" on:click={() => selectSpread(spread)}>
-					<h2>{spread.name}</h2>
-					<p>{spread.description}</p>
-					<div class="position-names">
-						{#each spread.positions as position}
-							<span class="position-label">{position.name}</span>
-						{/each}
-					</div>
+<div class="page spread">
+	<div class="head">
+		<h1 class="display title">{spread.title}</h1>
+		<div class="controls">
+			{#each data.spreads as s}
+				<button
+					type="button"
+					class="chip"
+					class:active={spreadId === s.id}
+					aria-pressed={spreadId === s.id}
+					on:click={() => (spreadId = s.id)}
+				>
+					{s.title}
 				</button>
 			{/each}
+			<button type="button" class="chip reshuffle" on:click={reshuffle}>Reshuffle</button>
 		</div>
-	{:else}
-		<div class="spread-header">
-			<h2>{selectedSpread.name}</h2>
-			<button class="back-button" on:click={reset}>← Choose another spread</button>
-		</div>
+	</div>
 
-		{#if drawnCards.length === 0}
-			<div class="draw-area">
-				<button on:click={drawSpread} disabled={isDrawing} class="draw-button">
-					{isDrawing ? 'Drawing...' : 'Draw the Spread'}
-				</button>
+	<p class="body blurb">{spread.blurb}</p>
+
+	<div class="table" aria-live="polite">
+		{#each slots as { slot, card } (`${slot.position}-${card.id}`)}
+			<div class="slot" style:left="{slot.x}%" style:top="{slot.y}%" style:width="{slot.w}px">
+				<a href="/card/{card.id}" class="card" style:transform="rotate({slot.rot}deg)">
+					<CardFace {card} />
+				</a>
+				<div class="caption" class:caption-right={slot.labelAt === 'right'}>
+					<span class="position">{slot.position}</span>
+					<span class="name">{card.name}</span>
+				</div>
 			</div>
-		{:else}
-			<div class="spread-result" aria-live="polite" aria-atomic="true">
-				<div class="card-grid">
-					{#each selectedSpread.positions as position, i}
-						<div class="spread-slot">
-							<span class="position-name">{position.name}</span>
-							<a href="/card/{drawnCards[i].id}" class="card-link">
-								<CardPlaceholder card={drawnCards[i]} />
-							</a>
-							<p class="position-interpretation">{position.interpretation}</p>
-							<p class="position-insight">{drawnCards[i].codingInsight}</p>
+		{/each}
+	</div>
+
+	{#if slots.length}
+		<section class="reading" aria-label="The reading">
+			<div class="reading-head"><span>The reading</span></div>
+			<ol class="list">
+				{#each slots as { slot, card } (`${slot.position}-${card.id}`)}
+					<li class="reading-row">
+						<div class="reading-position">
+							<span class="position">{slot.position}</span>
+							{#if slot.interpretation}
+								<p class="interpretation">{slot.interpretation}</p>
+							{/if}
 						</div>
-					{/each}
-				</div>
-				<div class="spread-actions">
-					<button on:click={drawSpread} class="draw-button">Draw Again</button>
-					<button on:click={reset} class="reset-button">Choose another spread</button>
-				</div>
-			</div>
-		{/if}
+						<a href="/card/{card.id}" class="card-button reading-card">
+							<CardFace {card} />
+							<span class="reading-copy">
+								<span class="card-caption list-name">{card.name}</span>
+								<span class="list-insight">{card.codingInsight}</span>
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		</section>
 	{/if}
 </div>
 
 <style>
-	.spread-intro {
-		text-align: center;
-		max-width: 650px;
-		margin: 0 auto var(--space-lg);
-		padding-bottom: var(--space-lg);
-		border-bottom: 2px solid var(--border);
+	.spread {
+		gap: 34px;
+		padding-top: 44px;
 	}
 
-	.spread-intro h1 {
-		margin-bottom: var(--space-sm);
-	}
-
-	.spread-intro p {
-		color: var(--text-secondary);
-	}
-
-	.spread-picker {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: var(--space-md);
-	}
-
-	.spread-option {
-		text-align: left;
-		padding: var(--space-md);
-		border: 2px solid var(--border);
-		background: var(--bg-primary);
-		cursor: pointer;
-		transition: transform 0.1s ease;
-	}
-
-	.spread-option:hover {
-		transform: translateY(-4px);
-		background: var(--text-primary);
-		color: var(--bg-primary);
-	}
-
-	.spread-option h2 {
-		font-size: var(--text-lg);
-		margin-bottom: var(--space-xs);
-	}
-
-	.spread-option p {
-		font-size: 0.9rem;
-		margin-bottom: var(--space-sm);
-		color: var(--text-secondary);
-	}
-
-	.spread-option:hover p {
-		color: var(--bg-secondary);
-	}
-
-	.position-names {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-	}
-
-	.position-label {
-		font-size: 0.8rem;
-		opacity: 0.7;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.spread-header {
+	.head {
 		display: flex;
 		justify-content: space-between;
-		align-items: baseline;
-		margin-bottom: var(--space-lg);
-		padding-bottom: var(--space-md);
-		border-bottom: 2px solid var(--border);
+		align-items: flex-end;
+		gap: 24px;
+		flex-wrap: wrap;
+		row-gap: 16px;
 	}
 
-	.spread-header h2 {
-		font-size: var(--text-xl);
-		margin: 0;
+	.title {
+		font-size: 50px;
+		line-height: 1;
+		letter-spacing: -0.04em;
+		white-space: nowrap;
 	}
 
-	.back-button {
-		font-size: 0.9rem;
-		border: none;
-		background: none;
-		padding: 0;
-		cursor: pointer;
-		color: var(--text-secondary);
-		text-decoration: underline;
-		text-decoration-thickness: 1px;
-	}
-
-	.back-button:hover {
-		background: none;
-		color: var(--text-primary);
-		text-decoration-thickness: 2px;
-	}
-
-	.draw-area {
-		min-height: 300px;
+	.controls {
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		gap: 6px;
+		flex-wrap: wrap;
 	}
 
-	.draw-button {
-		font-size: var(--text-lg);
-		padding: var(--space-md) var(--space-lg);
-		border: 3px solid var(--border);
+	.reshuffle {
+		background: var(--ink);
+		color: var(--paper);
 	}
 
-	.spread-slot {
+	.reshuffle:hover {
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.blurb {
+		margin-top: -14px;
+		max-width: 62ch;
+		color: var(--text-muted);
+		font-size: 14px;
+	}
+
+	.table {
+		position: relative;
+		width: 100%;
+		height: 780px;
+		border: 1px solid var(--rule-ghost);
+	}
+
+	.slot {
+		position: absolute;
+		transform: translate(-50%, -50%);
+	}
+
+	.card {
+		display: block;
+		transform-origin: center;
+	}
+
+	.caption {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		z-index: 5;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xs);
+		gap: 3px;
+		margin-top: 7px;
+		padding: 5px 7px;
+		background: var(--paper);
 	}
 
-	.position-name {
-		font-size: 0.8rem;
+	.caption-right {
+		top: 50%;
+		left: 100%;
+		width: 150px;
+		margin-top: 0;
+		margin-left: 84px;
+		transform: translateY(-50%);
+	}
+
+	.position {
+		font-size: 9px;
+		letter-spacing: 0.2em;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--text-secondary);
-		font-weight: 600;
+		color: var(--text-faint);
 	}
 
-	.card-link {
-		display: block;
-		text-decoration: none;
-		transition: transform 0.1s ease;
+	.name {
+		font-size: 11px;
+		font-weight: 700;
+		text-transform: uppercase;
+		font-stretch: 86%;
+		line-height: 1.15;
 	}
 
-	.card-link:hover {
-		transform: translateY(-4px);
-	}
-
-	.position-interpretation {
-		font-size: 0.85rem;
-		color: var(--text-secondary);
-		line-height: 1.5;
-		margin-top: var(--space-xs);
-	}
-
-	.position-insight {
-		font-size: 0.9rem;
-		font-weight: 600;
-		margin: 0;
-	}
-
-	.spread-actions {
-		margin-top: var(--space-lg);
+	.reading {
 		display: flex;
-		gap: var(--space-md);
-		align-items: center;
-		padding-top: var(--space-md);
-		border-top: 1px solid var(--border);
+		flex-direction: column;
+		gap: 18px;
 	}
 
-	.reset-button {
-		background: var(--bg-secondary);
+	.reading-head {
+		border-bottom: 3px solid var(--ink);
+		padding-bottom: 8px;
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
 	}
 
-	@media (max-width: 768px) {
-		.spread-header {
-			flex-direction: column;
-			gap: var(--space-sm);
+	.list {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.reading-row {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		gap: 34px;
+		border-bottom: 1px solid var(--rule-ghost);
+		padding: 18px 0;
+	}
+
+	.reading-position {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.reading-position .position {
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.24em;
+		color: var(--ink);
+	}
+
+	.interpretation {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--text-muted);
+		max-width: 52ch;
+		text-wrap: pretty;
+	}
+
+	.reading-card {
+		display: grid;
+		grid-template-columns: 70px 1fr;
+		gap: 12px;
+		align-items: start;
+	}
+
+	.reading-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.list-name {
+		font-size: 14px;
+		font-weight: 700;
+		text-transform: uppercase;
+		font-stretch: 86%;
+		line-height: 1.1;
+	}
+
+	.list-insight {
+		font-size: 12px;
+		line-height: 1.4;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 900px) {
+		.table {
+			display: none;
 		}
 
-		.spread-actions {
-			flex-direction: column;
-			align-items: flex-start;
+		.reading-row {
+			grid-template-columns: 1fr;
+			gap: 12px;
+		}
+
+		.title {
+			font-size: 40px;
+			white-space: normal;
 		}
 	}
 </style>

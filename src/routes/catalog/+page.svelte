@@ -1,107 +1,171 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import CardPlaceholder from '$lib/components/CardPlaceholder.svelte';
+	import type { Card } from '$lib/types/card';
+	import CardFace from '$lib/components/CardFace.svelte';
+	import { cardShortMeta, isCourt, isMajor } from '$lib/arcana';
 
 	export let data: PageData;
+
+	type Filter = 'all' | 'major' | 'cups' | 'wands' | 'swords' | 'pentacles' | 'court';
+
+	const filters: Array<[Filter, string]> = [
+		['all', 'All'],
+		['major', 'Majors'],
+		['cups', 'Cups'],
+		['wands', 'Wands'],
+		['swords', 'Swords'],
+		['pentacles', 'Pentacles'],
+		['court', 'Courts']
+	];
+
+	let filter: Filter = 'all';
+
+	const applyFilter = (cards: Card[], f: Filter): Card[] => {
+		if (f === 'all') return cards;
+		if (f === 'major') return cards.filter(isMajor);
+		if (f === 'court') return cards.filter(isCourt);
+		return cards.filter((c) => c.suit === f);
+	};
+
+	$: visible = applyFilter(data.cards, filter);
 </script>
 
-<div class="container">
-	<h1>Card Catalog</h1>
-	<p class="intro">
-		All 78 cards, organised by arcana and suit. Click any card to see its full insight.
-	</p>
+<svelte:head>
+	<title>The Deck | Arcana of Code</title>
+</svelte:head>
 
-	{#if data.majorArcana.length > 0}
-		<section class="arcana-section">
-			<h2>Major Arcana</h2>
-			<p class="section-note">The big philosophical questions.</p>
-			<div class="card-grid">
-				{#each data.majorArcana as card}
-					<a href="/card/{card.id}" class="card-link">
-						<CardPlaceholder {card} />
-					</a>
-				{/each}
-			</div>
-		</section>
-	{/if}
+<div class="page catalog">
+	<div class="head">
+		<h1 class="display title">The Deck</h1>
+		<div class="label count" aria-live="polite">{visible.length} of {data.cards.length} cards</div>
+	</div>
 
-	<section class="arcana-section">
-		<h2>Minor Arcana</h2>
-		<p class="section-note">
-			Daily practices, specific techniques, the actual work of writing code.
-		</p>
-
-		{#each Object.entries(data.suits) as [suitName, suitCards]}
-			{#if suitCards.length > 0}
-				<div class="suit-section">
-					<h3>{suitName.charAt(0).toUpperCase() + suitName.slice(1)}</h3>
-					<div class="card-grid">
-						{#each suitCards as card}
-							<a href="/card/{card.id}" class="card-link">
-								<CardPlaceholder {card} />
-								<div class="card-insight">
-									{card.codingInsight}
-								</div>
-							</a>
-						{/each}
-					</div>
-				</div>
-			{/if}
+	<div class="filters" role="group" aria-label="Filter the deck">
+		{#each filters as [id, label]}
+			<button
+				type="button"
+				class="filter"
+				class:active={filter === id}
+				aria-pressed={filter === id}
+				on:click={() => (filter = id)}
+			>
+				{label}
+			</button>
 		{/each}
-	</section>
+	</div>
+
+	<div class="grid">
+		{#each visible as card (card.id)}
+			<a href="/card/{card.id}" class="card-button cell">
+				<CardFace {card} />
+				<span class="card-caption name">{card.name}</span>
+				<span class="meta">{cardShortMeta(card)}</span>
+				<span class="cell-insight">{card.codingInsight}</span>
+			</a>
+		{/each}
+	</div>
 </div>
 
 <style>
-	.intro {
-		color: var(--text-secondary);
-		margin-bottom: var(--space-lg);
+	.catalog {
+		gap: 30px;
+		padding-top: 44px;
 	}
 
-	.arcana-section {
-		margin-bottom: var(--space-lg);
-		padding-bottom: var(--space-lg);
-		border-bottom: 2px solid var(--border);
+	.head {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 30px;
+		flex-wrap: wrap;
+		row-gap: 16px;
 	}
 
-	.arcana-section:last-child {
-		border-bottom: none;
+	.title {
+		font-size: 62px;
+		line-height: 0.94;
+		letter-spacing: -0.045em;
+		white-space: nowrap;
 	}
 
-	.arcana-section h2 {
-		margin-bottom: var(--space-xs);
+	.count {
+		letter-spacing: 0.24em;
 	}
 
-	.section-note {
-		color: var(--text-secondary);
-		font-size: 0.9rem;
-		margin-bottom: var(--space-md);
+	.filters {
+		display: flex;
+		gap: 6px;
+		flex-wrap: wrap;
+		border-top: 1px solid var(--ink);
+		border-bottom: 1px solid var(--ink);
+		padding: 12px 0;
 	}
 
-	.suit-section {
-		margin-top: var(--space-lg);
-	}
-
-	.suit-section h3 {
+	.filter {
+		font-family: inherit;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.18em;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		font-size: var(--text-base);
-		margin-bottom: var(--space-sm);
+		padding: 5px 11px;
+		cursor: pointer;
+		border: 1px solid var(--ink);
+		background: transparent;
+		color: var(--ink);
 	}
 
-	.card-link {
-		display: block;
-		text-decoration: none;
-		transition: transform 0.1s ease;
+	.filter:hover,
+	.filter.active {
+		background: var(--ink);
+		color: var(--paper);
 	}
 
-	.card-link:hover {
-		transform: translateY(-4px);
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(9, 1fr);
+		gap: 16px;
 	}
 
-	.card-insight {
-		margin-top: var(--space-xs);
-		font-size: 0.9rem;
-		color: var(--text-secondary);
-		text-align: center;
+	.cell {
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
+	}
+
+	.name {
+		font-size: 10px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+		line-height: 1.2;
+	}
+
+	.meta {
+		font-size: 9px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--text-faint);
+	}
+
+	.cell-insight {
+		font-size: 11px;
+		line-height: 1.35;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 1200px) {
+		.grid {
+			grid-template-columns: repeat(6, 1fr);
+		}
+	}
+
+	@media (max-width: 760px) {
+		.grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.title {
+			font-size: 48px;
+		}
 	}
 </style>

@@ -1,170 +1,241 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import CardPlaceholder from '$lib/components/CardPlaceholder.svelte';
+	import CardFace from '$lib/components/CardFace.svelte';
+	import { cardArt, cardCategory, cardIndex, cardMeta, isMajor } from '$lib/arcana';
 
 	export let data: PageData;
 
-	const { card, connectedCards } = data;
+	$: card = data.card;
+	$: paragraphs = (card.essay ?? '').split('\n\n');
+	$: faceLabel = isMajor(card) ? card.name : cardCategory(card);
 </script>
 
 <svelte:head>
 	<title>{card.name} | Arcana of Code</title>
+	<meta name="description" content={card.codingInsight} />
 </svelte:head>
 
-<div class="container">
-	<nav class="breadcrumb">
-		<a href="/catalog">← Back to Catalog</a>
-	</nav>
-
-	<article class="card-detail">
-		<div class="card-header">
-			<div class="card-display">
-				<CardPlaceholder {card} />
+<article class="page detail">
+	<div class="grid-12 top">
+		<div class="face-col">
+			<CardFace {card} index />
+			<div class="face-strip">
+				<span>{faceLabel}</span><span>{cardIndex(card)}</span>
 			</div>
-			<div class="card-meta">
-				<h1>{card.name}</h1>
-				<div class="keywords">
-					{#each card.keywords as keyword}
-						<span class="keyword">{keyword}</span>
-					{/each}
-				</div>
+			<div class="note">{cardArt(card).note}</div>
+		</div>
+
+		<div class="copy-col">
+			<header class="heading">
+				<div class="label">{cardMeta(card)}</div>
+				<h1 class="display name">{card.name}</h1>
+				<div class="rule-heavy"></div>
 				<p class="insight">{card.codingInsight}</p>
-			</div>
-		</div>
+			</header>
 
-		<div class="essay">
-			{#each (card.essay ?? '').split('\n\n') as paragraph}
-				<p>{paragraph}</p>
-			{/each}
-		</div>
-
-		{#if connectedCards.length > 0}
-			<div class="connections">
-				<h2>Related Cards</h2>
-				<div class="connected-grid">
-					{#each connectedCards as connectedCard}
-						<a href="/card/{connectedCard.id}" class="connected-card">
-							<CardPlaceholder card={connectedCard} />
-							<div class="connected-name">{connectedCard.name}</div>
-						</a>
+			<div class="essay">
+				<ul class="keywords" aria-label="Keywords">
+					{#each card.keywords as keyword}
+						<li>{keyword}</li>
+					{/each}
+				</ul>
+				<div class="paragraphs">
+					{#each paragraphs as text}
+						<p class="body">{text}</p>
 					{/each}
 				</div>
 			</div>
-		{/if}
-	</article>
-</div>
+		</div>
+	</div>
+
+	{#if data.related.length > 0}
+		<section class="related" aria-labelledby="related-heading">
+			<div class="related-head">
+				<span id="related-heading">Related</span>
+			</div>
+			<div class="related-grid">
+				{#each data.related as r (r.id)}
+					<a href="/card/{r.id}" class="card-button related-card">
+						<CardFace card={r} />
+						<span class="related-copy">
+							<span class="card-caption related-name">{r.name}</span>
+							<span class="related-insight">{r.codingInsight}</span>
+						</span>
+					</a>
+				{/each}
+			</div>
+		</section>
+	{/if}
+</article>
 
 <style>
-	.breadcrumb {
-		margin-bottom: var(--space-md);
+	.detail {
+		gap: 52px;
+		padding-top: 44px;
 	}
 
-	.breadcrumb a {
-		color: var(--text-secondary);
-		text-decoration: none;
+	.top {
+		align-items: start;
 	}
 
-	.breadcrumb a:hover {
-		color: var(--text-primary);
-		text-decoration: underline;
-	}
-
-	.card-header {
-		display: grid;
-		grid-template-columns: 300px 1fr;
-		gap: var(--space-lg);
-		margin-bottom: var(--space-lg);
-		padding-bottom: var(--space-lg);
-		border-bottom: 2px solid var(--border);
-	}
-
-	.card-display {
-		position: sticky;
-		top: var(--space-md);
-		align-self: start;
-	}
-
-	.card-meta h1 {
-		font-size: var(--text-2xl);
-		margin-bottom: var(--space-sm);
-	}
-
-	.keywords {
+	.face-col {
+		grid-column: 1 / 4;
 		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-xs);
-		margin-bottom: var(--space-md);
+		flex-direction: column;
 	}
 
-	.keyword {
-		font-size: 0.85rem;
-		padding: 0.25rem 0.5rem;
-		border: 1px solid var(--border);
-		text-transform: lowercase;
-		letter-spacing: 0.025em;
-	}
-
-	.insight {
-		font-size: var(--text-lg);
+	.face-strip {
+		background: var(--ink);
+		color: var(--paper);
+		display: flex;
+		justify-content: space-between;
+		gap: 14px;
+		padding: 8px 10px;
+		font-size: 9px;
 		font-weight: 600;
-		line-height: 1.4;
-		margin-top: var(--space-md);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.note {
+		font-size: 11px;
+		line-height: 1.5;
+		color: var(--text-faint);
+		padding-top: 12px;
+	}
+
+	.copy-col {
+		grid-column: 5 / 13;
+		display: flex;
+		flex-direction: column;
+		gap: 26px;
+	}
+
+	.heading {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.name {
+		font-size: clamp(44px, 6vw, 84px);
+		line-height: 0.84;
+	}
+
+	.heading .insight {
+		font-size: 23px;
+		padding: 10px 13px 12px;
 	}
 
 	.essay {
-		max-width: 650px;
-		margin: var(--space-lg) 0;
-	}
-
-	.essay p {
-		margin-bottom: var(--space-md);
-	}
-
-	.connections {
-		margin-top: var(--space-lg);
-		padding-top: var(--space-lg);
-		border-top: 2px solid var(--border);
-	}
-
-	.connections h2 {
-		font-size: var(--text-lg);
-		margin-bottom: var(--space-md);
-	}
-
-	.connected-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-		gap: var(--space-md);
+		grid-template-columns: 150px 1fr;
+		gap: 24px;
+		align-items: start;
 	}
 
-	.connected-card {
-		display: block;
-		text-decoration: none;
-		transition: transform 0.1s ease;
+	.keywords {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
 	}
 
-	.connected-card:hover {
-		transform: translateY(-4px);
+	.keywords li {
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--text-muted);
 	}
 
-	.connected-name {
-		margin-top: var(--space-xs);
-		font-size: 0.85rem;
-		text-align: center;
-		color: var(--text-secondary);
+	.paragraphs {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
 	}
 
-	@media (max-width: 768px) {
-		.card-header {
-			grid-template-columns: 1fr;
-			gap: var(--space-md);
+	.paragraphs .body {
+		font-size: 16.5px;
+		line-height: 1.62;
+	}
+
+	.related {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.related-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		border-bottom: 3px solid var(--ink);
+		padding-bottom: 8px;
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+	}
+
+	.related-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: var(--grid-gap);
+	}
+
+	.related-card {
+		display: grid;
+		grid-template-columns: 70px 1fr;
+		gap: 12px;
+		align-items: start;
+	}
+
+	.related-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.related-name {
+		font-size: 13px;
+		font-weight: 700;
+		text-transform: uppercase;
+		font-stretch: 86%;
+		line-height: 1.1;
+	}
+
+	.related-insight {
+		font-size: 12px;
+		line-height: 1.4;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 900px) {
+		.face-col,
+		.copy-col {
+			grid-column: 1 / -1;
 		}
 
-		.card-display {
-			max-width: 300px;
-			margin: 0 auto;
-			position: relative;
-			top: 0;
+		.face-col {
+			max-width: 280px;
+		}
+
+		.essay {
+			grid-template-columns: 1fr;
+		}
+
+		.keywords {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 12px;
+		}
+
+		.related-grid {
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 </style>
