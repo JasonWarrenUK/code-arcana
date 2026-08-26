@@ -23,11 +23,7 @@ export interface CardConnection {
 }
 
 export type ConnectionType =
-	| 'complements'
-	| 'contrasts'
-	| 'builds-upon'
-	| 'prerequisites'
-	| 'related-practice';
+	'complements' | 'contrasts' | 'builds-upon' | 'prerequisites' | 'related-practice';
 
 export interface Spread {
 	id: string;
