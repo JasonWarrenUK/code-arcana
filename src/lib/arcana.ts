@@ -185,10 +185,11 @@ export const rankWord = (card: Card): string => {
 	return PIP_WORD[card.number ?? 0];
 };
 
-/** "Major Arcana · XVI" or "Ten of Swords · Pip" */
+/** "Major Arcana · XVI", "King of Cups · Court" or "Ten of Swords" */
 export const cardMeta = (card: Card): string => {
 	if (isMajor(card)) return `Major Arcana · ${cardIndex(card)}`;
-	return `${rankWord(card)} of ${capitalise(card.suit ?? '')} · ${cardCategory(card)}`;
+	const base = `${rankWord(card)} of ${capitalise(card.suit ?? '')}`;
+	return isCourt(card) ? `${base} · Court` : base;
 };
 
 /** Short meta for grid captions: "XVI" or "Pip · 10" */

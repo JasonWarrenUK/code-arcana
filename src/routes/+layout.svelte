@@ -10,8 +10,7 @@
 		{ href: '/draw', label: 'Draw' },
 		{ href: '/spread', label: 'Spread' },
 		{ href: '/graph', label: 'Connections' },
-		{ href: '/system', label: 'System' },
-		{ href: '/about', label: 'About' }
+		{ href: '/system', label: 'System' }
 	];
 
 	const isActive = (href: string, pathname: string): boolean =>
@@ -47,7 +46,7 @@
 
 	<footer class="footer">
 		<div class="rule-heavy"></div>
-		<p class="label footer-line">A tarot-based programming philosophy. No bullshit.</p>
+		<p class="label footer-line">A tarot-based programming philosophy.</p>
 	</footer>
 </div>
 

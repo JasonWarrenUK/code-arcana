@@ -24,14 +24,8 @@
 	<div class="hero grid-12">
 		<h1 class="display hero-title">A tarot deck about writing software</h1>
 		<div class="hero-cta">
-			<p class="tagline">
-				For devs with enough scar tissue to find methodology slogans irritating.
-			</p>
-			<p class="intro">
-				Archetypal lenses for the recurring patterns in programming life: the codebase you've
-				inherited, the architecture you can't commit to, the colleague who ships everything and
-				documents nothing.
-			</p>
+			<p class="tagline">For devs with scar tissue.</p>
+			<p class="intro">Archetypal lenses for the recurring patterns in programming life.</p>
 			<a href="/draw" class="btn btn-primary btn-large">Draw a card</a>
 		</div>
 	</div>

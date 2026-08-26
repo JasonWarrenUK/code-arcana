@@ -18,8 +18,18 @@
 		)
 	);
 
-	const labelX = $derived(hoveredNode ? Math.min(860, hoveredNode.x + 12) : 0);
-	const labelW = $derived(hoveredNode ? Math.max(90, hoveredNode.name.length * 9.2) : 0);
+	const neighbourNodes = $derived(
+		[...neighbours].flatMap((id) => {
+			const node = nodeById.get(id);
+			return node ? [node] : [];
+		})
+	);
+
+	// Anchor the tooltip on whichever side of the star has more room
+	const tipLeft = $derived(hoveredNode ? (hoveredNode.x / GRAPH_W) * 100 : 0);
+	const tipTop = $derived(hoveredNode ? (hoveredNode.y / GRAPH_H) * 100 : 0);
+	const tipFlipX = $derived(hoveredNode ? hoveredNode.x > GRAPH_W * 0.6 : false);
+	const tipFlipY = $derived(hoveredNode ? hoveredNode.y > GRAPH_H * 0.6 : false);
 
 	const legend: Array<[keyof typeof PALETTE, string]> = [
 		['major', 'Majors'],
@@ -92,15 +102,30 @@
 					/>
 				</a>
 			{/each}
-			{#if hoveredNode}
-				<g pointer-events="none">
-					<rect x={labelX} y={hoveredNode.y - 30} width={labelW} height="22" fill="#efece5" />
-					<text x={labelX + 8} y={hoveredNode.y - 14} class="tooltip">
-						{hoveredNode.name.toUpperCase()}
-					</text>
-				</g>
-			{/if}
+			{#each neighbourNodes as node (node.id)}
+				<text
+					x={node.x + (node.x > GRAPH_W * 0.85 ? -9 : 9)}
+					y={node.y + 3.5}
+					text-anchor={node.x > GRAPH_W * 0.85 ? 'end' : 'start'}
+					class="neighbour-label"
+					pointer-events="none"
+				>
+					{node.name.toUpperCase()}
+				</text>
+			{/each}
 		</svg>
+		{#if hoveredNode}
+			<div
+				class="tooltip"
+				class:flip-x={tipFlipX}
+				class:flip-y={tipFlipY}
+				style:left="{tipLeft}%"
+				style:top="{tipTop}%"
+			>
+				<span class="tooltip-name">{hoveredNode.name}</span>
+				<span class="tooltip-insight">{hoveredNode.insight}</span>
+			</div>
+		{/if}
 	</div>
 
 	<ul class="legend" aria-label="Legend">
@@ -159,12 +184,55 @@
 		transition: fill 0.1s ease;
 	}
 
-	.tooltip {
+	.neighbour-label {
 		font-family: var(--font-body);
+		font-size: 9px;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		fill: #efece5;
+		paint-order: stroke;
+		stroke: #0b0b0b;
+		stroke-width: 3px;
+		stroke-linejoin: round;
+	}
+
+	.tooltip {
+		position: absolute;
+		z-index: 10;
+		pointer-events: none;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 240px;
+		padding: 8px 10px;
+		background: #efece5;
+		color: #0b0b0b;
+		transform: translate(14px, -100%) translateY(-12px);
+	}
+
+	.tooltip.flip-x {
+		transform: translate(calc(-100% - 14px), -100%) translateY(-12px);
+	}
+
+	.tooltip.flip-y {
+		transform: translate(14px, 12px);
+	}
+
+	.tooltip.flip-x.flip-y {
+		transform: translate(calc(-100% - 14px), 12px);
+	}
+
+	.tooltip-name {
 		font-size: 12px;
 		font-weight: 700;
 		letter-spacing: 0.04em;
-		fill: #0b0b0b;
+		text-transform: uppercase;
+	}
+
+	.tooltip-insight {
+		font-size: 11px;
+		line-height: 1.4;
+		color: #3a3733;
 	}
 
 	.legend {

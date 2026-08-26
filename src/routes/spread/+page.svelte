@@ -40,7 +40,10 @@
 					class="chip"
 					class:active={spreadId === s.id}
 					aria-pressed={spreadId === s.id}
-					onclick={() => (spreadId = s.id)}
+					onclick={() => {
+						spreadId = s.id;
+						reshuffle();
+					}}
 				>
 					{s.title}
 				</button>

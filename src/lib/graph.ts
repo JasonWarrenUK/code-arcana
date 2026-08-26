@@ -12,6 +12,7 @@ export const GRAPH_H = 620;
 export interface GraphNode {
 	id: string;
 	name: string;
+	insight: string;
 	group: ArtKey;
 	major: boolean;
 	x: number;
@@ -44,6 +45,7 @@ export function buildGraphLayout(cards: Card[], seed = 78): GraphLayout {
 		return {
 			id: c.id,
 			name: c.name,
+			insight: c.codingInsight,
 			group: artKey(c),
 			major: isMajor(c),
 			x: cx + Math.cos(a) * 240 + (random() - 0.5) * 40,
@@ -119,9 +121,10 @@ export function buildGraphLayout(cards: Card[], seed = 78): GraphLayout {
 	const sy = (GRAPH_H - pad * 2) / Math.max(1, y1 - y0);
 
 	return {
-		nodes: nodes.map(({ id, name, group, major, x, y }) => ({
+		nodes: nodes.map(({ id, name, insight, group, major, x, y }) => ({
 			id,
 			name,
+			insight,
 			group,
 			major,
 			x: parseFloat((pad + (x - x0) * sx).toFixed(1)),
