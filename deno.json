@@ -1,8 +1,8 @@
 {
 	"tasks": {
 		"build": "npm run build",
-		"start": "PORT=8000 deno run --allow-env --allow-read --allow-net build/index.js",
-		"preview": "PORT=8000 deno run --allow-env --allow-read --allow-net build/index.js"
+		"start": "deno run -A .deno-deploy/server.ts",
+		"preview": "deno run -A .deno-deploy/server.ts"
 	},
-	"exclude": ["node_modules", "build", ".svelte-kit", "static"]
+	"exclude": ["node_modules", "build", ".svelte-kit", ".deno-deploy", "static"]
 }

@@ -26,7 +26,7 @@ Every card has a full essay, keywords, a one-line coding insight, and connection
 
 ```
 SvelteKit + TypeScript
-├── Static prerendering (svelte-adapter-deno → Deno Deploy)
+├── Static prerendering (@deno/svelte-adapter → Deno Deploy)
 ├── Inter font family
 ├── Vite for build tooling
 └── Platform-independent deployment
@@ -152,7 +152,7 @@ npm run format
 
 ### Deployment
 
-See `DEPLOY.md` for full instructions. The short version: `npm run build` produces a Deno server at `build/index.js`; deploy to Deno Deploy via the GitHub Action in `.github/workflows/deploy.yml`.
+See `DEPLOY.md` for full instructions. The short version: `npm run build` produces a Deno server at `.deno-deploy/server.ts`; Deno Deploy builds and deploys it on every push to `main`.
 
 ## What's Next
 

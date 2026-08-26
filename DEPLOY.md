@@ -1,13 +1,13 @@
 # Deployment Guide
 
-The site is a SvelteKit app built with [`svelte-adapter-deno`](https://github.com/pluvial/svelte-adapter-deno). Every page is prerendered; the adapter wraps the output in a standalone Deno server suitable for [Deno Deploy](https://deno.com/deploy).
+The site is a SvelteKit app built with [`@deno/svelte-adapter`](https://www.npmjs.com/package/@deno/svelte-adapter), the official Deno adapter. Every page is prerendered; the adapter wraps the output in a Deno server at `.deno-deploy/server.ts` for [Deno Deploy](https://deno.com/deploy).
 
 ## Build
 
 ```bash
 npm install
 npm run build
-# Output: build/ (Deno server entrypoint at build/index.js)
+# Output: .deno-deploy/ (server entrypoint at .deno-deploy/server.ts)
 ```
 
 ## Run Locally
@@ -15,32 +15,30 @@ npm run build
 ```bash
 deno task start
 # or directly:
-deno run --allow-env --allow-read --allow-net build/index.js
-# deno task start serves on http://localhost:8000; the bare deno run command
-# defaults to port 3000 (override with PORT / HOST env vars)
+deno run -A .deno-deploy/server.ts
 ```
 
 ## Deno Deploy
 
-### One-time setup (manual)
+The `code-arcana` app on Deno Deploy is linked to this GitHub repository. Deno Deploy clones the repo, runs the install and build itself (framework preset: SvelteKit) and serves `.deno-deploy/server.ts`. Every push to `main` deploys; other branches get preview deployments.
 
-1. Sign in at <https://dash.deno.com> and create a new project (suggested name: `arcana-of-code`).
-2. Link the GitHub repository, **or** rely on the GitHub Action below (preferred — it builds with npm first).
-3. If using the Action: the workflow at `.github/workflows/deploy.yml` deploys on every push to `main` via OIDC — no secrets needed, but the `project:` field in the workflow must match the project name you created.
+There is no GitHub Action for deployment: the platform does the build, so a second pipeline pushing to the same app would only race it.
 
 ### Custom domain (manual)
 
-1. In the Deno Deploy dashboard: project → Settings → Domains → Add domain.
+1. In the Deno Deploy dashboard: app → Settings → Domains → Add domain.
 2. Add the provided `A`/`AAAA` (apex) or `CNAME` (subdomain) records at your DNS provider.
 3. Deno Deploy provisions the TLS certificate automatically once DNS propagates.
 
 ### Smoke test checklist (post-deploy)
 
-- [ ] `/` — homepage
-- [ ] `/catalog` — all 78 cards render
-- [ ] `/card/three-of-wands` — card detail with essay and connections
-- [ ] `/draw` — draws a random card
-- [ ] `/about`
+- [ ] `/` — homepage with card of the day
+- [ ] `/catalog` — all 78 cards render, filters work
+- [ ] `/card/three-of-wands` — card detail with essay and related cards
+- [ ] `/draw` — turns a card over
+- [ ] `/spread` — deals a spread
+- [ ] `/graph` — constellation renders
+- [ ] `/system`, `/about`
 - [ ] A nonexistent card id returns 404
 
 ## Adding New Cards
