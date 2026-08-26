@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import type { Card } from '$lib/types/card';
 	import CardFace from '$lib/components/CardFace.svelte';
 	import { pickCardIds } from '$lib/arcana';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	const byId = new Map(data.allCards.map((c) => [c.id, c]));
+	const byId = $derived(new Map(data.allCards.map((c) => [c.id, c])));
 
-	let spreadId = data.spreads[0].id;
-	let ids: string[] = [];
+	let spreadId: string | null = $state(null);
+	let ids: string[] = $state([]);
 
 	const reshuffle = () => {
 		ids = pickCardIds(data.allCards, 5);
@@ -18,10 +17,13 @@
 
 	onMount(reshuffle);
 
-	$: spread = data.spreads.find((s) => s.id === spreadId) ?? data.spreads[0];
-	$: slots = ids.length
-		? spread.slots.map((slot, i) => ({ slot, card: byId.get(ids[i]) as Card }))
-		: [];
+	const spread = $derived(data.spreads.find((s) => s.id === spreadId) ?? data.spreads[0]);
+	const slots = $derived(
+		spread.slots.flatMap((slot, i) => {
+			const card = byId.get(ids[i]);
+			return card ? [{ slot, card }] : [];
+		})
+	);
 </script>
 
 <svelte:head>
@@ -38,12 +40,12 @@
 					class="chip"
 					class:active={spreadId === s.id}
 					aria-pressed={spreadId === s.id}
-					on:click={() => (spreadId = s.id)}
+					onclick={() => (spreadId = s.id)}
 				>
 					{s.title}
 				</button>
 			{/each}
-			<button type="button" class="chip reshuffle" on:click={reshuffle}>Reshuffle</button>
+			<button type="button" class="chip reshuffle" onclick={reshuffle}>Reshuffle</button>
 		</div>
 	</div>
 

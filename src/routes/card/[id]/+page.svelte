@@ -3,11 +3,11 @@
 	import CardFace from '$lib/components/CardFace.svelte';
 	import { cardArt, cardCategory, cardIndex, cardMeta, isMajor } from '$lib/arcana';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	$: card = data.card;
-	$: paragraphs = (card.essay ?? '').split('\n\n');
-	$: faceLabel = isMajor(card) ? card.name : cardCategory(card);
+	const card = $derived(data.card);
+	const paragraphs = $derived((card.essay ?? '').split('\n\n'));
+	const faceLabel = $derived(isMajor(card) ? card.name : cardCategory(card));
 </script>
 
 <svelte:head>

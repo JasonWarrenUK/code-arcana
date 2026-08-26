@@ -3,10 +3,10 @@
 	import CardFace from '$lib/components/CardFace.svelte';
 	import { cardMeta, cardOfTheDay } from '$lib/arcana';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	$: daily = cardOfTheDay(data.cards);
-	$: excerpt = (daily.essay ?? '').split('\n\n')[0];
+	const daily = $derived(cardOfTheDay(data.cards));
+	const excerpt = $derived((daily.essay ?? '').split('\n\n')[0]);
 
 	const entries = [
 		{ href: '/catalog', number: '01', title: 'The Deck' },

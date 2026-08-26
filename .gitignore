@@ -3,3 +3,4 @@ build/
 .svelte-kit/
 node_modules/
 *.tar.gz
+.deno-deploy/

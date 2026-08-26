@@ -4,20 +4,22 @@
 	import { PALETTE, suitAccent } from '$lib/arcana';
 	import { GRAPH_H, GRAPH_W } from '$lib/graph';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	let hovered: string | null = null;
+	let hovered: string | null = $state(null);
 
-	$: nodeById = new Map(data.layout.nodes.map((n) => [n.id, n]));
-	$: hoveredNode = hovered ? nodeById.get(hovered) : undefined;
-	$: neighbours = new Set(
-		hovered
-			? data.layout.edges.flatMap((e) => (e.a === hovered ? [e.b] : e.b === hovered ? [e.a] : []))
-			: []
+	const nodeById = $derived(new Map(data.layout.nodes.map((n) => [n.id, n])));
+	const hoveredNode = $derived(hovered ? nodeById.get(hovered) : undefined);
+	const neighbours = $derived(
+		new Set(
+			hovered
+				? data.layout.edges.flatMap((e) => (e.a === hovered ? [e.b] : e.b === hovered ? [e.a] : []))
+				: []
+		)
 	);
 
-	$: labelX = hoveredNode ? Math.min(860, hoveredNode.x + 12) : 0;
-	$: labelW = hoveredNode ? Math.max(90, hoveredNode.name.length * 9.2) : 0;
+	const labelX = $derived(hoveredNode ? Math.min(860, hoveredNode.x + 12) : 0);
+	const labelW = $derived(hoveredNode ? Math.max(90, hoveredNode.name.length * 9.2) : 0);
 
 	const legend: Array<[keyof typeof PALETTE, string]> = [
 		['major', 'Majors'],
@@ -70,11 +72,14 @@
 				<a
 					href="/card/{node.id}"
 					aria-label={node.name}
-					on:mouseenter={() => (hovered = node.id)}
-					on:mouseleave={() => (hovered = null)}
-					on:focus={() => (hovered = node.id)}
-					on:blur={() => (hovered = null)}
-					on:click|preventDefault={() => goto(`/card/${node.id}`)}
+					onmouseenter={() => (hovered = node.id)}
+					onmouseleave={() => (hovered = null)}
+					onfocus={() => (hovered = node.id)}
+					onblur={() => (hovered = null)}
+					onclick={(event) => {
+						event.preventDefault();
+						goto(`/card/${node.id}`);
+					}}
 				>
 					<circle
 						cx={node.x}

@@ -2,13 +2,17 @@
 	import type { Card } from '$lib/types/card';
 	import { cardArt, cardIndex, indexY } from '$lib/arcana';
 
-	export let card: Card;
-	/** Print the rank numeral at the top of the face */
-	export let index = false;
-	/** Draw the ridges in, base to crown, on mount */
-	export let animate = false;
+	interface Props {
+		card: Card;
+		/** Print the rank numeral at the top of the face */
+		index?: boolean;
+		/** Draw the ridges in, base to crown, on mount */
+		animate?: boolean;
+	}
 
-	$: art = cardArt(card);
+	let { card, index = false, animate = false }: Props = $props();
+
+	const art = $derived(cardArt(card));
 </script>
 
 <svg viewBox="0 0 200 300" role="img" aria-label={card.name} class="face">

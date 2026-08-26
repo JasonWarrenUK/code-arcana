@@ -4,7 +4,7 @@
 	import CardFace from '$lib/components/CardFace.svelte';
 	import { cardShortMeta, isCourt, isMajor } from '$lib/arcana';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
 	type Filter = 'all' | 'major' | 'cups' | 'wands' | 'swords' | 'pentacles' | 'court';
 
@@ -18,7 +18,7 @@
 		['court', 'Courts']
 	];
 
-	let filter: Filter = 'all';
+	let filter: Filter = $state('all');
 
 	const applyFilter = (cards: Card[], f: Filter): Card[] => {
 		if (f === 'all') return cards;
@@ -27,7 +27,7 @@
 		return cards.filter((c) => c.suit === f);
 	};
 
-	$: visible = applyFilter(data.cards, filter);
+	const visible = $derived(applyFilter(data.cards, filter));
 </script>
 
 <svelte:head>
@@ -47,7 +47,7 @@
 				class="filter"
 				class:active={filter === id}
 				aria-pressed={filter === id}
-				on:click={() => (filter = id)}
+				onclick={() => (filter = id)}
 			>
 				{label}
 			</button>

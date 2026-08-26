@@ -1,20 +1,16 @@
-import adapter from 'svelte-adapter-deno';
+import adapter from '@deno/svelte-adapter';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
-	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 
 	kit: {
-		// Deno server build for Deno Deploy
-		adapter: adapter({
-			out: 'build',
-			precompress: true
-		}),
+		// Official Deno adapter: Deno Deploy builds from the repo and runs
+		// .deno-deploy/server.ts
+		adapter: adapter(),
 
-		// Prerender everything; the Deno server serves the static output
+		// Prerender everything; the server only serves the static output
 		prerender: {
 			handleHttpError: 'warn'
 		}
