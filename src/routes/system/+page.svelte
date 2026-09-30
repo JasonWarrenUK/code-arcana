@@ -63,7 +63,7 @@
 		},
 		{
 			title: 'Majors · Full bleed',
-			rule: 'No frame, no counting. Red falls on the dominant swell; the numeral is white.',
+			rule: 'No frame, no counting. One red symbol per card, with the ridges cleared from its interior; the numeral is white.',
 			withIndex: true,
 			cards: [
 				[spec('the-fool', 'major', undefined, 0), 'The Fool'],
