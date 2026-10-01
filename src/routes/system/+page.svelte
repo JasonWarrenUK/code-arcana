@@ -18,6 +18,12 @@
 		{ label: 'Frame', value: '#3a3733' }
 	];
 
+	const nameFromId = (id: string): string =>
+		id
+			.split('-')
+			.map((word, i) => (i > 0 && word === 'of' ? word : word[0].toUpperCase() + word.slice(1)))
+			.join(' ');
+
 	// Specimens: enough of a card to render a face, no essay required
 	const spec = (
 		id: string,
@@ -25,12 +31,20 @@
 		suit: Card['suit'],
 		number: number | undefined,
 		courtRank?: Card['courtRank']
-	): Card => ({ id, name: id, arcana, suit, number, courtRank, keywords: [], codingInsight: '' });
+	): Card => ({
+		id,
+		name: nameFromId(id),
+		arcana,
+		suit,
+		number,
+		courtRank,
+		keywords: [],
+		codingInsight: ''
+	});
 
 	interface GrammarRow {
 		title: string;
 		rule: string;
-		withIndex: boolean;
 		cards: Array<[Card, string]>;
 	}
 
@@ -38,7 +52,6 @@
 		{
 			title: 'Pips · Ace to Ten',
 			rule: 'Ten ridges, one frame. Count up from the base: the accented ridge is the rank.',
-			withIndex: false,
 			cards: [
 				[spec('ace-of-swords', 'minor', 'swords', 1), 'Ace'],
 				[spec('three-of-swords', 'minor', 'swords', 3), 'Three'],
@@ -51,7 +64,6 @@
 		{
 			title: 'Courts · Strata',
 			rule: 'A doubled frame. The lowest ridges fill solid instead of stroking, and the depth of the solid is the rank.',
-			withIndex: false,
 			cards: [
 				[spec('page-of-cups', 'minor', 'cups', undefined, 'page'), 'Page'],
 				[spec('knight-of-cups', 'minor', 'cups', undefined, 'knight'), 'Knight'],
@@ -62,9 +74,8 @@
 			]
 		},
 		{
-			title: 'Majors · Full bleed',
-			rule: 'No frame, no counting. One red symbol per card, with the ridges cleared from its interior; the numeral is white.',
-			withIndex: true,
+			title: 'Majors · Symbol',
+			rule: 'Framed like the minors, with the numeral above the border and the name below it. Quiet ridges, and one red symbol with the ridges cleared from its interior.',
 			cards: [
 				[spec('the-fool', 'major', undefined, 0), 'The Fool'],
 				[spec('the-empress', 'major', undefined, 3), 'The Empress'],
@@ -168,7 +179,7 @@
 					<div class="grammar-cards">
 						{#each g.cards as [card, label]}
 							<div class="grammar-card">
-								<CardFace {card} index={g.withIndex} />
+								<CardFace {card} />
 								<div class="grammar-label">{label}</div>
 							</div>
 						{/each}
