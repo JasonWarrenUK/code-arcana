@@ -7,16 +7,49 @@
  *   - absolute commands only: M L H V C Q A Z
  *   - a path ending in Z is a closed shape: ridges are cleared from its interior
  *   - a space enclosed by open lines is listed in `cleared` (closed paths, not drawn)
+ *   - layout 'strip': paths[0] is the hero, inside y 6 to 114 (the Moon's crescent); the rest
+ *     is a substrate strip. Every strip card spans exactly y 6 (highest symbol) to y 168
+ *     (lowest substrate), the Moon's extent
+ *   - layout 'framed': paths[0] is the enclosing frame, a closed outline spanning at least 80
+ *     units each way; a frame that is only an outline (a portal) lists its opening in `cleared`
+ *   - paired cards (Fool and Magician, Priestess and Hierophant, Empress and Emperor) call the
+ *     same frame helper with the same arguments
  *   - no colour here: the symbol takes the major accent
  */
+
+import {
+	circle,
+	diamondFrame,
+	ellipse,
+	hexagonFrame,
+	hexagram,
+	infinity,
+	pentagram,
+	portalFrame,
+	portalOpening,
+	raysAround,
+	ringFrame,
+	shieldFrame,
+	squareFrame,
+	star
+} from '../symbol-shapes';
 
 export interface SymbolPath {
 	d: string;
 	fine?: boolean;
+	/** Filled with the card's ink, so anything drawn earlier (a frame line) is hidden behind it */
+	opaque?: boolean;
 }
+
+export type SymbolLayout = 'strip' | 'framed';
 
 export interface MajorSymbol {
 	concept: string;
+	/**
+	 * strip: paths[0] is the hero in the upper zone, the rest is a substrate strip below.
+	 * framed: paths[0] is the enclosing frame, the rest sits inside it.
+	 */
+	layout: SymbolLayout;
 	paths: SymbolPath[];
 	/** Closed regions cleared of ridges but not drawn: interiors that open lines enclose */
 	cleared?: string[];
@@ -24,176 +57,107 @@ export interface MajorSymbol {
 
 export const SYMBOL_BOX = { width: 120, height: 168, x: 40, y: 66 } as const;
 
-const round = (n: number): number => Math.round(n * 10) / 10;
-const polar = (cx: number, cy: number, r: number, deg: number): string => {
-	const rad = (deg * Math.PI) / 180;
-	return `${round(cx + r * Math.cos(rad))} ${round(cy + r * Math.sin(rad))}`;
-};
-
-const circle = (cx: number, cy: number, r: number): string =>
-	`M${cx - r} ${cy} A${r} ${r} 0 1 0 ${cx + r} ${cy} A${r} ${r} 0 1 0 ${cx - r} ${cy} Z`;
-
-const ellipse = (cx: number, cy: number, rx: number, ry: number): string =>
-	`M${cx - rx} ${cy} A${rx} ${ry} 0 1 0 ${cx + rx} ${cy} A${rx} ${ry} 0 1 0 ${cx - rx} ${cy} Z`;
-
-/** A straight ray from radius `from` to radius `to`, at `deg` degrees (0 = right, 90 = down) */
-const ray = (cx: number, cy: number, from: number, to: number, deg: number): string =>
-	`M${polar(cx, cy, from, deg)} L${polar(cx, cy, to, deg)}`;
-
-const raysAround = (
-	cx: number,
-	cy: number,
-	from: number,
-	to: number,
-	count: number
-): SymbolPath[] =>
-	Array.from({ length: count }, (_, k) => ({
-		d: ray(cx, cy, from, to, (360 / count) * k),
-		fine: true
-	}));
-
-/** A closed star polygon with a point straight up (or down when `flip` is set) */
-const star = (
-	cx: number,
-	cy: number,
-	outer: number,
-	inner: number,
-	points: number,
-	flip = false
-): string => {
-	const start = flip ? 90 : -90;
-	const vertices = Array.from({ length: points * 2 }, (_, k) =>
-		polar(cx, cy, k % 2 === 0 ? outer : inner, start + (180 / points) * k)
-	);
-	return `M${vertices.join(' L')} Z`;
-};
-
-/** Five points joined every second vertex; `flip` puts one point straight down */
-const pentagram = (cx: number, cy: number, r: number, flip = false): string => {
-	const start = flip ? 90 : -90;
-	const vertices = [0, 2, 4, 1, 3].map((k) => polar(cx, cy, r, start + 72 * k));
-	return `M${vertices.join(' L')} Z`;
-};
-
 export const MAJOR_SYMBOLS: Record<string, MajorSymbol> = {
 	'the-fool': {
-		concept: 'A sun above a cliff edge, a leap already under way',
+		concept: "A single dot steps out through the bottom of the Magician's ring",
+		layout: 'framed',
 		paths: [
-			{ d: circle(60, 50, 28) },
-			...raysAround(60, 50, 36, 46, 8),
-			{ d: 'M0 132 H76 V168' },
-			{ d: 'M76 128 Q92 98 108 122', fine: true },
-			{ d: circle(108, 130, 8) }
+			{ d: ringFrame(), fine: true },
+			{ d: circle(60, 142, 20), opaque: true }
 		]
 	},
 	'the-magician': {
-		concept: 'An infinity loop over a table laid with the four tools',
-		cleared: ['M22 134 H98 V168 H22 Z'],
-		paths: [
-			{
-				d: 'M60 36 C80 8 108 8 108 36 C108 64 80 64 60 36 C40 8 12 8 12 36 C12 64 40 64 60 36 Z'
-			},
-			{ d: 'M8 122 H112 V134 H8 Z' },
-			{ d: 'M22 134 V168' },
-			{ d: 'M98 134 V168' },
-			{ d: 'M14 96 H34 L30 118 H18 Z', fine: true },
-			{ d: 'M48 80 V120', fine: true },
-			{ d: 'M74 80 V120', fine: true },
-			{ d: 'M66 104 H82', fine: true },
-			{ d: circle(98, 106, 10), fine: true }
-		]
+		concept: 'An infinity loop held in a ring',
+		layout: 'framed',
+		paths: [{ d: ringFrame(), fine: true }, { d: infinity(60, 84, 42, 24) }]
 	},
 	'the-high-priestess': {
-		concept: 'Two pillars with a crescent between them and a scroll below',
+		concept: 'A crescent between two pillars',
+		layout: 'framed',
+		cleared: [portalOpening()],
 		paths: [
-			{ d: 'M8 20 H36 V168 H8 Z' },
-			{ d: 'M84 20 H112 V168 H84 Z' },
-			{ d: 'M70 40 A24 24 0 1 0 70 88 A30 30 0 0 1 70 40 Z' },
-			{ d: 'M48 120 H72 V152 H48 Z', fine: true },
-			{ d: 'M54 130 H66', fine: true },
-			{ d: 'M54 138 H66', fine: true }
+			{ d: portalFrame(), fine: true },
+			{ d: 'M80.6 62.8 A32.4 32.4 0 1 0 80.6 125.2 A37.2 37.2 0 0 1 80.6 62.8 Z' }
 		]
 	},
 	'the-empress': {
-		concept: 'The Venus glyph: a full disc over a cross, a good default in bloom',
+		concept: 'A pointed crown set with pearls, over a sprig of wheat',
+		layout: 'framed',
 		paths: [
-			{ d: circle(60, 54, 34) },
-			{ d: 'M60 88 V156' },
-			{ d: 'M32 122 H88' },
-			{ d: circle(60, 54, 22), fine: true }
+			{ d: shieldFrame(), fine: true },
+			{ d: 'M34 66 V46 L47 56 L60 40 L73 56 L86 46 V66 Z' },
+			{ d: 'M34 60 H86', fine: true },
+			{ d: circle(34, 42, 3.5) },
+			{ d: circle(60, 36, 3.5) },
+			{ d: circle(86, 42, 3.5) },
+			{ d: 'M60 132 V82' },
+			{ d: ellipse(60, 76, 4, 9), fine: true },
+			{ d: 'M60 120 L50 110', fine: true },
+			{ d: 'M60 120 L70 110', fine: true },
+			{ d: 'M60 106 L50 96', fine: true },
+			{ d: 'M60 106 L70 96', fine: true },
+			{ d: 'M60 92 L50 82', fine: true },
+			{ d: 'M60 92 L70 82', fine: true }
 		]
 	},
 	'the-emperor': {
-		concept: 'A high-backed square throne under a crest',
+		concept: 'A castellated crown over a sceptre topped with an orb and cross',
+		layout: 'framed',
 		paths: [
-			{ d: 'M22 12 H98 V96 H114 V160 H6 V96 H22 Z' },
-			{ d: 'M22 96 H98', fine: true },
-			{ d: circle(60, 46, 14), fine: true },
-			{ d: 'M60 132 V160', fine: true }
+			{ d: shieldFrame(), fine: true },
+			{ d: 'M34 66 V42 H44 V50 H54 V42 H66 V50 H76 V42 H86 V66 Z' },
+			{ d: circle(60, 98, 9) },
+			{ d: 'M60 89 V78 M55 83 H65' },
+			{ d: 'M60 107 V134' },
+			{ d: 'M55 120 H65', fine: true }
 		]
 	},
 	'the-hierophant': {
-		concept: 'A three-barred cross inside a niche',
-		cleared: ['M10 168 V112 A50 50 0 0 1 110 112 V168 Z'],
+		concept: 'A three-barred cross between two pillars',
+		layout: 'framed',
+		cleared: [portalOpening()],
 		paths: [
-			{ d: 'M60 6 V160' },
-			{ d: 'M44 30 H76' },
-			{ d: 'M32 58 H88' },
-			{ d: 'M20 86 H100' },
-			{ d: 'M10 168 V112 A50 50 0 0 1 110 112 V168', fine: true }
+			{ d: portalFrame(), fine: true },
+			{ d: 'M60 62 V142' },
+			{ d: 'M48 78 H72' },
+			{ d: 'M40 96 H80' },
+			{ d: 'M32 114 H88' }
 		]
 	},
 	'the-lovers': {
-		concept: 'Two overlapping rings above a path that forks',
-		paths: [
-			{ d: circle(40, 56, 32) },
-			{ d: circle(80, 56, 32) },
-			{ d: 'M60 168 V128', fine: true },
-			{ d: 'M60 128 L34 104', fine: true },
-			{ d: 'M60 128 L86 104', fine: true }
-		]
+		concept: 'Two rings, interlocked, held in a diamond',
+		layout: 'framed',
+		paths: [{ d: diamondFrame(), fine: true }, { d: circle(44, 84, 20) }, { d: circle(76, 84, 20) }]
 	},
 	'the-chariot': {
-		concept: 'A canopied cart on a single wheel',
-		cleared: ['M22 58 H98 V112 H22 Z'],
-		paths: [
-			{ d: 'M12 58 A48 48 0 0 1 108 58 Z' },
-			{ d: 'M22 58 V112' },
-			{ d: 'M98 58 V112' },
-			{ d: 'M12 112 H108 V132 H12 Z' },
-			{ d: circle(60, 150, 18) },
-			{ d: 'M42 150 H78', fine: true },
-			{ d: 'M60 132 V168', fine: true }
-		]
+		concept: 'Velocity is a vector: one arrow in a square',
+		layout: 'framed',
+		paths: [{ d: squareFrame(), fine: true }, { d: 'M16 70 H64 V54 L102 84 L64 114 V98 H16 Z' }]
 	},
 	strength: {
-		concept: 'An infinity loop over a lion held gently by the face',
+		concept: 'Force meets an equal and opposite resistance, held in a square',
+		layout: 'framed',
 		paths: [
-			{ d: 'M60 24 C74 4 100 4 100 24 C100 44 74 44 60 24 C46 4 20 4 20 24 C20 44 46 44 60 24 Z' },
-			{
-				d: 'M20 84 Q20 68 36 68 H84 Q100 68 100 84 V126 Q100 160 60 160 Q20 160 20 126 Z'
-			},
-			{ d: 'M38 100 H54', fine: true },
-			{ d: 'M66 100 H82', fine: true },
-			{ d: 'M50 120 H70 L60 132 Z', fine: true },
-			{ d: 'M60 132 V146', fine: true }
+			{ d: squareFrame(), fine: true },
+			{ d: 'M14 70 H40 V58 L58 84 L40 110 V98 H14 Z' },
+			{ d: 'M106 70 H80 V58 L62 84 L80 110 V98 H106 Z' }
 		]
 	},
 	'the-hermit': {
-		concept: 'A lantern holding a six-pointed star, carried on a staff',
-		cleared: ['M38 120 L46 134 H74 L82 120 Z'],
+		concept: 'A lantern alone in a ring: nothing else is allowed inside it',
+		layout: 'framed',
 		paths: [
-			{ d: 'M30 52 L60 24 L90 52 Z' },
-			{ d: 'M60 24 V6' },
-			{ d: 'M34 52 H86 V120 H34 Z' },
-			{ d: 'M38 120 L46 134 H74 L82 120', fine: true },
-			{ d: 'M60 62 L76 96 H44 Z', fine: true },
-			{ d: 'M60 110 L44 76 H76 Z', fine: true },
-			{ d: 'M108 30 V168' }
+			{ d: circle(60, 84, 58), fine: true },
+			{ d: 'M60 30 V40', fine: true },
+			{ d: 'M38 62 L60 40 L82 62 Z' },
+			{ d: 'M42 62 H78 V120 H42 Z' },
+			{ d: 'M46 120 L52 132 H68 L74 120 Z', fine: true },
+			...hexagram(60, 90, 16).map((d) => ({ d, fine: true }))
 		]
 	},
 	'wheel-of-fortune': {
 		concept: 'A turning wheel of eight spokes',
+		layout: 'framed',
 		paths: [
 			{ d: circle(60, 84, 56) },
 			{ d: circle(60, 84, 38), fine: true },
@@ -202,122 +166,156 @@ export const MAJOR_SYMBOLS: Record<string, MajorSymbol> = {
 		]
 	},
 	justice: {
-		concept: 'Scales hung from a beam on an upright sword',
-		cleared: ['M28 44 L8 96 H48 Z', 'M92 44 L72 96 H112 Z'],
+		concept: 'Scales hung from a beam on a central stem, standing on a tiled floor',
+		layout: 'strip',
+		cleared: ['M28 32 L8 78 H48 Z', 'M92 32 L72 78 H112 Z'],
 		paths: [
-			{ d: 'M8 44 H112' },
-			{ d: 'M60 4 V168' },
-			{ d: 'M46 138 H74' },
-			{ d: 'M8 96 H48 A20 20 0 0 1 8 96 Z' },
-			{ d: 'M72 96 H112 A20 20 0 0 1 72 96 Z' },
-			{ d: 'M28 44 L8 96', fine: true },
-			{ d: 'M28 44 L48 96', fine: true },
-			{ d: 'M92 44 L72 96', fine: true },
-			{ d: 'M92 44 L112 96', fine: true }
+			{ d: 'M60 6 V114 M8 32 H112' },
+			{ d: 'M8 78 H48 A20 20 0 0 1 8 78 Z' },
+			{ d: 'M72 78 H112 A20 20 0 0 1 72 78 Z' },
+			{ d: 'M28 32 L8 78', fine: true },
+			{ d: 'M28 32 L48 78', fine: true },
+			{ d: 'M92 32 L72 78', fine: true },
+			{ d: 'M92 32 L112 78', fine: true },
+			{ d: 'M44 114 H76 V132 H44 Z' },
+			{ d: 'M0 132 H120 V168 H0 Z' },
+			{ d: 'M20 132 V168 M40 132 V168 M60 132 V168 M80 132 V168 M100 132 V168', fine: true },
+			{ d: 'M0 150 H120', fine: true }
 		]
 	},
 	'the-hanged-man': {
-		concept: 'A figure hung by one foot from a gallows, head-down',
-		cleared: ['M8 168 V10 H112 V168 Z'],
+		concept: 'A plumb bob hangs point-down from a living branch over its own roots',
+		layout: 'strip',
 		paths: [
-			{ d: 'M8 168 V10 H112 V168' },
-			{ d: 'M60 10 V34', fine: true },
-			{ d: 'M60 34 L46 78' },
-			{ d: 'M60 34 L74 78' },
-			{ d: 'M44 78 H76 L66 118 H54 Z' },
-			{ d: circle(60, 142, 16) }
+			{ d: 'M48 52 H72 V76 L60 114 L48 76 Z' },
+			{ d: 'M20 6 H100' },
+			{ d: 'M60 6 V52', fine: true },
+			{ d: 'M48 64 H72', fine: true },
+			{ d: 'M0 134 H120' },
+			{ d: 'M24 134 Q28 146 20 156 Q16 162 18 168', fine: true },
+			{ d: 'M50 134 Q46 148 56 158 Q60 164 56 168', fine: true },
+			{ d: 'M78 134 Q84 146 74 156 Q70 162 74 168', fine: true },
+			{ d: 'M100 134 Q96 148 104 158 Q108 164 104 168', fine: true }
 		]
 	},
 	death: {
-		concept: 'A scythe: the blade, the snath and the hand-grip',
+		concept: 'A scythe leaning, upper left to lower right, in a field already cut',
+		layout: 'strip',
 		paths: [
-			{ d: 'M88 8 V168' },
-			{ d: 'M88 8 C40 4 10 40 6 92 C34 62 58 50 88 50 Z' },
-			{ d: 'M78 108 H98', fine: true },
-			{ d: 'M78 124 H98', fine: true }
+			{ d: 'M67.9 6 C23.8 9.7 5.4 43.4 9.1 87.4 C28.2 57.6 50.1 43.6 74.1 41.4 Z' },
+			{ d: 'M67.9 6 L92.2 143.8' },
+			{ d: 'M73.8 96.6 L93.5 93.2', fine: true },
+			{ d: 'M76.5 112.6 L96.2 109.2', fine: true },
+			{ d: 'M0 168 H120' },
+			{
+				d: 'M8 168 V156 M20 168 V150 M32 168 V158 M44 168 V152 M56 168 V158 M68 168 V154 M104 168 V150 M114 168 V158',
+				fine: true
+			}
 		]
 	},
 	temperance: {
-		concept: 'Two cups, one pouring into the other',
+		concept: 'One cup tilted to pour, the liquid falling, held in a hexagon',
+		layout: 'framed',
 		paths: [
-			{ d: 'M8 24 H48 Q48 58 28 58 Q8 58 8 24 Z' },
-			{ d: 'M28 58 V72', fine: true },
-			{ d: 'M18 72 H38', fine: true },
-			{ d: 'M72 100 H112 Q112 134 92 134 Q72 134 72 100 Z' },
-			{ d: 'M92 134 V148', fine: true },
-			{ d: 'M82 148 H102', fine: true },
-			{ d: 'M48 26 C72 26 90 58 90 98', fine: true }
+			{ d: hexagonFrame(), fine: true },
+			{ d: 'M82.6 62.5 L65.5 109.5 Q30.2 96.7 38.8 73.2 Q47.3 49.7 82.6 62.5 Z' },
+			{ d: 'M38.8 73.2 L20 66.3' },
+			{ d: 'M25.1 52.3 L14.8 80.4' },
+			{ d: 'M66 112 Q74 122 70 134', fine: true }
 		]
 	},
 	'the-devil': {
-		concept: 'An inverted pentagram in a ring, on a chain',
-		paths: [
-			{ d: circle(60, 72, 56) },
-			{ d: pentagram(60, 72, 48, true) },
-			{ d: circle(60, 142, 7), fine: true },
-			{ d: circle(60, 158, 7), fine: true }
-		]
+		concept: 'The inverted pentagram, held in a hexagon',
+		layout: 'framed',
+		paths: [{ d: hexagonFrame(), fine: true }, { d: pentagram(60, 86, 40, true) }]
 	},
 	'the-tower': {
-		concept: 'A crenellated tower struck at the crown by a bolt',
+		concept: 'A struck tower standing on its own broken rubble heap',
+		layout: 'strip',
 		paths: [
+			{ d: 'M38 114 V62 H30 V40 H42 V48 H52 V40 H68 V48 H78 V40 H90 V62 H82 V114 Z' },
+			{ d: 'M104 6 L86 24 H97 L68 40' },
+			{ d: 'M52 114 V94 A8 8 0 0 1 68 94 V114', fine: true },
+			{ d: 'M60 62 L54 80 L64 94', fine: true },
 			{
-				d: 'M32 168 V72 H22 V44 H36 V54 H50 V44 H70 V54 H84 V44 H98 V72 H88 V168 Z'
+				d: 'M34 114 L26 130 L32 136 L14 152 L24 158 L6 168 H114 L96 158 L106 152 L88 136 L94 130 L86 114 Z'
 			},
-			{ d: 'M112 0 L88 22 H102 L76 42' },
-			{ d: 'M50 168 V132 A10 10 0 0 1 70 132 V168', fine: true },
-			{ d: 'M60 54 L52 84 L66 104 L56 128', fine: true }
+			{ d: 'M60 114 L56 134 L64 148 L58 168', fine: true },
+			{ d: 'M42 124 L46 140', fine: true },
+			{ d: 'M78 124 L74 142', fine: true },
+			{ d: 'M8 140 L16 134 L20 142 L12 146 Z', fine: true },
+			{ d: 'M112 140 L104 134 L100 142 L108 146 Z', fine: true }
 		]
 	},
 	'the-star': {
 		concept: 'A single eight-pointed star above still water',
+		layout: 'strip',
 		paths: [
-			{ d: star(60, 62, 58, 20, 8) },
-			{ d: 'M6 138 Q21 128 36 138 Q51 148 66 138 Q81 128 96 138 Q106 144 114 138', fine: true },
-			{ d: 'M6 154 Q21 144 36 154 Q51 164 66 154 Q81 144 96 154 Q106 160 114 154', fine: true }
+			{ d: star(60, 60, 54, 19, 8) },
+			{
+				d: 'M6 147 Q21 137 36 147 Q51 157 66 147 Q81 137 96 147 Q106 153 114 147',
+				fine: true
+			},
+			{
+				d: 'M6 163 Q21 153 36 163 Q51 173 66 163 Q81 153 96 163 Q106 169 114 163',
+				fine: true
+			}
 		]
 	},
 	'the-moon': {
-		concept: 'A crescent over two towers with a road running between them',
+		concept: 'A large crescent above, two towers and a road as the low landscape',
+		layout: 'strip',
 		paths: [
-			{ d: 'M72 8 A42 42 0 1 0 72 88 A48 48 0 0 1 72 8 Z' },
-			{ d: 'M6 168 V108 H12 V100 H20 V108 H28 V100 H36 V108 H42 V168 Z' },
-			{ d: 'M114 168 V108 H108 V100 H100 V108 H92 V100 H84 V108 H78 V168 Z' },
-			{ d: 'M60 168 C60 150 44 144 60 128 C76 112 60 106 60 100', fine: true }
+			{ d: 'M89 8 A54 54 0 1 0 89 112 A62 62 0 0 1 89 8 Z' },
+			{ d: 'M6 168 V140 H10 V132 H16 V140 H24 V132 H30 V140 H34 V168 Z' },
+			{ d: 'M114 168 V140 H110 V132 H104 V140 H96 V132 H90 V140 H86 V168 Z' },
+			{ d: 'M60 168 C60 158 46 154 60 146 C74 138 60 134 60 128', fine: true }
 		]
 	},
 	'the-sun': {
-		concept: 'A twelve-rayed sun with a bright disc',
+		concept: 'A sunburst above a low field of sunflowers on long stems',
+		layout: 'strip',
 		paths: [
-			{ d: star(60, 84, 60, 44, 12) },
-			{ d: circle(60, 84, 28) },
-			{ d: circle(60, 84, 16), fine: true }
+			{ d: star(60, 60, 54, 39, 12) },
+			{ d: circle(60, 60, 25) },
+			{ d: circle(60, 60, 13), fine: true },
+			{ d: circle(22, 128, 8) },
+			{ d: circle(60, 138, 8) },
+			{ d: circle(98, 128, 8) },
+			{ d: 'M22 136 V152', fine: true },
+			{ d: 'M60 146 V152', fine: true },
+			{ d: 'M98 136 V152', fine: true },
+			{ d: 'M6 152 H114', fine: true },
+			{ d: 'M6 168 H114', fine: true }
 		]
 	},
 	judgement: {
-		concept: 'A trumpet with a banner, over three rising graves',
+		concept: 'Spread wings above three figures rising from their tombstones',
+		layout: 'strip',
 		paths: [
-			{ d: 'M8 60 L64 56 L112 22 V110 L64 78 L8 74 Z' },
-			{ d: 'M36 74 V96', fine: true },
-			{ d: 'M56 76 V96', fine: true },
-			{ d: 'M28 96 H64 V136 H28 Z' },
-			{ d: 'M46 104 V128', fine: true },
-			{ d: 'M37 114 H55', fine: true },
-			{ d: 'M8 146 H32 V168 H8 Z' },
-			{ d: 'M48 146 H72 V168 H48 Z' },
-			{ d: 'M88 146 H112 V168 H88 Z' }
+			{
+				d: 'M54 42 C40 30 22 14 6 6 Q2 18 10 26 Q4 36 14 44 Q12 54 24 62 Q38 68 54 58 Z M66 42 C80 30 98 14 114 6 Q118 18 110 26 Q116 36 106 44 Q108 54 96 62 Q82 68 66 58 Z'
+			},
+			{ d: circle(22, 118, 5) },
+			{ d: 'M22 136 V126 M22 132 L14 122 M22 132 L30 122', fine: true },
+			{ d: 'M8 168 V150 A14 14 0 0 1 36 150 V168 Z' },
+			{ d: circle(60, 118, 5) },
+			{ d: 'M60 136 V126 M60 132 L52 122 M60 132 L68 122', fine: true },
+			{ d: 'M46 168 V150 A14 14 0 0 1 74 150 V168 Z' },
+			{ d: circle(98, 118, 5) },
+			{ d: 'M98 136 V126 M98 132 L90 122 M98 132 L106 122', fine: true },
+			{ d: 'M84 168 V150 A14 14 0 0 1 112 150 V168 Z' }
 		]
 	},
 	'the-world': {
-		concept: 'A wreath around a dancer, the four creatures at the corners',
+		concept: 'A laurel wreath around a dancer, standing on a plain horizon',
+		layout: 'strip',
 		paths: [
-			{ d: ellipse(60, 84, 44, 68) },
-			{ d: ellipse(60, 84, 36, 58), fine: true },
-			{ d: 'M60 52 L76 84 L60 116 L44 84 Z' },
-			{ d: circle(12, 14, 8) },
-			{ d: circle(108, 14, 8) },
-			{ d: circle(12, 154, 8) },
-			{ d: circle(108, 154, 8) }
+			{ d: ellipse(60, 60, 40, 54) },
+			{ d: ellipse(60, 60, 32, 46), fine: true },
+			{ d: 'M60 32 L72 60 L60 88 L48 60 Z' },
+			{ d: 'M6 144 H114' },
+			{ d: 'M6 168 H114', fine: true }
 		]
 	}
 };
