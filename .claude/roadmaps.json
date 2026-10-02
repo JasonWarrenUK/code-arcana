@@ -83,10 +83,11 @@
 					{
 						"id": "1DE.9",
 						"description": "Re-run smoke test checklist against the live deployment",
-						"status": "todo",
+						"status": "done",
 						"dependsOn": [
 							"1DE.6"
-						]
+						],
+						"ended": "2026-10-02"
 					}
 				]
 			},
