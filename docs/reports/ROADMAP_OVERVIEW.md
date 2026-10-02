@@ -25,5 +25,5 @@ Public launch of Arcana of Code: a Deno Deploy migration of the SvelteKit site, 
 
 ## External blockers (flag early)
 
-- **1DE.7** (custom domain) requires manual DNS access.
 - **1DE.9** (live smoke test) follows the Deno Deploy project (1DE.6), which is now linked.
+- **1DE.7** (custom domain) is out of scope until a domain is chosen; it needs manual DNS access.

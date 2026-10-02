@@ -2,7 +2,7 @@
 
 Public launch: Deno Deploy migration, all 78 cards with prototype content, Joy Division-esque SVG illustrations.
 
-**Critical path:** `1DE.7`, the custom domain (manual, requires DNS access), and `1DE.9`, the live smoke test. The Deno Deploy project (1DE.6) is linked.
+**Critical path:** `1DE.9`, the live smoke test, is the last open task. The Deno Deploy project (1DE.6) is linked and the custom domain (1DE.7) is out of scope until a domain is chosen.
 
 ---
 
@@ -127,8 +127,9 @@ graph LR
 	3VI.7 --> M3
 	3VI.8 --> 3VI.9
 	3VI.9 --> M3
-	class 1DE.7,1DE.9 todo
+	class 1DE.9 todo
 	class 1DE.1,1DE.2,1DE.3,1DE.4,1DE.5,1DE.6,1DE.8,2CU,2MA,2PE,2SW,2WA,3VI.1,3VI.2,3VI.3,3VI.4,3VI.5,3VI.6,3VI.7,3VI.8,3VI.9 done
+	class 1DE.7 outOfScope
 ```
 
 ---

@@ -64,11 +64,11 @@
 					{
 						"id": "1DE.7",
 						"description": "Configure custom domain on Deno Deploy",
-						"status": "todo",
+						"status": "out_of_scope",
 						"dependsOn": [
 							"1DE.6"
 						],
-						"notes": "Manual: requires DNS access; see DEPLOY.md"
+						"notes": "Dropped 2026-10-02: no domain chosen; the site runs on the Deno Deploy default URL. Manual steps stay in DEPLOY.md."
 					},
 					{
 						"id": "1DE.8",
