@@ -2,7 +2,7 @@
 
 Public launch: Deno Deploy migration, all 78 cards with prototype content, Joy Division-esque SVG illustrations.
 
-**Critical path:** `1DE.6 → 1DE.7, 1DE.9`; the Deno Deploy account setup (manual, requires dash.deno.com access) unblocks the custom domain and live smoke test.
+**Critical path:** `1DE.7`, the custom domain (manual, requires DNS access), and `1DE.9`, the live smoke test. The Deno Deploy project (1DE.6) is linked.
 
 ---
 
