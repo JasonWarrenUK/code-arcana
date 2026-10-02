@@ -23,7 +23,7 @@
 </script>
 
 <svg viewBox="0 0 200 300" role="img" aria-label={card.name} class="face">
-	<rect width="200" height="300" fill="#0b0b0b" />
+	<rect width="200" height="300" style:fill="var(--ink)" />
 	<rect x="14" y="14" width="172" height="272" fill="none" stroke="#3a3733" stroke-width="1" />
 	{#if art.doubleFrame}
 		<rect x="20" y="20" width="160" height="260" fill="none" stroke="#3a3733" stroke-width="1" />
@@ -110,7 +110,7 @@
 		display: block;
 		width: 100%;
 		height: auto;
-		background: #0b0b0b;
+		background: var(--ink);
 	}
 
 	.index {
