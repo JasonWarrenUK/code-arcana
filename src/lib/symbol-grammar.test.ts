@@ -2,7 +2,13 @@ import { describe, expect, it } from 'vitest';
 import cards from './data/cards.json';
 import { MAJOR_SYMBOLS } from './data/major-symbols';
 import { cardArt } from './arcana';
-import { framesMatch, pathBounds, validateLayout, validateSymbol } from './symbol-grammar';
+import {
+	framesMatch,
+	isClosedPath,
+	pathBounds,
+	validateLayout,
+	validateSymbol
+} from './symbol-grammar';
 import type { Card } from './types/card';
 import * as fixtures from '../../tests/fixtures/symbol-grammar';
 
@@ -14,6 +20,19 @@ const PAIRS: Array<[string, string]> = [
 	['the-high-priestess', 'the-hierophant'],
 	['the-empress', 'the-emperor']
 ];
+
+describe('isClosedPath', () => {
+	it.each([['M0 0L10 0L10 10Z'], ['M0 0L10 0L10 10z'], ['M0 0L10 0L10 10Z  ']])(
+		'treats %j as closed',
+		(d) => {
+			expect(isClosedPath(d)).toBe(true);
+		}
+	);
+
+	it.each([['M0 0L10 0L10 10'], ['M0 0Z L10 0'], ['']])('treats %j as open', (d) => {
+		expect(isClosedPath(d)).toBe(false);
+	});
+});
 
 describe('major symbol set', () => {
 	it('has exactly one symbol per major arcana card', () => {

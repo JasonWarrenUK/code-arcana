@@ -2,6 +2,7 @@
 	import type { Card } from '$lib/types/card';
 	import { cardArt, cardIndex, indexY } from '$lib/arcana';
 	import { SYMBOL_BOX } from '$lib/data/major-symbols';
+	import { isClosedPath } from '$lib/symbol-grammar';
 
 	// Stroke width of the clearing around a symbol line, in face units
 	const CLEARANCE = 8;
@@ -39,7 +40,7 @@
 				stroke-linecap="round"
 			>
 				{#each art.symbol.paths as path (path.d)}
-					<path d={path.d} fill={/z\s*$/i.test(path.d) ? 'black' : 'none'} />
+					<path d={path.d} fill={isClosedPath(path.d) ? 'black' : 'none'} />
 				{/each}
 				{#each art.symbol.cleared ?? [] as region (region)}
 					<path d={region} fill="black" />

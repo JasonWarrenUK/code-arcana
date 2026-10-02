@@ -20,6 +20,9 @@ const LAYOUT_TOLERANCE = 0.5;
 
 type Point = [number, number];
 
+/** True when a path ends with Z: the renderer and the validator both rely on this one definition */
+export const isClosedPath = (d: string): boolean => /z\s*$/i.test(d);
+
 const COMMAND_ARITY: Record<string, number> = { M: 2, L: 2, H: 1, V: 1, C: 6, Q: 4, A: 7, Z: 0 };
 const ARC_SAMPLES = 24;
 
@@ -185,7 +188,7 @@ export const validateSymbol = (symbol: MajorSymbol): string[] => {
 			problems.push(`cleared ${index}: ${error}`);
 			return;
 		}
-		if (!/z\s*$/i.test(region)) problems.push(`cleared ${index}: must end with Z`);
+		if (!isClosedPath(region)) problems.push(`cleared ${index}: must end with Z`);
 		const outside = outsideBox(points);
 		if (outside) problems.push(`cleared ${index}: ${outside}`);
 	});
@@ -231,7 +234,7 @@ export const pathBounds = (d: string): Bounds | undefined => {
 /** The frame of a framed card: paths[0], when it is a closed outline */
 export const frameRegion = (symbol: MajorSymbol): string | undefined => {
 	const frame = symbol.paths[0]?.d;
-	return frame && /z\s*$/i.test(frame) ? frame : undefined;
+	return frame && isClosedPath(frame) ? frame : undefined;
 };
 
 /** True when two framed symbols enclose regions of the same size in the same place */
