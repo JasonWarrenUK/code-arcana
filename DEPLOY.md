@@ -32,14 +32,15 @@ There is no GitHub Action for deployment: the platform does the build, so a seco
 
 ### Smoke test checklist (post-deploy)
 
-- [ ] `/` — homepage with card of the day
-- [ ] `/catalog` — all 78 cards render, filters work
-- [ ] `/card/three-of-wands` — card detail with essay and related cards
-- [ ] `/draw` — turns a card over
-- [ ] `/spread` — deals a spread
-- [ ] `/graph` — constellation renders
-- [ ] `/system`, `/about`
-- [ ] A nonexistent card id returns 404
+- [ ] `/`: homepage with card of the day
+- [ ] `/catalog`: all 78 cards render, filters work
+- [ ] `/card/three-of-wands`: card detail with essay and related cards
+- [ ] `/card/the-fool`: major card shows its red symbol, border, numeral above and name below
+- [ ] `/draw`: turns a card over
+- [ ] `/spread`: deals a spread
+- [ ] `/graph`: constellation renders
+- [ ] `/system`: card art grammar renders
+- [ ] `/about` and a nonexistent card id both return 404
 
 ## Adding New Cards
 
