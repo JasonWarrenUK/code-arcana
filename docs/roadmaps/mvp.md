@@ -18,13 +18,13 @@ Public launch: Deno Deploy migration, all 78 cards with prototype content, Joy D
 - [x] **1DE.4**: Add `deno.json` config at project root (`deno task start` runs the built server)
 - [x] **1DE.5**: Update build script and CI
   - Note: `npm run build` produces the Deno server; `.github/workflows/deploy.yml` deploys via `deployctl` on push to main (project name placeholder until 1DE.6)
-- [ ] **1DE.6**: Set up Deno Deploy project and link to repository
+- [x] **1DE.6**: Set up Deno Deploy project and link to repository
   - Note: Manual: requires dash.deno.com account access; see DEPLOY.md
-- [ ] **1DE.7**: Configure custom domain on Deno Deploy _(blocked: depends on 1DE.6)_
+- [ ] **1DE.7**: Configure custom domain on Deno Deploy _(depends on 1DE.6)_
   - Note: Manual: requires DNS access; see DEPLOY.md
 - [x] **1DE.8**: Smoke test all routes locally under Deno (homepage, catalog, draw, about, card pages incl. majors, 404 case)
   - Note: All pass
-- [ ] **1DE.9**: Re-run smoke test checklist against the live deployment _(blocked: depends on 1DE.6)_
+- [ ] **1DE.9**: Re-run smoke test checklist against the live deployment _(depends on 1DE.6)_
 
 ---
 
@@ -63,11 +63,12 @@ Public launch: Deno Deploy migration, all 78 cards with prototype content, Joy D
 ```mermaid
 graph LR
 	classDef todo fill:#f6f6f6,stroke:#6f6f6f,color:#6f6f6f
+	classDef inProgress fill:#e8f2ff,stroke:#0071af,color:#0071af
 	classDef blocked fill:#fff8f6,stroke:#e0002b,color:#e0002b,stroke-width:2px
 	classDef paused fill:#fdf4ff,stroke:#b01fe3,color:#b01fe3,stroke-dasharray:4 3
 	classDef deferred fill:#fff8f3,stroke:#ac5c00,color:#ac5c00,stroke-dasharray:2 4,font-style:italic
 	classDef done fill:#e0ffd9,stroke:#008217,color:#008217
-	classDef outOfScope fill:#f6f6f6,stroke:#e2e2e2,color:#e2e2e2,stroke-dasharray:2 2
+	classDef outOfScope fill:#f6f6f6,stroke:#717171,color:#717171,stroke-dasharray:2 2
 	classDef mile fill:#e3f7ff,stroke:#007590,color:#007590,font-weight:bold
 	classDef external fill:#fff9e5,stroke:#7d6f00,color:#7d6f00,stroke-dasharray:4 3,font-style:italic
 	1DE.1["1DE.1: Swap `@sveltejs/adapter-static` for the…"]
@@ -126,9 +127,8 @@ graph LR
 	3VI.7 --> M3
 	3VI.8 --> 3VI.9
 	3VI.9 --> M3
-	class 1DE.6 todo
-	class 1DE.7,1DE.9 blocked
-	class 1DE.1,1DE.2,1DE.3,1DE.4,1DE.5,1DE.8,2CU,2MA,2PE,2SW,2WA,3VI.1,3VI.2,3VI.3,3VI.4,3VI.5,3VI.6,3VI.7,3VI.8,3VI.9 done
+	class 1DE.7,1DE.9 todo
+	class 1DE.1,1DE.2,1DE.3,1DE.4,1DE.5,1DE.6,1DE.8,2CU,2MA,2PE,2SW,2WA,3VI.1,3VI.2,3VI.3,3VI.4,3VI.5,3VI.6,3VI.7,3VI.8,3VI.9 done
 ```
 
 ---
