@@ -27,6 +27,8 @@ Every card has a full essay, keywords, a one-line coding insight, and connection
 ```
 SvelteKit + TypeScript
 ├── Static prerendering (@deno/svelte-adapter → Deno Deploy)
+├── Deno for installs, tasks and CI
+├── Vitest for unit tests
 ├── Inter font family
 ├── Vite for build tooling
 └── Platform-independent deployment
@@ -40,9 +42,15 @@ src/
 │   ├── types/
 │   │   └── card.ts           # TypeScript interfaces
 │   ├── data/
-│   │   └── cards.json         # Card content
-│   └── components/
-│       └── CardPlaceholder.svelte
+│   │   ├── cards.json         # Card content
+│   │   ├── major-symbols.ts   # One drawn symbol per major arcana card
+│   │   └── spreads.ts         # Spread layouts and positions
+│   ├── components/
+│   │   └── CardFace.svelte    # Card face: ridges, frame and symbol
+│   ├── arcana.ts              # Card art grammar
+│   ├── graph.ts               # Constellation layout
+│   ├── symbol-grammar.ts      # Rules every major symbol must pass
+│   └── symbol-shapes.ts       # Shape helpers for authoring symbols
 ├── routes/
 │   ├── +layout.svelte         # Main site wrapper
 │   ├── +layout.ts             # Prerender config
@@ -56,10 +64,19 @@ src/
 │   ├── draw/
 │   │   ├── +page.svelte       # Random card draw
 │   │   └── +page.ts           # Cards list loader
-│   └── about/
-│       └── +page.svelte       # Project philosophy
+│   ├── spread/
+│   │   ├── +page.svelte       # Multi-card spreads
+│   │   └── +page.ts           # Spread data loader
+│   ├── graph/
+│   │   ├── +page.svelte       # Constellation of card connections
+│   │   └── +page.ts           # Graph data loader
+│   └── system/
+│       └── +page.svelte       # Card art system reference
 ├── app.css                    # Global styles
 └── app.html                   # HTML template
+
+tests/
+└── fixtures/                  # Named test data, one file per module
 
 static/
 └── favicon.png
@@ -117,7 +134,7 @@ interface Card {
 	suit?: 'cups' | 'wands' | 'swords' | 'pentacles';
 	arcana: 'major' | 'minor';
 	number?: number;
-	court?: 'page' | 'knight' | 'queen' | 'king';
+	courtRank?: 'page' | 'knight' | 'queen' | 'king';
 	keywords: string[];
 	codingInsight: string;
 	essay?: string;
@@ -125,34 +142,43 @@ interface Card {
 }
 ```
 
+### Card Art
+
+Every face is drawn in SVG by `src/lib/arcana.ts`, seeded from the card id so the build and the browser render the same card. Pips count their rank in ridges and courts fill their lowest ridges solid; each major carries one red symbol over quiet ridges. The symbols live in `src/lib/data/major-symbols.ts` and must pass the rules in `src/lib/symbol-grammar.ts`, which `deno task test` checks for every card. The `/system` page lays out the whole grammar.
+
 ### Development Commands
+
+`deno task` runs the scripts in `package.json`; there is no npm lockfile.
 
 ```bash
 # Install dependencies
-npm install
+deno install
 
 # Development server
-npm run dev
+deno task dev
 
 # Build for production
-npm run build
+deno task build
 
 # Preview production build
-npm run preview
+deno task preview
 
 # Type checking
-npm run check
+deno task check
 
 # Linting
-npm run lint
+deno task lint
+
+# Unit tests
+deno task test
 
 # Format code
-npm run format
+deno task format
 ```
 
 ### Deployment
 
-See `DEPLOY.md` for full instructions. The short version: `npm run build` produces a Deno server at `.deno-deploy/server.ts`; Deno Deploy builds and deploys it on every push to `main`.
+See `DEPLOY.md` for full instructions. The short version: `deno task build` produces a Deno server at `.deno-deploy/server.ts`; Deno Deploy builds and deploys it on every push to `main`.
 
 ## What's Next
 

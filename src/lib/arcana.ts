@@ -1,11 +1,13 @@
 import type { Card, CourtRank, Suit } from './types/card';
+import { MAJOR_SYMBOLS, type MajorSymbol } from './data/major-symbols';
 
 /**
  * Card art grammar. Three categories, three visual logics:
  *
  *   PIPS    ten ridges in a frame; the Nth from the base is accented. The count is the rank.
  *   COURTS  strata: the lowest ridges fill solid, doubled frame. Depth of solid = Page…King.
- *   MAJORS  full bleed, no frame; the accent falls on the single dominant swell.
+ *   MAJORS  framed, ridges clipped to the frame; quiet ridges with one red symbol cleared
+ *           out of them. Numeral above the border, name below it.
  *
  * Everything is seeded from the card id, so the same card renders identically
  * at build time and in the browser.
@@ -26,8 +28,9 @@ export interface RidgeLine {
 export interface CardArt {
 	lines: RidgeLine[];
 	accent: string;
-	framed: boolean;
 	doubleFrame: boolean;
+	/** Majors with a drawn symbol: ridges go quiet and clear out of it */
+	symbol?: MajorSymbol;
 	category: CardCategory;
 	note: string;
 }
@@ -103,7 +106,7 @@ export const SUIT_NOTE: Record<ArtKey, string> = {
 	wands: 'Leaping peaks: tall, narrow, restless',
 	swords: 'Shattered spikes: dense, unsmoothed, brittle',
 	pentacles: 'Terraces: quantised steps, low and settled',
-	major: 'Monumental arcs: full bleed, one dominant swell'
+	major: 'Quiet ridges in a frame, one red symbol cleared out of them'
 };
 
 /* Palette: chroma 0.14 across the suits so none outranks another. Cups sit at
@@ -196,8 +199,8 @@ export const cardMeta = (card: Card): string => {
 export const cardShortMeta = (card: Card): string =>
 	isMajor(card) ? cardIndex(card) : `${cardCategory(card)} · ${cardIndex(card)}`;
 
-/** Vertical position of the index numeral inside the 200x300 face */
-export const indexY = (card: Card): number => (isMajor(card) ? 32 : 36);
+/** Vertical position of a minor's index numeral inside the 200x300 face */
+export const indexY = (): number => 36;
 
 // xmur3 string hash: deterministic seed from a card id
 export const hashSeed = (input: string): number => {
@@ -230,7 +233,7 @@ interface Dimensions {
 }
 
 const DIM: Record<'major' | 'minor', Dimensions> = {
-	major: { top: 20, bottom: 300, xs: 0, xe: 200 },
+	major: { top: 14, bottom: 286, xs: 14, xe: 186 },
 	minor: { top: 48, bottom: 256, xs: 32, xe: 168 }
 };
 
@@ -260,8 +263,6 @@ export const cardArt = (card: Card): CardArt => {
 	const accent = cardAccent(card);
 
 	const raw: RawLine[] = [];
-	let dominant = 0;
-	let best = -1;
 	for (let i = 0; i < g.lines; i++) {
 		const baseY = top + ((bottom - top) * i) / (g.lines - 1);
 		const centres: number[] = [];
@@ -269,10 +270,6 @@ export const cardArt = (card: Card): CardArt => {
 			centres.push(0.5 + (random() - 0.5) * (g.peaks > 1 ? 0.85 : 0.34));
 		}
 		const amp = g.amp * (0.4 + random() * 0.6);
-		if (amp > best) {
-			best = amp;
-			dominant = i;
-		}
 		let values: number[] = [];
 		for (let k = 0; k < g.points; k++) values.push(random());
 		for (let pass = 0; pass < g.smoothing; pass++) {
@@ -317,10 +314,10 @@ export const cardArt = (card: Card): CardArt => {
 		weight: 1.1
 	}));
 
-	if (major) {
-		lines[dominant].colour = accent;
-		lines[dominant].weight = 2.6;
-	} else if (court && card.courtRank) {
+	const symbol = major ? MAJOR_SYMBOLS[card.id] : undefined;
+
+	// Majors leave every ridge quiet; the red belongs to the symbol
+	if (court && card.courtRank) {
 		// Solid mass runs from the topmost strata line down to the lowest drawn
 		// ridge; it never spills past the last line into the frame.
 		const depth = COURT_ORDER[card.courtRank];
@@ -338,7 +335,7 @@ export const cardArt = (card: Card): CardArt => {
 				lines[k].band = accent;
 			}
 		}
-	} else {
+	} else if (!major) {
 		const idx = n - (card.number ?? 1);
 		if (lines[idx]) {
 			lines[idx].colour = accent;
@@ -349,8 +346,8 @@ export const cardArt = (card: Card): CardArt => {
 	const art: CardArt = {
 		lines,
 		accent,
-		framed: !major,
 		doubleFrame: court,
+		symbol,
 		category: cardCategory(card),
 		note: SUIT_NOTE[key]
 	};

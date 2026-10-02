@@ -5,8 +5,8 @@ The site is a SvelteKit app built with [`@deno/svelte-adapter`](https://www.npmj
 ## Build
 
 ```bash
-npm install
-npm run build
+deno install
+deno task build
 # Output: .deno-deploy/ (server entrypoint at .deno-deploy/server.ts)
 ```
 
